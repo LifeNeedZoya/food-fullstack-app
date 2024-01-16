@@ -1,18 +1,16 @@
-import { Grid, Button, Typography } from "@mui/material";
+"use client";
+import React from "react";
+import Header from "@/components/navbar/Header";
+import Footer from "@/components/navbar/Footer";
 
-export default function Home() {
+const Home = () => {
   return (
     <main>
-      <Grid container>
-        <Grid item>
-          <Typography variant="h1">Welcome Mui Framework </Typography>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="success" size="large">
-            Click me
-          </Button>
-        </Grid>
-      </Grid>
+      <Header />
+      <div style={{ width: "100vh", height: "60vh" }}>Hello </div>
+      <Footer />
     </main>
   );
-}
+};
+
+export default Home;
