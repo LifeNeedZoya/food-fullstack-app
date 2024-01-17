@@ -20,7 +20,7 @@ import { green } from "@mui/material/colors";
 import Image from "next/image";
 
 const Header = () => {
-  const NavDatas = [
+  const routes = [
     { name: "НҮҮР", path: "/" },
     { name: "ХООЛНЫ ЦЭС", path: "/" },
     { name: "ХҮРГЭЛТИЙН БҮС", path: "/" },
@@ -41,7 +41,7 @@ const Header = () => {
             display="flex"
             alignItems="center"
             justifyContent="space-evenly"
-            gap={5}
+            gap={7}
           >
             <Image
               src="/assets/Logos/Pinecone-logo.png"
@@ -49,9 +49,13 @@ const Header = () => {
               height={50}
               alt="logo"
             />
-            {NavDatas.map((data, i) => {
+            {routes.map((data, i) => {
               return (
-                <Typography key={i} variant="subtitle1" fontFamily={"fantasy"}>
+                <Typography
+                  key={i}
+                  variant="subtitle1"
+                  sx={{ fontWeight: 900 }}
+                >
                   {data.name}
                 </Typography>
               );
@@ -61,6 +65,7 @@ const Header = () => {
             <TextField
               id="outlined-basic"
               label="Хайх"
+              size="small"
               variant="outlined"
               InputProps={{
                 startAdornment: (
@@ -70,18 +75,26 @@ const Header = () => {
                 ),
               }}
             />
-            <Button>
-              <Link display="flex">
-                <ShoppingBasket />
-                <Typography>Сагс</Typography>
-              </Link>
-            </Button>
-            <Button>
-              <Link display="flex">
-                <Person />
-                <Typography>Нэвтрэх</Typography>
-              </Link>
-            </Button>
+
+            <Link
+              display="flex"
+              gap={3}
+              underline="none"
+              sx={{ color: "black", fontWeight: 900 }}
+            >
+              <ShoppingBasket />
+              <Typography sx={{ fontWeight: 900 }}>Сагс</Typography>
+            </Link>
+
+            <Link
+              display="flex"
+              gap={3}
+              underline="none"
+              sx={{ color: "black" }}
+            >
+              <Person />
+              <Typography sx={{ fontWeight: 900 }}>Нэвтрэх</Typography>
+            </Link>
           </Grid>
         </Grid>
       </Container>

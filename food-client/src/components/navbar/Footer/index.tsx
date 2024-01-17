@@ -16,7 +16,7 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import { green } from "@mui/material/colors";
+import { pink } from "@mui/material/colors";
 
 import Image from "next/image";
 
@@ -35,12 +35,33 @@ export default function Footer() {
     justifyContent: "center",
     alignItems: "center",
   };
+
   return (
-    <main style={{ background: green[900] }}>
+    <main
+      style={{
+        background: "#18b551",
+        position: "fixed",
+        width: "100%",
+        bottom: 0,
+        paddingTop: 60,
+        paddingBottom: 60,
+      }}
+    >
+      <Image
+        src="/assets/Logos/footer-bg.svg"
+        alt="bg"
+        fill={true}
+        style={{
+          height: "100%",
+          width: "100%",
+          position: "absolute",
+          zIndex: 1000,
+        }}
+      />
       <Container>
         <Grid container gridRow={1} spacing={8}>
           <Grid item container>
-            <Grid xs item sx={centerStyle}>
+            <Grid xs item sx={centerStyle} gap={3}>
               <Image
                 src="/assets/Logos/Pinecone-logo-white.png"
                 width={50}
@@ -50,7 +71,11 @@ export default function Footer() {
               <Typography
                 variant="h6"
                 sx={centerStyle}
-                style={{ fontFamily: "Poppins", fontWeight: 700 }}
+                style={{
+                  fontFamily: "Poppins",
+                  fontWeight: 700,
+                  color: "white",
+                }}
               >
                 Food Delivery
               </Typography>
@@ -60,31 +85,54 @@ export default function Footer() {
             {FooterDatas.map((data, i) => {
               return (
                 <Link key={i}>
-                  <Typography variant="h6">{data.name}</Typography>
+                  <Typography color={"white"} variant="h6">
+                    {data.name}
+                  </Typography>
                 </Link>
               );
             })}
           </Grid>
           <Grid item container sx={centerStyle}>
             <Button>
-              <Facebook />
+              <Facebook
+                sx={{ color: "white", weight: "50px", height: "50px" }}
+              />
             </Button>
             <Button>
-              <Instagram />
+              <Instagram
+                sx={{ color: "white", weight: "50px", height: "50px" }}
+              />
             </Button>
             <Button>
-              <Twitter />
+              <Twitter
+                sx={{ color: "white", weight: "50px", height: "50px" }}
+              />
             </Button>
           </Grid>
-          <Divider light />
-          <Grid sx={centerStyle} item container>
-            <Typography variant="subtitle1">
-              © 2024 Pinecone Foods LLC
-            </Typography>
+          <Divider
+            light
+            sx={{ width: "100%", height: 1, marginY: 6 }}
+            component={"button"}
+          />
+          <Grid
+            sx={centerStyle}
+            item
+            container
+            color={"white"}
+            gridRow={1}
+            flexDirection={"column"}
+          >
+            <Grid item>
+              <Typography variant="subtitle1">
+                © 2024 Pinecone Foods LLC
+              </Typography>
+            </Grid>
 
-            <Typography variant="subtitle1">
-              Зохиогчийн эрх хуулиар хамгаалагдсан.
-            </Typography>
+            <Grid item>
+              <Typography variant="subtitle1">
+                Зохиогчийн эрх хуулиар хамгаалагдсан.
+              </Typography>
+            </Grid>
           </Grid>
           <br />
         </Grid>

@@ -19,7 +19,7 @@ export const theme = createTheme({
   palette: {
     mode: "light",
     success: {
-      main: green[500],
+      main: "#18BA51",
     },
   },
 });

@@ -1,5 +1,7 @@
 import "./globals.css";
 import { ThemeProvider } from "@/theme";
+import Header from "@/components/navbar/Header";
+import Footer from "@/components/navbar/Footer";
 
 export default function RootLayout({
   children,
@@ -9,7 +11,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
