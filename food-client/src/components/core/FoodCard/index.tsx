@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import Header from "@/components/navbar/Header";
-import Footer from "@/components/navbar/Footer";
+
 import {
   Card,
   CardContent,
