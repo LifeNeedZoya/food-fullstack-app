@@ -15,20 +15,11 @@ import {
   Button,
   Drawer,
   Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Divider,
 } from "@mui/material";
 
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-
-import { green } from "@mui/material/colors";
-
 import Image from "next/image";
+
+import { BasketCard } from "@/components";
 
 type Anchor = "right";
 const Header = () => {
@@ -61,36 +52,14 @@ const Header = () => {
 
   const list = (anchor: Anchor) => (
     <Box
-      sx={{ width: anchor === "right" || anchor === "left" ? "auto" : 250 }}
+      sx={{
+        width: anchor === "right" ? 600 : "auto",
+      }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <BasketCard />
     </Box>
   );
 

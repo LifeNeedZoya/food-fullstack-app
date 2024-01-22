@@ -4,3 +4,6 @@ export * from "./core/DetailModal";
 export * from "./core/FoodCard";
 export * from "./core/InfoCard";
 export * from "./core/Selector";
+export * from "./core/Input";
+export * from "./pages/Login";
+export * from "./pages/Signup";

@@ -1,0 +1,17 @@
+@import "variables";
+@import "mixin";
+
+.Test {
+  background-color: $bg-default;
+  text-align: center;
+  margin: 20px 30px;
+
+  .Test2 {
+    padding: 20px;
+
+    h1 {
+      color: white;
+      background-color: chartreuse;
+    }
+  }
+}

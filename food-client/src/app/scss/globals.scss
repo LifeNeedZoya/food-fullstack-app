@@ -4,3 +4,48 @@
 .wrapper {
   background-color: aquamarine;
 }
+@import "variables";
+@import "mixin";
+
+.wrapper {
+  background: violet;
+
+  &-top {
+    @include background-color(teal);
+
+    h1 {
+      color: $primary-color;
+    }
+  }
+
+  &-bottom {
+    @include background-color(orange);
+
+    h1 {
+      color: $secondary-color;
+    }
+  }
+}
+
+.btn {
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 2em;
+
+  &-primary {
+    @include button-bg(#2e65cc);
+  }
+
+  &-secondary {
+    @include button-bg(#cc2ebc);
+  }
+
+  &-success {
+    @include button-bg(#2ecc71);
+  }
+
+  &-error {
+    @include button-bg(#cc552e);
+  }
+}

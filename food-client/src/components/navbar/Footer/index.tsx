@@ -9,6 +9,7 @@ import {
   Twitter,
 } from "@mui/icons-material";
 import {
+  Box,
   Button,
   Container,
   Divider,
@@ -16,6 +17,7 @@ import {
   Link,
   Typography,
 } from "@mui/material";
+
 import { pink } from "@mui/material/colors";
 
 import Image from "next/image";
@@ -37,27 +39,15 @@ export default function Footer() {
   };
 
   return (
-    <main
+    <Box
       style={{
         background: "#18b551",
-        position: "fixed",
         width: "100%",
-        bottom: 0,
         paddingTop: 60,
         paddingBottom: 60,
+        backgroundImage: `url(${"/assets/Logos/bg-footer.png"})`,
       }}
     >
-      <Image
-        src="/assets/Logos/footer-bg.svg"
-        alt="bg"
-        fill={true}
-        style={{
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          zIndex: 1000,
-        }}
-      />
       <Container>
         <Grid container gridRow={1} spacing={8}>
           <Grid item container>
@@ -137,6 +127,6 @@ export default function Footer() {
           <br />
         </Grid>
       </Container>
-    </main>
+    </Box>
   );
 }
