@@ -6,7 +6,7 @@ import { Button as CustomButton, Input } from "@/components";
 
 import { Container, Grid, Link, Stack, Typography } from "@mui/material";
 
-const LoginPage = () => {
+export const LoginPage = () => {
   const onClick = () => {
     console.log("aa");
   };
@@ -59,5 +59,3 @@ const LoginPage = () => {
     </Container>
   );
 };
-
-export default LoginPage;

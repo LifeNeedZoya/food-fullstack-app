@@ -62,6 +62,7 @@ const Header = () => {
       <BasketCard />
     </Box>
   );
+  const a: string = "Сагс";
 
   return (
     <main>
@@ -123,8 +124,8 @@ const Header = () => {
                 <React.Fragment key={anchor}>
                   <Button onClick={toggleDrawer(anchor, true)}>
                     <ShoppingBasket />
-                    <Typography sx={{ color: "black", fontWeight: 900 }}>
-                      Сагс
+                    <Typography sx={{ color: "black", fontWeight: 800 }}>
+                      {a}
                     </Typography>
                   </Button>
                   <Drawer

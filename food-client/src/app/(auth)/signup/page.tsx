@@ -1,7 +1,9 @@
+"use client";
+import { SignupPage } from "@/components";
 import React from "react";
 
 const Page = () => {
-  return <div>Signup</div>;
+  return <SignupPage />;
 };
 
 export default Page;

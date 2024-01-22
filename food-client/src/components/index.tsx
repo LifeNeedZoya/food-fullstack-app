@@ -7,3 +7,6 @@ export * from "./core/Selector";
 export * from "./core/Input";
 export * from "./pages/Login";
 export * from "./pages/Signup";
+export * from "./pages/ForgotPass/StepOne";
+export * from "./pages/ForgotPass/StepTwo";
+export * from "./pages/ForgotPass/StepThree";

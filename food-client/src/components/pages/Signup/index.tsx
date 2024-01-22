@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const SignupPage = () => {
+export const SignupPage = () => {
   const centerStyle = {
     display: "flex",
     justifyContent: "center",
@@ -64,5 +64,3 @@ const SignupPage = () => {
     </Container>
   );
 };
-
-export default SignupPage;
