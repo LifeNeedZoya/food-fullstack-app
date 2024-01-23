@@ -10,3 +10,4 @@ export * from "./pages/Signup";
 export * from "./pages/ForgotPass/StepOne";
 export * from "./pages/ForgotPass/StepTwo";
 export * from "./pages/ForgotPass/StepThree";
+export * from "./pages/Home";
