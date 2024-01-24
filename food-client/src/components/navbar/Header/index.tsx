@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-import { AnchorHTMLAttributes } from "react";
 
 import { Search, ShoppingBasket, Person } from "@mui/icons-material";
 
@@ -65,93 +64,80 @@ const Header = () => {
   const a: string = "Сагс";
 
   return (
-    <main>
-      <Container>
+    <Container>
+      <Grid container gridColumn={1} direction={"row"} sx={{ paddingY: 3 }}>
         <Grid
-          container
-          gridRow={1}
+          item
           display="flex"
-          justifyContent="space-between"
-          sx={{ paddingY: 3 }}
+          alignItems="center"
+          justifyContent="space-evenly"
+          gap={7}
+          xs={12}
+          lg={6}
         >
-          <Grid
-            item
-            display="flex"
-            alignItems="center"
-            justifyContent="space-evenly"
-            gap={7}
-          >
-            <Image
-              src="/assets/Logos/Pinecone-logo.png"
-              width={50}
-              height={50}
-              alt="logo"
-            />
-            {routes.map((data, i) => {
-              return (
-                <Typography
-                  key={i}
-                  variant="subtitle1"
-                  sx={{ fontWeight: 900 }}
-                >
-                  {data.name}
-                </Typography>
-              );
-            })}
-          </Grid>
-          <Grid item display="flex" alignItems="center" gap={5}>
-            <TextField
-              id="outlined-basic"
-              label="Хайх"
-              size="small"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-            />
-
-            <Link
-              display="flex"
-              gap={3}
-              underline="none"
-              sx={{ color: "black", fontWeight: 900 }}
-            >
-              {(["right"] as const).map((anchor) => (
-                <React.Fragment key={anchor}>
-                  <Button onClick={toggleDrawer(anchor, true)}>
-                    <ShoppingBasket />
-                    <Typography sx={{ color: "black", fontWeight: 800 }}>
-                      {a}
-                    </Typography>
-                  </Button>
-                  <Drawer
-                    anchor={anchor}
-                    open={state[anchor]}
-                    onClose={toggleDrawer(anchor, false)}
-                  >
-                    {list(anchor)}
-                  </Drawer>
-                </React.Fragment>
-              ))}
-            </Link>
-
-            <Link
-              display="flex"
-              gap={3}
-              underline="none"
-              sx={{ color: "black" }}
-            >
-              <Person />
-              <Typography sx={{ fontWeight: 900 }}>Нэвтрэх</Typography>
-            </Link>
-          </Grid>
+          <Image
+            src="/assets/Logos/Pinecone-logo.png"
+            width={50}
+            height={50}
+            alt="logo"
+          />
+          {routes.map((data, i) => {
+            return (
+              <Typography key={i} variant="subtitle1" sx={{ fontWeight: 900 }}>
+                {data.name}
+              </Typography>
+            );
+          })}
         </Grid>
-      </Container>
-    </main>
+        <Grid item container direction={"row"} gap={5} xs={12} lg={6}>
+          <TextField
+            id="outlined-basic"
+            label="Хайх"
+            size="small"
+            variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Link
+            display="flex"
+            gap={3}
+            underline="none"
+            sx={{ color: "black", fontWeight: 900 }}
+          >
+            {(["right"] as const).map((anchor) => (
+              <React.Fragment key={anchor}>
+                <Button onClick={toggleDrawer(anchor, true)}>
+                  <ShoppingBasket />
+                  <Typography sx={{ color: "black", fontWeight: 800 }}>
+                    {a}
+                  </Typography>
+                </Button>
+                <Drawer
+                  anchor={anchor}
+                  open={state[anchor]}
+                  onClose={toggleDrawer(anchor, false)}
+                >
+                  {list(anchor)}
+                </Drawer>
+              </React.Fragment>
+            ))}
+          </Link>
+
+          <Button>
+            <Person />
+            <Typography sx={{ fontWeight: 900, marginLeft: 2 }}>
+              Нэвтрэх
+            </Typography>
+          </Button>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

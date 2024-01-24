@@ -8,6 +8,7 @@ import {
   Instagram,
   Twitter,
 } from "@mui/icons-material";
+
 import {
   Box,
   Button,
@@ -18,11 +19,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import { pink } from "@mui/material/colors";
-
 import Image from "next/image";
 
+import { useRouter } from "next/navigation";
+
 export default function Footer() {
+  const router = useRouter();
   const FooterDatas = [
     { name: "Нүүр ", path: "/" },
     { name: "Холбоо барих", path: "/" },
@@ -43,6 +45,7 @@ export default function Footer() {
       style={{
         background: "#18b551",
         width: "100%",
+        marginTop: "auto",
         paddingTop: 60,
         paddingBottom: 60,
         backgroundImage: `url(${"/assets/Logos/bg-footer.png"})`,
@@ -63,26 +66,30 @@ export default function Footer() {
                 sx={centerStyle}
                 style={{
                   fontFamily: "Poppins",
-                  fontWeight: 700,
                   color: "white",
+                  fontWeight: 700,
                 }}
               >
                 Food Delivery
               </Typography>
             </Grid>
           </Grid>
-          <Grid item display={"flex"} sx={centerStyle} style={{ gap: "40px" }}>
-            {FooterDatas.map((data, i) => {
-              return (
-                <Link key={i}>
-                  <Typography color={"white"} variant="h6">
-                    {data.name}
-                  </Typography>
-                </Link>
-              );
-            })}
+          <Grid
+            item
+            sx={centerStyle}
+            gap={2}
+            gridAutoColumns="250px"
+            gridAutoFlow="column"
+            xs={12}
+            flexWrap="wrap"
+          >
+            {FooterDatas.map((data, i) => (
+              <Button onClick={() => router.push(data.path)} key={i}>
+                <Typography color="white">{data.name}</Typography>
+              </Button>
+            ))}
           </Grid>
-          <Grid item container sx={centerStyle}>
+          <Grid item container sx={centerStyle} xs={12}>
             <Button>
               <Facebook
                 sx={{ color: "white", weight: "50px", height: "50px" }}

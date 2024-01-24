@@ -2,10 +2,10 @@
 
 import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
 
-import { HomeTop } from "@/components";
+import { HomePage } from "@/components";
 
 const Home = () => {
-  return <HomeTop />;
+  return <HomePage />;
 };
 
 export default Home;

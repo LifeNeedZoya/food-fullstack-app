@@ -4,7 +4,7 @@ import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
 
 import Image from "next/image";
 
-export const HomeTop = () => {
+export const HomePage = () => {
   return (
     <Box
       style={{
@@ -12,8 +12,10 @@ export const HomeTop = () => {
         background: "#18b551",
         backgroundImage: `url(${"/assets/Logos/bg-footer.png"})`,
       }}
+      width={"full"}
+      height={"788px"}
     >
-      <Grid container gridRow={2} spacing={8} height={"788px"}>
+      <Grid container gridRow={2} spacing={8} height={"788px"} xs={12}>
         <Grid item xs={12} lg={6}>
           <Stack
             height={"100%"}
@@ -22,6 +24,7 @@ export const HomeTop = () => {
             color="white"
           >
             <Typography
+              textAlign={"center"}
               sx={{
                 fontSize: 55,
                 fontWeight: 600,
