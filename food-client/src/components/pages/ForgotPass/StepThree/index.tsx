@@ -4,17 +4,16 @@ import { Container, Grid, Stack, Typography, Link } from "@mui/material";
 import React, { ChangeEvent } from "react";
 
 import { Button as CustomButton, Input } from "@/components";
-import { useRouter } from "next/navigation";
 
 interface IStepProps {
-  email: string;
-  password: string;
   handleThirdStep: () => void;
   handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const StepThree = ({ email }: IStepProps) => {
-  const router = useRouter();
+export const StepThree = ({
+  handleThirdStep,
+  handleChangeInput,
+}: IStepProps) => {
   const centerStyle = {
     display: "flex",
     justifyContent: "center",
@@ -48,19 +47,21 @@ export const StepThree = ({ email }: IStepProps) => {
             label="Нууц үг "
             placeholder="Шинэ нууц үгээ оруулна уу"
             showPassword
+            onChange={handleChangeInput}
           />
           <Input
-            name="password"
+            name="rePassword"
             label="Нууц үг давтах"
             placeholder="Нууц үг адилхан байх ёстой"
             showPassword
+            onChange={handleChangeInput}
           />
         </Grid>
         <Grid item width="100%">
           <CustomButton
             label="Үргэлжлүүлэх"
             btnType="contained"
-            onClick={() => router.push("/")}
+            onClick={handleThirdStep}
           />
         </Grid>
       </Grid>

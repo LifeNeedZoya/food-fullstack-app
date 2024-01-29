@@ -72,7 +72,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     await findUser?.updateOne({ password: hashedPassword });
     await findUser?.save();
-    res.status(400).json({ message: "Нууц үг солих амжилттай боллоо" });
+    res.status(200).json({ message: "Нууц үг солих амжилттай боллоо" });
   } catch (error) {
     res.status(400).json({ message: "Нууц үг солих  амжилтgui боллоо", error });
     console.log("err", error);
