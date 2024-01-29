@@ -13,14 +13,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (email: string, subject: string) => {
+export const sendEmail = async (email: string, otp: string) => {
   const info = await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: email,
-    subject,
+    subject: "reset email",
     text: "Hello world?",
     html: `<div>
-    <h1>${subject}</h1>
+    <h1>Email reset code is ${otp}</h1>
     </div>`,
   });
 };

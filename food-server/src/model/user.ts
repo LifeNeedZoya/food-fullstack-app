@@ -20,6 +20,10 @@ const userSchema = new Schema({
   avatarImg: {
     type: String,
   },
+  otp: {
+    type: String,
+    default: "",
+  },
   address: {
     street: {
       type: String,
@@ -39,10 +43,10 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.pre("save", async function () {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
+// userSchema.pre("save", async function () {
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = await bcrypt.hash(this.password, salt);
+// });
 
 const User = model("User", userSchema);
 

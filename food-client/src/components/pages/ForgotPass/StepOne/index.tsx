@@ -1,12 +1,22 @@
 "use client";
 import { Container, Grid, Stack, Typography, Link } from "@mui/material";
 
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 import { Button as CustomButton, Input } from "@/components";
 import { useRouter } from "next/navigation";
 
-export const StepOne = () => {
+interface IStepProps {
+  email: string;
+  handleFirstStep: () => void;
+  handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const StepOne = ({
+  email,
+  handleFirstStep,
+  handleChangeInput,
+}: IStepProps) => {
   const router = useRouter();
   const centerStyle = {
     display: "flex",
@@ -29,13 +39,18 @@ export const StepOne = () => {
           Нууц үг сэргээх
         </Grid>
         <Grid item>
-          <Input label="Имэйл" placeholder="Имэйл хаягаа оруулна уу" />
+          <Input
+            label="Имэйл"
+            placeholder="Имэйл хаягаа оруулна уу"
+            onChange={handleChangeInput}
+            name="email"
+          />
         </Grid>
         <Grid item width="100%">
           <CustomButton
             label="Үргэлжлүүлэх"
             btnType="contained"
-            onClick={() => router.push("/forgotPass/firstStep")}
+            onClick={handleFirstStep}
           />
         </Grid>
       </Grid>

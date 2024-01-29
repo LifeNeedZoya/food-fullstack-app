@@ -6,9 +6,12 @@ import jwt from "jsonwebtoken";
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const user = await User.create(req.body);
+    const newUser = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newUser.password, salt);
+    await User.create({ ...newUser, password: hashedPassword });
 
-    res.status(200).json({ message: "Шинэ хэрэглэгч үүслээ.", user });
+    res.status(200).json({ message: "Шинэ хэрэглэгч үүслээ.", newUser });
   } catch (error) {
     res.status(400).json({ message: "Error occured while adding new user" });
   }
@@ -41,25 +44,7 @@ export const login = async (req: Request, res: Response) => {
     console.log("CCCC");
     res.status(201).json({ message: "Хэрэглэгч амжилттай нэвтэрлээ", token });
   } catch (error) {
-    res.status(201).json({ message: "Хэрэглэгч амжилтgui ", error });
+    res.status(201).json({ message: `Хэрэглэгч амжилтgui ${error}` });
     console.log("err", error);
-  }
-};
-
-export const verifyAccount = async (req: Request, res: Response) => {
-  try {
-    const { email } = req.body;
-    await sendEmail(
-      email,
-      "Verify Account for Food platform And your code is 4545"
-    );
-
-    res.status(201).json({ message: "Email амжилттай илгээгдлээ." });
-  } catch (error) {
-    console.log("ERR", error);
-    res.status(400).json({
-      message: "Email илгээх үед алдаа гарлаа.",
-      error,
-    });
   }
 };

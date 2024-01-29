@@ -1,13 +1,26 @@
 "use client";
 import { Container, Grid, Stack, Typography, Link } from "@mui/material";
 
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 import { Button as CustomButton, Input } from "@/components";
 import { useRouter } from "next/navigation";
 
-export const StepTwo = () => {
+interface IStepProps {
+  email: string;
+  otp: string;
+  handleSecondStep: () => void;
+  handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const StepTwo = ({
+  email,
+  otp,
+  handleSecondStep,
+  handleChangeInput,
+}: IStepProps) => {
   const router = useRouter();
+
   const centerStyle = {
     display: "flex",
     justifyContent: "center",
@@ -22,6 +35,7 @@ export const StepTwo = () => {
     width: "500px",
     boxSizing: "border-box",
   };
+
   return (
     <Container sx={centerStyle}>
       <Grid container sx={BigGridStyle}>
@@ -30,19 +44,20 @@ export const StepTwo = () => {
         </Grid>
         <Grid item>
           <Typography>
-            Таны example@pinecone.mn хаяг руу сэргээх код илгээх болно.
+            Таны {email} хаяг руу сэргээх код илгээх болно.
           </Typography>
           <Input
             label="Нууц үг сэргээх код"
             placeholder="Нууц үг сэргээх кодоо оруулна уу"
-            showPassword
+            onChange={handleChangeInput}
+            name="otp"
           />
         </Grid>
         <Grid item width="100%">
           <CustomButton
             label="Үргэлжлүүлэх"
             btnType="contained"
-            onClick={() => router.push("/forgotPass/secondStep")}
+            onClick={handleSecondStep}
           />
         </Grid>
       </Grid>

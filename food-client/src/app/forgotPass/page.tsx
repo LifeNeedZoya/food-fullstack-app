@@ -1,8 +1,8 @@
-import { StepOne } from "@/components";
+import { MyStepper } from "@/components";
 import React from "react";
 
 const Page = () => {
-  return <StepOne />;
+  return <MyStepper />;
 };
 
 export default Page;

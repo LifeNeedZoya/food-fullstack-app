@@ -1,12 +1,19 @@
 "use client";
 import { Container, Grid, Stack, Typography, Link } from "@mui/material";
 
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 import { Button as CustomButton, Input } from "@/components";
 import { useRouter } from "next/navigation";
 
-export const StepThree = () => {
+interface IStepProps {
+  email: string;
+  password: string;
+  handleThirdStep: () => void;
+  handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const StepThree = ({ email }: IStepProps) => {
   const router = useRouter();
   const centerStyle = {
     display: "flex",
@@ -36,8 +43,18 @@ export const StepThree = () => {
           Шинэ нууц үг зохиох
         </Grid>
         <Grid item>
-          <Input label="Нууц үг " placeholder="" showPassword />
-          <Input label="Нууц үг давтах" placeholder="" showPassword />
+          <Input
+            name="password"
+            label="Нууц үг "
+            placeholder="Шинэ нууц үгээ оруулна уу"
+            showPassword
+          />
+          <Input
+            name="password"
+            label="Нууц үг давтах"
+            placeholder="Нууц үг адилхан байх ёстой"
+            showPassword
+          />
         </Grid>
         <Grid item width="100%">
           <CustomButton
