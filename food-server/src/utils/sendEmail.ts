@@ -14,15 +14,13 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async (email: string, subject: string) => {
-  console.log("WWWW");
   const info = await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: email,
     subject,
     text: "Hello world?",
     html: `<div>
-    <h1>hello Zoi</h1>
+    <h1>${subject}</h1>
     </div>`,
   });
-  console.log("111111");
 };

@@ -49,7 +49,10 @@ export const login = async (req: Request, res: Response) => {
 export const verifyAccount = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-    await sendEmail(email, "Verify Account for Food platform");
+    await sendEmail(
+      email,
+      "Verify Account for Food platform And your code is 4545"
+    );
 
     res.status(201).json({ message: "Email амжилттай илгээгдлээ." });
   } catch (error) {
