@@ -42,6 +42,7 @@ export const login = async (req: Request, res: Response) => {
     res.status(201).json({ message: "Хэрэглэгч амжилттай нэвтэрлээ", token });
   } catch (error) {
     res.status(201).json({ message: "Хэрэглэгч амжилтgui ", error });
+    console.log("err", error);
   }
 };
 

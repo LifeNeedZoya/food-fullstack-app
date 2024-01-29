@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application } from "express";
 import color from "colors";
 import cors from "cors";
 import { connectDB } from "./config/db";
