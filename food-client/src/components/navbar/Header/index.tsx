@@ -19,21 +19,24 @@ import {
 import Image from "next/image";
 
 import { BasketCard } from "@/components";
+import { useRouter } from "next/navigation";
 
 type Anchor = "right";
+
 const Header = () => {
   const routes = [
     { name: "НҮҮР", path: "/" },
     { name: "ХООЛНЫ ЦЭС", path: "/" },
     { name: "ХҮРГЭЛТИЙН БҮС", path: "/" },
   ];
-
   const [state, setState] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
+
+  const router = useRouter();
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -61,6 +64,7 @@ const Header = () => {
       <BasketCard />
     </Box>
   );
+
   const a: string = "Сагс";
 
   return (
@@ -83,9 +87,14 @@ const Header = () => {
           />
           {routes.map((data, i) => {
             return (
-              <Typography key={i} variant="subtitle1" sx={{ fontWeight: 900 }}>
+              <Link
+                key={i}
+                variant="subtitle1"
+                sx={{ fontWeight: 900, color: "black", textDecoration: "none" }}
+                href={data.path}
+              >
                 {data.name}
-              </Typography>
+              </Link>
             );
           })}
         </Grid>
@@ -113,7 +122,7 @@ const Header = () => {
             {(["right"] as const).map((anchor) => (
               <React.Fragment key={anchor}>
                 <Button onClick={toggleDrawer(anchor, true)}>
-                  <ShoppingBasket />
+                  <ShoppingBasket sx={{ color: "black" }} />
                   <Typography sx={{ color: "black", fontWeight: 800 }}>
                     {a}
                   </Typography>
@@ -129,11 +138,12 @@ const Header = () => {
             ))}
           </Link>
 
-          <Button>
+          <Button
+            onClick={() => router.push("/login")}
+            sx={{ fontWeight: 900, marginLeft: 2, color: "black" }}
+          >
             <Person />
-            <Typography sx={{ fontWeight: 900, marginLeft: 2 }}>
-              Нэвтрэх
-            </Typography>
+            Нэвтрэх
           </Button>
         </Grid>
       </Grid>

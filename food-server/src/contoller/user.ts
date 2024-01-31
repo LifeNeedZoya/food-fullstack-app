@@ -11,7 +11,10 @@ export const signup = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(newUser.password, salt);
     await User.create({ ...newUser, password: hashedPassword });
 
-    res.status(200).json({ message: "Шинэ хэрэглэгч үүслээ.", newUser });
+    res.status(200).json({
+      message: "Шинэ хэрэглэгч үүслээь Таны руу имэйл игээсэн",
+      newUser,
+    });
   } catch (error) {
     res.status(400).json({ message: "Error occured while adding new user" });
   }
@@ -34,6 +37,7 @@ export const login = async (req: Request, res: Response) => {
         .json({ message: `Имэйл эсвэл нууц үг буруу байна.` });
     }
     console.log("bbbb");
+    jwt.verify;
     const token = jwt.sign(
       {
         id: user._id,

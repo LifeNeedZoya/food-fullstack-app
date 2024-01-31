@@ -23,18 +23,17 @@ export const MyStepper = () => {
 
   const handleFirstStep = async () => {
     try {
-      console.log("handleNext");
       const data = await axios.post("http://localhost:8080/auth/verify/email", {
         email: user.email,
       });
-      console.log("object");
+
       setActiveStep((prev) => prev + 1);
       toast.success("success");
     } catch (error) {
       toast.error(`Email илгэээхэд алдаа гарлаа.${error}`);
-      console.log("err", error);
     }
   };
+
   const handleSecondStep = async () => {
     try {
       const data = await axios.post(
@@ -48,9 +47,7 @@ export const MyStepper = () => {
       setActiveStep((prev) => prev + 1);
       toast.success("success");
     } catch (error) {
-      toast.error(
-        `Email илгэээхэд алдаа гарлаа.${error.response.data.message}`
-      );
+      toast.error(`Email илгэээхэд алдаа гарлаа.${error}`);
       console.log("err");
     }
   };
@@ -67,7 +64,7 @@ export const MyStepper = () => {
       toast.success("success");
       await router.push("/");
     } catch (error) {
-      toast.error(`алдаа гарлаа.${error.response.data.message}`);
+      toast.error(`алдаа гарлаа.${error}`);
       console.log("err");
     }
   };

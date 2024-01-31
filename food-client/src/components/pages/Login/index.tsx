@@ -1,15 +1,42 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 
 import { Button as CustomButton, Input } from "@/components";
 
 import { Container, Grid, Link, Stack, Typography } from "@mui/material";
+import { UserContext } from "@/context/authContext";
+
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { useRouter } from "next/navigation";
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .max(50, "Имэйл 50С хэтрэхгү")
+    .required("Имэйл заавал оруулан уу")
+    .email()
+    .matches(/^w+[+.w-]*[0-9]@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i),
+  password: yup
+    .string()
+    .required("password заавал оруулан уу")
+    .min(6, "password хамгийн багадаа 6 байх ёстой"),
+});
 
 export const LoginPage = () => {
-  const onClick = () => {
-    console.log("aa");
-  };
+  const { user } = useContext(UserContext);
+  const router = useRouter();
+  const formik = useFormik({
+    onSubmit: ({ email, password }) => {
+      console.log("email", email);
+      console.log("password", password);
+    },
+    initialValues: { email: user.email, password: user.password },
+    validateOnChange: false,
+    validateOnBlur: false,
+    validationSchema,
+  });
 
   const centerStyle = {
     display: "flex",
@@ -32,14 +59,25 @@ export const LoginPage = () => {
           Нэвтрэх
         </Grid>
         <Grid item>
-          <Input label="Имэйл" placeholder="Имэйл хаягаа оруулна уу" />
+          <Input
+            name="email"
+            label="Имэйл"
+            value={formik.values.email}
+            errorText={formik.errors.email}
+            placeholder="Имэйл хаягаа оруулна уу"
+            onChange={formik.handleChange}
+          />
           <Input
             label="Нууц үг"
+            name="password"
             placeholder="Нууц үгээ оруулна уу"
             showPassword
+            errorText={formik.errors.password}
+            value={formik.values.password}
+            onChange={formik.handleChange}
           />
           <Link
-            href="#"
+            href="/forgotPass"
             underline="hover"
             color="black"
             display="flex"
@@ -50,9 +88,17 @@ export const LoginPage = () => {
         </Grid>
         <Grid item width="100%">
           <Stack spacing={4}>
-            <CustomButton label="Нэвтрэх" btnType="contained" />
+            <CustomButton
+              label="Нэвтрэх"
+              btnType="contained"
+              onClick={formik.handleSubmit}
+            />
             <Typography sx={centerStyle}>Эсвэл</Typography>
-            <CustomButton label="Бүртгүүлэх" btnType="outlined" />
+            <CustomButton
+              label="Бүртгүүлэх"
+              btnType="outlined"
+              onClick={() => router.push("/signup")}
+            />
           </Stack>
         </Grid>
       </Grid>

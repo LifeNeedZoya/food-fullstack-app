@@ -41,6 +41,10 @@ const userSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // userSchema.pre("save", async function () {
