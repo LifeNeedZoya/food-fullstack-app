@@ -9,8 +9,19 @@ export const signup = async (req: Request, res: Response) => {
     const newUser = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newUser.password, salt);
-    await User.create({ ...newUser, password: hashedPassword });
-
+    const user = await User.create({ ...newUser, password: hashedPassword });
+    const verifyToken = jwt.sign(
+      { email: user.email },
+      process.env.JWT_PRIVATE_KEY as string,
+      {
+        expiresIn: "5m",
+      }
+    );
+    await sendEmail({ email: user.email, token: verifyToken });
+    res.status(201).json({
+      message:
+        "Шинэ хэрэглэгч амжилттай бүртгэгдлээ таны бүртгэлтэй имэйл хаяг руу баталгаажуулах email илгээсэн.",
+    });
     res.status(200).json({
       message: "Шинэ хэрэглэгч үүслээь Таны руу имэйл игээсэн",
       newUser,

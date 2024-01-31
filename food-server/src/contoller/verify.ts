@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { sendEmail } from "../utils/sendEmail";
 import User from "../model/user";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const sendEmailToUser = async (req: Request, res: Response) => {
   try {
@@ -18,13 +19,12 @@ export const sendEmailToUser = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Хэрэглэгч олдсонгүй" });
     }
 
-    console.log("OTP", otp);
     const salt = await bcrypt.genSalt(10);
 
     findUser.otp = await bcrypt.hash(otp, salt);
 
     await findUser.save();
-    await sendEmail(email, otp);
+    await sendEmail({ email, otp });
 
     res.status(201).json({ message: "Email амжилттай илгээгдлээ." });
   } catch (error) {
@@ -76,5 +76,31 @@ export const resetPassword = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: "Нууц үг солих  амжилтgui боллоо", error });
     console.log("err", error);
+  }
+};
+
+export const verifyUser = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.query;
+
+    const { email } = jwt.verify(
+      token as string,
+      process.env.JWT_PRIVATE_KEY as string
+    ) as { email: string };
+
+    const findUser = await User.findOne({ email: email });
+
+    if (!findUser) {
+      res.status(500).send("Not verified");
+    } else {
+      findUser.isVerified = true;
+    }
+
+    await findUser?.save();
+
+    res.status(200).send(`<h1 style="color: green">Valid Link </h1>`);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Server is internal error", error });
   }
 };
