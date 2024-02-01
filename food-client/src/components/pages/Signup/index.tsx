@@ -15,7 +15,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 export const SignupPage = () => {
-  const { user } = useContext(UserContext);
+  const { user, signup } = useContext(UserContext);
 
   const validationSchema = yup.object({
     name: yup.string().required("Нэрээ заавал оруулан уу"),
@@ -38,13 +38,30 @@ export const SignupPage = () => {
   });
 
   const formik = useFormik({
-    onSubmit: () => {},
+    onSubmit: ({
+      name,
+      email,
+      password,
+      address,
+      avatarImg,
+    }: {
+      name: string;
+      email: string;
+      password: string;
+      address?: string;
+      avatarImg?: string;
+      rePassword?: string;
+    }) => {
+      console.log("Medeelel", name, email, password, address, avatarImg);
+      // signup({ name, email, password, address, avatarImg });
+    },
     initialValues: {
       name: user.name,
       email: user.email,
       address: user.address,
-      password: user.password,
+      password: user.password || "",
       rePassword: user.rePassword,
+      avatarImg: user.avatarImg,
     },
     validateOnChange: false,
     validateOnBlur: false,

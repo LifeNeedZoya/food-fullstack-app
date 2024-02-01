@@ -16,8 +16,7 @@ const validationSchema = yup.object({
     .string()
     .max(50, "Имэйл 50С хэтрэхгү")
     .required("Имэйл заавал оруулан уу")
-    .email()
-    .matches(/^w+[+.w-]*[0-9]@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i),
+    .email(),
   password: yup
     .string()
     .required("password заавал оруулан уу")
@@ -25,14 +24,15 @@ const validationSchema = yup.object({
 });
 
 export const LoginPage = () => {
-  const { user } = useContext(UserContext);
+  const { user, login } = useContext(UserContext);
   const router = useRouter();
   const formik = useFormik({
-    onSubmit: ({ email, password }) => {
-      console.log("email", email);
-      console.log("password", password);
+    onSubmit: ({ email, password }: { email: string; password: string }) => {
+      console.log("Medeelel", email, password);
+      login({ email, password });
+      console.log("alda");
     },
-    initialValues: { email: user.email, password: user.password },
+    initialValues: { email: user.email, password: user.password as string },
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema,
@@ -91,7 +91,7 @@ export const LoginPage = () => {
             <CustomButton
               label="Нэвтрэх"
               btnType="contained"
-              onClick={formik.handleSubmit}
+              onClick={() => formik.handleSubmit()}
             />
             <Typography sx={centerStyle}>Эсвэл</Typography>
             <CustomButton

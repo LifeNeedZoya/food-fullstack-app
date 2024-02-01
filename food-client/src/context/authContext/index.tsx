@@ -1,5 +1,8 @@
 "use client";
 import { PropsWithChildren, createContext, useState } from "react";
+import MyAxios from "@/utils/axios";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export const UserContext = createContext<IUserContext>({
   user: {
@@ -8,8 +11,10 @@ export const UserContext = createContext<IUserContext>({
     address: "",
     password: "",
     rePassword: "",
+    avatarImg: "",
   },
-  login: function (): void {},
+  login: async () => {},
+  signup: async () => {},
 });
 
 interface IUser {
@@ -18,19 +23,28 @@ interface IUser {
   address: string;
   password?: string;
   rePassword?: string;
+  avatarImg?: string;
+}
+
+interface ISignUp {
+  name: string;
+  password: string;
+  email: string;
+  address?: string;
+  avatarImg?: string;
 }
 
 interface IUserContext {
   user: IUser;
-  login: () => void;
-  logout?: () => void;
-  signup?: () => void;
+  login: ({ email, password }: ILogin) => {};
+  logout?: () => {};
+  signup?: ({ name, email, password, address, avatarImg }: ISignUp) => {};
 }
 
-interface IProps {
-  children: any;
+interface ILogin {
+  password: string;
+  email: string;
 }
-
 export const UserProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<IUser>({
     name: "",
@@ -40,8 +54,56 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     rePassword: "",
   });
 
+  const signup = async ({
+    name,
+    email,
+    password,
+    address,
+    avatarImg,
+  }: ISignUp) => {
+    try {
+      await MyAxios.post("/auth/signup", {
+        email,
+        name,
+        password,
+        address,
+        avatarImg,
+      });
+      await Swal.fire({
+        position: "top-end",
+        title: "Та амжилттай бүртгүүллээ",
+        text: "E-mail хаягруу баталгаажуулах линк явууллаа",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      toast.error("Бүртгүүлэхэд алдаа гарлаа");
+    }
+  };
+
+  const login = async ({ email, password }: ILogin) => {
+    try {
+      await MyAxios.post("/auth/login", {
+        email,
+        password,
+      });
+      await Swal.fire({
+        position: "top-end",
+        title: "амжилттай Нэвтрэлээ",
+        text: "E-mail хаягруу баталгаажуулах линк явууллаа",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      toast.error(`Нэвтрэхэд алдаа гарлаа, ${error}`);
+      console.log("err", error);
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, login: () => {} }}>
+    <UserContext.Provider value={{ user, login, signup }}>
       {children}
     </UserContext.Provider>
   );
