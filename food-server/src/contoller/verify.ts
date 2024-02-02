@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 export const sendEmailToUser = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-    console.log("email", email);
+
     const otp = Math.round(Math.random() * 10000)
       .toString()
       .padStart(4, "0");
@@ -41,7 +41,7 @@ export const verifyOtp = async (req: Request, res: Response) => {
     const { email, otp } = req.body;
 
     const findUser = await User.findOne({ email });
-    console.log("USER", findUser);
+
     if (!findUser) {
       return res.status(400).json({ message: "Хэрэглэгч олдсонгүй" });
     }

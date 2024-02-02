@@ -95,11 +95,11 @@ export const SignupPage = () => {
         <Grid item>
           <Input
             name="name"
-            placeholder="Нэрээ оруулна уу"
             label="Нэр"
             onChange={formik.handleChange}
             errorText={formik.errors.name}
             value={formik.values.name}
+            placeholder="Нэрээ оруулна уу"
           />
           <Input
             name="email"

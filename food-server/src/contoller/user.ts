@@ -14,7 +14,7 @@ export const signup = async (req: Request, res: Response) => {
       { email: user.email },
       process.env.JWT_PRIVATE_KEY as string,
       {
-        expiresIn: "5m",
+        expiresIn: "20m",
       }
     );
     await sendEmail({ email: user.email, token: verifyToken });
@@ -22,19 +22,17 @@ export const signup = async (req: Request, res: Response) => {
       message:
         "Шинэ хэрэглэгч амжилттай бүртгэгдлээ таны бүртгэлтэй имэйл хаяг руу баталгаажуулах email илгээсэн.",
     });
-    res.status(200).json({
-      message: "Шинэ хэрэглэгч үүслээь Таны руу имэйл игээсэн",
-      newUser,
-    });
   } catch (error) {
-    res.status(400).json({ message: "Error occured while adding new user" });
+    res
+      .status(400)
+      .json({ message: `Error occured while adding new user${error}` });
   }
 };
 
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    console.log("aaa");
+
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(400).json({ message: "user does not exist" });
@@ -47,8 +45,7 @@ export const login = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: `Имэйл эсвэл нууц үг буруу байна.` });
     }
-    console.log("bbbb");
-    jwt.verify;
+
     const token = jwt.sign(
       {
         id: user._id,
@@ -56,7 +53,7 @@ export const login = async (req: Request, res: Response) => {
       process.env.JWT_PRIVATE_KEY as string,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
-    console.log("CCCC");
+
     res.status(201).json({ message: "Хэрэглэгч амжилттай нэвтэрлээ", token });
   } catch (error) {
     res.status(201).json({ message: `Хэрэглэгч амжилтgui ${error}` });
