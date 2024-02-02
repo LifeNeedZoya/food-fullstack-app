@@ -24,7 +24,6 @@ export const SignupPage = () => {
       .max(50, "Имэйл 50С хэтрэхгү")
       .required("Имэйл заавал оруулан уу")
       .email(),
-
     address: yup.string().required("Хаягаа заавал оруулан уу"),
     password: yup
       .string()
@@ -53,7 +52,9 @@ export const SignupPage = () => {
       rePassword?: string;
     }) => {
       console.log("Medeelel", name, email, password, address, avatarImg);
-      // signup({ name, email, password, address, avatarImg });
+      if (signup) {
+        signup({ name, email, password, address, avatarImg });
+      }
     },
     initialValues: {
       name: user.name,

@@ -25,12 +25,11 @@ const validationSchema = yup.object({
 
 export const LoginPage = () => {
   const { user, login } = useContext(UserContext);
+
   const router = useRouter();
   const formik = useFormik({
     onSubmit: ({ email, password }: { email: string; password: string }) => {
-      console.log("Medeelel", email, password);
       login({ email, password });
-      console.log("alda");
     },
     initialValues: { email: user.email, password: user.password as string },
     validateOnChange: false,

@@ -1,10 +1,15 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import User from "../model/user";
 import bcrypt from "bcrypt";
 import { sendEmail } from "../utils/sendEmail";
 import jwt from "jsonwebtoken";
+import MyError from "../utils/myError";
 
-export const signup = async (req: Request, res: Response) => {
+export const signup = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const newUser = req.body;
     const salt = await bcrypt.genSalt(10);
@@ -23,27 +28,32 @@ export const signup = async (req: Request, res: Response) => {
         "Шинэ хэрэглэгч амжилттай бүртгэгдлээ таны бүртгэлтэй имэйл хаяг руу баталгаажуулах email илгээсэн.",
     });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: `Error occured while adding new user${error}` });
+    next(error);
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email }).select("+password");
+
+    if (user?.isVerified === false) {
+      return res.status(401).json({ message: "Имэйлээ баталгаажуулана уу" });
+    }
     if (!user) {
-      return res.status(400).json({ message: "user does not exist" });
+      throw new MyError(`Хэрэглэгч олдсонгүй`, 400);
+      // return res.status(400).json({ message: "user does not exist" });
     }
 
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      return res
-        .status(400)
-        .json({ message: `Имэйл эсвэл нууц үг буруу байна.` });
+      throw new MyError(`Нууц үг буруу байна`, 400);
     }
 
     const token = jwt.sign(
@@ -56,7 +66,6 @@ export const login = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "Хэрэглэгч амжилттай нэвтэрлээ", token });
   } catch (error) {
-    res.status(201).json({ message: `Хэрэглэгч амжилтgui ${error}` });
-    console.log("err", error);
+    next(error);
   }
 };

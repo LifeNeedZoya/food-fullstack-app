@@ -3,6 +3,7 @@ import { PropsWithChildren, createContext, useState } from "react";
 import MyAxios from "@/utils/axios";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export const UserContext = createContext<IUserContext>({
   user: {
@@ -46,6 +47,7 @@ interface ILogin {
   email: string;
 }
 export const UserProvider = ({ children }: PropsWithChildren) => {
+  const router = useRouter();
   const [user, setUser] = useState<IUser>({
     name: "",
     email: "",
@@ -77,8 +79,10 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         timer: 1500,
         showConfirmButton: false,
       });
+      router.push("/login");
     } catch (error) {
-      toast.error("Бүртгүүлэхэд алдаа гарлаа");
+      console.log("err", error);
+      toast.error(` ${error.response.data.message as string}`);
     }
   };
 
@@ -96,8 +100,9 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         timer: 1500,
         showConfirmButton: false,
       });
+      router.push("/");
     } catch (error) {
-      toast.error(`Нэвтрэхэд алдаа гарлаа, ${error}`);
+      toast.error(`${error.response.data.message as string}`);
       console.log("err", error);
     }
   };

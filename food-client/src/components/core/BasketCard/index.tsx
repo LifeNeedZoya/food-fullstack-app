@@ -1,22 +1,11 @@
 "use client";
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import Image from "next/image";
-import {
-  ButtonGroup,
-  Card,
-  CardContent,
-  CardMedia,
-  Chip,
-  Container,
-  Divider,
-  Grid,
-  Stack,
-} from "@mui/material";
-import { green, grey } from "@mui/material/colors";
+import { ButtonGroup, Divider, Grid, Stack } from "@mui/material";
+import { grey } from "@mui/material/colors";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,6 +20,7 @@ const style = {
 };
 
 export const BasketCard = () => {
+  const [amount, setAmount] = useState(0);
   return (
     <>
       <Divider aria-hidden="true" />
@@ -73,9 +63,21 @@ export const BasketCard = () => {
                 boxShadow: "none",
               }}
             >
-              <Button sx={{ background: "#18BA51" }}>-</Button>
-              <Typography>1</Typography>
-              <Button sx={{ background: "#18BA51" }}>+</Button>
+              <Button
+                sx={{ background: "#18BA51" }}
+                onClick={() => {
+                  setAmount(amount);
+                }}
+              >
+                -
+              </Button>
+              <Typography>{amount}</Typography>
+              <Button
+                sx={{ background: "#18BA51" }}
+                onClick={() => setAmount((prev) => prev + 1)}
+              >
+                +
+              </Button>
             </ButtonGroup>
           </Grid>
         </Stack>

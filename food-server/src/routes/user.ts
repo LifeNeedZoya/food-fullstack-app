@@ -10,7 +10,7 @@ const router = Router();
 
 router.route("/signup").post(signup);
 router.route("/login").post(login);
-router.route("/verify/email").post(sendEmailToUser);
+router.route("/verify").post(sendEmailToUser);
 router.route("/verify/compare").post(verifyOtp);
 router.route("/newPassword").put(resetPassword);
 router.route("/verify/user").get(verifyUser);
