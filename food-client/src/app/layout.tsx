@@ -1,10 +1,12 @@
+"use client";
+
 import "./scss/globals.scss";
 import { ThemeProvider } from "@/theme";
 import Header from "@/components/navbar/Header";
 import Footer from "@/components/navbar/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserProvider } from "@/context/authContext";
+import UserProvider from "@/context/AuthProvider";
 
 export default function RootLayout({
   children,

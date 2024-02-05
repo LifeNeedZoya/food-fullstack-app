@@ -69,3 +69,59 @@ export const login = async (
     next(error);
   }
 };
+
+export const DeleteUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user) {
+      throw new MyError(`Хэрэглэгч олдсонгүй`, 400);
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      throw new MyError(`Нууц үг буруу байна`, 400);
+    }
+
+    await User.deleteOne({ email: user.email });
+
+    res.status(201).json({ message: "Хэрэглэгч амжилттай устлаа" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const UpdateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password, name } = req.body;
+
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user) {
+      throw new MyError(`Хэрэглэгч олдсонгүй`, 400);
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      throw new MyError(`Нууц үг буруу байна`, 400);
+    }
+
+    await User.updateOne({ email, password, name });
+
+    res.status(201).json({ message: "Хэрэглэгч амжилттай устлаа" });
+  } catch (error) {
+    next(error);
+  }
+};

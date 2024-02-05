@@ -1,4 +1,5 @@
 "use client";
+
 import { PropsWithChildren, createContext, useState } from "react";
 import MyAxios from "@/utils/axios";
 import Swal from "sweetalert2";
@@ -46,7 +47,7 @@ interface ILogin {
   password: string;
   email: string;
 }
-export const UserProvider = ({ children }: PropsWithChildren) => {
+const UserProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const [user, setUser] = useState<IUser>({
     name: "",
@@ -80,9 +81,9 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         showConfirmButton: false,
       });
       router.push("/login");
-    } catch (error) {
+    } catch (error: any) {
       console.log("err", error);
-      toast.error(` ${error.response.data.message as string}`);
+      toast.error(`${error.response.data.message as string}`);
     }
   };
 
@@ -101,7 +102,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         showConfirmButton: false,
       });
       router.push("/");
-    } catch (error) {
+    } catch (error: any) {
       toast.error(`${error.response.data.message as string}`);
       console.log("err", error);
     }
@@ -113,3 +114,5 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
     </UserContext.Provider>
   );
 };
+
+export default UserProvider;

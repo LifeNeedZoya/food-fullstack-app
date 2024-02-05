@@ -28,6 +28,7 @@ export const StepThree = ({
     width: "500px",
     boxSizing: "border-box",
   };
+
   const firstGridStyle = {
     display: "flex",
     justifyContent: "center",
@@ -35,6 +36,7 @@ export const StepThree = ({
     fontSize: 28,
     fontWeight: 700,
   };
+
   return (
     <Container sx={centerStyle}>
       <Grid container sx={BigGridStyle}>

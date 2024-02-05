@@ -1,5 +1,6 @@
+"use client";
+
 import { MyStepper } from "@/components";
-import React from "react";
 
 const Page = () => {
   return <MyStepper />;
