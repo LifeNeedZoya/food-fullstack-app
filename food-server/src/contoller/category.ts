@@ -33,7 +33,7 @@ export const getAllCategory = async (
   }
 };
 
-export const getCatgory = async (
+export const getCategory = async (
   req: Request,
   res: Response,
   next: NextFunction

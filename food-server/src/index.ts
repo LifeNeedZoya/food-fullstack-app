@@ -4,6 +4,8 @@ import cors from "cors";
 import { connectDB } from "./config/db";
 import UserRoutes from "./routes/user";
 import categoryRoutes from "./routes/category";
+import foodRoutes from "./routes/food";
+import uploadRoutes from "./routes/upload";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -21,6 +23,9 @@ app.get("/", (req, res) => {
 
 app.use("/auth", UserRoutes);
 app.use("/category", categoryRoutes);
+app.use("/food", foodRoutes);
+app.use("/upload", uploadRoutes);
+
 app.use(errorHandler);
 
 const MONGO_URL = process.env.MONGO_URL as string;

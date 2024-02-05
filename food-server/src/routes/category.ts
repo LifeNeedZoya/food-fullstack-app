@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   getAllCategory,
-  getCatgory,
+  getCategory,
   createCategory,
   updateCategory,
   deleteCategory,
@@ -15,6 +15,6 @@ router
   .route("/:categoryId")
   .put(updateCategory)
   .delete(deleteCategory)
-  .get(getCatgory);
+  .get(getCategory);
 
 export default router;
