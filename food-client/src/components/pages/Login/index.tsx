@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 import { Button as CustomButton, Input } from "@/components";
 
 import { Container, Grid, Link, Stack, Typography } from "@mui/material";
-import UserContext from "@/context/AuthProvider";
+import { UserContext } from "@/context/AuthProvider";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -25,10 +25,10 @@ const validationSchema = yup.object({
 
 export const LoginPage = () => {
   const router = useRouter();
+
+  const { login } = useContext(UserContext);
   const formik = useFormik({
-    onSubmit: ({ email, password }: { email: string; password: string }) => {
-      // login({ email, password });
-    },
+    onSubmit: ({ email, password }: { email: string; password: string }) => {},
     initialValues: { email: "", password: "" },
     validateOnChange: false,
     validateOnBlur: false,

@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import React, { useContext } from "react";
 
-// import { UserContext } from "@/context/authContext";
+import { UserContext } from "@/context/AuthProvider";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 export const SignupPage = () => {
-  // const { user, signup } = useContext(UserContext);
+  const { user, signup } = useContext(UserContext);
 
   const validationSchema = yup.object({
     name: yup.string().required("Нэрээ заавал оруулан уу"),
@@ -51,9 +51,9 @@ export const SignupPage = () => {
       avatarImg?: string;
       rePassword?: string;
     }) => {
-      // if (signup) {
-      //   signup({ name, email, password, address, avatarImg });
-      // }
+      if (signup) {
+        signup({ name, email, password, address, avatarImg });
+      }
     },
     initialValues: {
       name: "",
