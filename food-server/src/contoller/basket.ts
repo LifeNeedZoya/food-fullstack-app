@@ -36,7 +36,7 @@ export const getOrder = async (
   }
 };
 
-export const deleteOrder = async (
+export const deleteBasket = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -72,15 +72,21 @@ export const updateOrder = async (
   }
 };
 
-export const createOrder = async (
+export const createBasket = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { newOrder } = req.body;
-    const findOrder = await Basket.create(newOrder);
+    const { foodId } = req.body;
 
+    // const basketFoods = Basket.countDocuments({ _id: foodId }, (err, count) => {
+    //   if (count > 0) {
+    //     console.log("Document exists.");
+    //   }
+    // });
+
+    const findOrder = await Basket.create({ foodId });
     res.status(200).json({
       message: ` захиалгыг амжилттай үүсгэлээ`,
       findOrder,

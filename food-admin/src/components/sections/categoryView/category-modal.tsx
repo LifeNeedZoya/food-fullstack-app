@@ -4,13 +4,11 @@ import {
   Button as MuiButton,
   Typography,
   Modal,
-  Grid,
   Stack,
   styled,
-  Input,
   Button,
+  TextField,
 } from "@mui/material";
-import Image from "next/image";
 
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
@@ -19,7 +17,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 750,
+  width: 550,
   bgcolor: "background.paper",
   border: "2px solid #000",
   borderRadius: 5,
@@ -39,37 +37,63 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function CategoryModal({ handleClose, open }: any) {
+export default function CategoryModal({
+  handleClose,
+  open,
+  handleSave,
+  handleChange,
+  handleFileChange,
+}: any) {
   return (
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <Typography variant="h3">Ангилал нэмэх хэсэг</Typography>
-            <MuiButton onClick={handleClose} sx={{ fontSize: 23 }}>
-              X
-            </MuiButton>
-          </Stack>
-
-          <Input name="name" />
-
-          <Input name="desc" />
-          <MuiButton
-            component="label"
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload file
-            <VisuallyHiddenInput type="file" />
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <Stack direction={"row"} justifyContent={"space-between"}>
+          <Typography variant="h3">Ангилал нэмэх хэсэг</Typography>
+          <MuiButton onClick={handleClose} sx={{ fontSize: 23 }}>
+            X
           </MuiButton>
-          <Button variant="outlined">нэмэх</Button>
-        </Box>
-      </Modal>
-    </div>
+        </Stack>
+        <Typography sx={{ margin: 0 }}>Нэр</Typography>
+        <TextField
+          id="outlined-basic"
+          label="Name"
+          name="name"
+          variant="outlined"
+          sx={{ width: 400, marginY: 2 }}
+          onChange={handleChange}
+        />
+        <Typography sx={{ margin: 0 }}>Тайлбар</Typography>
+
+        <TextField
+          id="outlined-basic"
+          label="description"
+          name="description"
+          variant="outlined"
+          sx={{ width: 400, marginY: 2 }}
+          onChange={handleChange}
+        />
+        <MuiButton
+          component="label"
+          variant="contained"
+          startIcon={<CloudUploadIcon />}
+          sx={{ width: 400, marginY: 2 }}
+        >
+          Upload file
+          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+        </MuiButton>
+        <Button
+          variant="outlined"
+          sx={{ width: 400, marginY: 2 }}
+          onClick={handleSave}
+        >
+          нэмэх
+        </Button>
+      </Box>
+    </Modal>
   );
 }

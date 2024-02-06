@@ -15,8 +15,9 @@ import CategorySearch from "./category-search";
 // ----------------------------------------------------------------------
 import { faker } from "@faker-js/faker";
 import CategoryModal from "./category-modal";
-import { useEffect, useState } from "react";
-
+import { ChangeEvent, useEffect, useState } from "react";
+import axios from "axios";
+import myAxios from "@/utils/axios";
 // ----------------------------------------------------------------------
 
 const CATEGORY_TITLES = [
@@ -29,19 +30,36 @@ const CATEGORY_TITLES = [
   "vincenzo de cotiis",
 ];
 
-export const categories = [...Array(CATEGORY_TITLES.length)].map(
-  (_, index) => ({
-    id: faker.string.uuid(),
-    cover: `/assets/images/covers/cover_${index + 1}.jpg`,
-    title: CATEGORY_TITLES[index + 1],
-    createdAt: faker.date.past(),
-  })
-);
+// export const categories = [...Array(CATEGORY_TITLES.length)].map(
+//   (_, index) => ({
+//     id: faker.string.uuid(),
+//     cover: `/assets/images/covers/cover_${index + 1}.jpg`,
+//     title: CATEGORY_TITLES[index + 1],
+//     createdAt: faker.date.past(),
+//   })
+// );
 
 // ----------------------------------------------------------------------
 
 export default function CategoryView() {
   const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [file, setFile] = useState<File | null>(null);
+
+  const [newCategory, setNewCategory] = useState({
+    name: "",
+    description: "",
+  });
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFile(e.currentTarget.files![0]);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setNewCategory({ ...newCategory, [name]: value });
+  };
 
   const handleClose = () => {
     setOpen(() => false);
@@ -51,6 +69,17 @@ export default function CategoryView() {
   };
 
   const getCategory = async () => {};
+
+  const createCategory = async () => {
+    try {
+      const formData = new FormData();
+      formData.set("image", file!);
+      formData.set("name", newCategory.name);
+      formData.set("description", newCategory.description);
+      const data = await myAxios.post("/category", formData);
+      console.log("successfull added category", data);
+    } catch (error) {}
+  };
 
   useEffect(() => {
     getCategory();
@@ -99,7 +128,10 @@ export default function CategoryView() {
       <CategoryModal
         open={open}
         handleClose={handleClose}
-        handleOpen={handleOpen}
+        newCategory={newCategory}
+        handleChange={handleChange}
+        handleFileChange={handleFileChange}
+        handleSave={createCategory}
       />
     </Container>
   );

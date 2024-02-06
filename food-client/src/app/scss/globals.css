@@ -1,0 +1,72 @@
+.wrapper {
+  background-color: aquamarine;
+}
+
+.wrapper {
+  background: violet;
+}
+.wrapper-top {
+  padding: 10px;
+  background-color: teal;
+}
+.wrapper-top h1 {
+  color: #3333ee;
+}
+.wrapper-bottom {
+  padding: 10px;
+  background-color: orange;
+}
+.wrapper-bottom h1 {
+  color: #ee7711;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 2em;
+}
+.btn-primary {
+  background: #2e65cc;
+  color: white;
+}
+.btn-primary:hover {
+  background: #2655ab;
+  transition: all 0.3s ease;
+}
+.btn-primary:active {
+  background: #173164;
+}
+.btn-secondary {
+  background: #cc2ebc;
+  color: white;
+}
+.btn-secondary:hover {
+  background: #ab269d;
+  transition: all 0.3s ease;
+}
+.btn-secondary:active {
+  background: #64175c;
+}
+.btn-success {
+  background: #2ecc71;
+  color: white;
+}
+.btn-success:hover {
+  background: #26ab5f;
+  transition: all 0.3s ease;
+}
+.btn-success:active {
+  background: #176437;
+}
+.btn-error {
+  background: #cc552e;
+  color: white;
+}
+.btn-error:hover {
+  background: #ab4726;
+  transition: all 0.3s ease;
+}
+.btn-error:active {
+  background: #642a17;
+}/*# sourceMappingURL=globals.css.map */

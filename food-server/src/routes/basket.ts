@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
-  createOrder,
-  deleteOrder,
+  createBasket,
+  deleteBasket,
   getAllOrder,
   getOrder,
   updateOrder,
@@ -9,7 +9,7 @@ import {
 
 const router = Router();
 
-router.route("/").get(getAllOrder).post(createOrder);
-router.route("/:orderId").get(getOrder).put(updateOrder).delete(deleteOrder);
+router.route("/").get(getAllOrder).post(createBasket);
+router.route("/:orderId").get(getOrder).put(updateOrder).delete(deleteBasket);
 
 export default router;

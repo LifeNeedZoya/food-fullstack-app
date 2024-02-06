@@ -10,7 +10,7 @@ const BasketSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  Count: {
+  count: {
     type: Number,
     default: 1,
   },

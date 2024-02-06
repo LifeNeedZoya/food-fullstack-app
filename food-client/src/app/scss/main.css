@@ -1,0 +1,12 @@
+.Test {
+  background-color: #f0c537;
+  text-align: center;
+  margin: 20px 30px;
+}
+.Test .Test2 {
+  padding: 20px;
+}
+.Test .Test2 h1 {
+  color: white;
+  background-color: chartreuse;
+}/*# sourceMappingURL=main.css.map */
