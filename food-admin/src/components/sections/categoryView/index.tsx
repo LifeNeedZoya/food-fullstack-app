@@ -16,8 +16,8 @@ import CategorySearch from "./category-search";
 import { faker } from "@faker-js/faker";
 import CategoryModal from "./category-modal";
 import { ChangeEvent, useEffect, useState } from "react";
-import axios from "axios";
 import myAxios from "@/utils/axios";
+import axios from "axios";
 // ----------------------------------------------------------------------
 
 const CATEGORY_TITLES = [
@@ -51,6 +51,14 @@ export default function CategoryView() {
     description: "",
   });
 
+  const handleClose = () => {
+    setOpen(() => false);
+  };
+
+  const handleOpen = () => {
+    setOpen(() => true);
+  };
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFile(e.currentTarget.files![0]);
   };
@@ -59,16 +67,8 @@ export default function CategoryView() {
     const { name, value } = e.target;
 
     setNewCategory({ ...newCategory, [name]: value });
+    console.log("PutData", newCategory);
   };
-
-  const handleClose = () => {
-    setOpen(() => false);
-  };
-  const handleOpen = () => {
-    setOpen(() => true);
-  };
-
-  const getCategory = async () => {};
 
   const createCategory = async () => {
     try {
@@ -76,9 +76,27 @@ export default function CategoryView() {
       formData.set("image", file!);
       formData.set("name", newCategory.name);
       formData.set("description", newCategory.description);
-      const data = await myAxios.post("/category", formData);
+      console.log("image", file!);
+      console.log("name", newCategory.name);
+      console.log("description", newCategory.description);
+      console.log("FFFFFFFF==>", formData);
+      const data = await axios.post("http://localhost:8080/category", formData);
       console.log("successfull added category", data);
+      console.log("data", formData);
     } catch (error) {}
+  };
+
+  const getCategory = async () => {
+    try {
+      const {
+        data: { categories },
+      } = await axios.get("http://localhost:8080/category");
+      console.log("categoriesthat", myAxios);
+      setCategories(categories);
+      console.log("get categories successfully");
+    } catch (error: any) {
+      alert("Get Error - " + error.message);
+    }
   };
 
   useEffect(() => {
@@ -121,8 +139,8 @@ export default function CategoryView() {
       </Stack>
 
       <Grid container spacing={3}>
-        {categories.map((categories: any) => (
-          <CategoryCard key={categories.id} categories={categories} />
+        {categories?.map((category: any) => (
+          <CategoryCard key={category.id} category={category} />
         ))}
       </Grid>
       <CategoryModal
