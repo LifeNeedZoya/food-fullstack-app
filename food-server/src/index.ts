@@ -6,6 +6,7 @@ import UserRoutes from "./routes/user";
 import categoryRoutes from "./routes/category";
 import foodRoutes from "./routes/food";
 import uploadRoutes from "./routes/upload";
+import basketRoutes from "./routes/basket";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -25,6 +26,7 @@ app.use("/auth", UserRoutes);
 app.use("/category", categoryRoutes);
 app.use("/food", foodRoutes);
 app.use("/upload", uploadRoutes);
+app.use("/basket", basketRoutes);
 
 app.use(errorHandler);
 

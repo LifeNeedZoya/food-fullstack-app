@@ -6,6 +6,14 @@ const BasketSchema = new Schema({
     ref: "Food",
     required: true,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  Count: {
+    type: Number,
+    default: 1,
+  },
 });
 
 const Basket = model("Basket", BasketSchema);
