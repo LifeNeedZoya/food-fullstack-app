@@ -13,32 +13,11 @@ import CategorySort from "./category-sort";
 import CategorySearch from "./category-search";
 
 // ----------------------------------------------------------------------
-import { faker } from "@faker-js/faker";
+
 import CategoryModal from "./category-modal";
 import { ChangeEvent, useEffect, useState } from "react";
 import myAxios from "@/utils/axios";
 import axios from "axios";
-// ----------------------------------------------------------------------
-
-const CATEGORY_TITLES = [
-  "Whiteboard Templates",
-  "Tesla Cybertruck-inspired",
-  "Designify Agency",
-  "✨What is Done is Done ✨",
-  "Fresh Prince",
-  "Six Socks Studio",
-  "vincenzo de cotiis",
-];
-
-// export const categories = [...Array(CATEGORY_TITLES.length)].map(
-//   (_, index) => ({
-//     id: faker.string.uuid(),
-//     cover: `/assets/images/covers/cover_${index + 1}.jpg`,
-//     title: CATEGORY_TITLES[index + 1],
-//     createdAt: faker.date.past(),
-//   })
-// );
-
 // ----------------------------------------------------------------------
 
 export default function CategoryView() {
@@ -51,15 +30,8 @@ export default function CategoryView() {
     description: "",
   });
 
-  const handleClose = () => {
-    setOpen(() => false);
-  };
-
-  const handleOpen = () => {
-    setOpen(() => true);
-  };
-
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("FFF", e.currentTarget.files![0]);
     setFile(e.currentTarget.files![0]);
   };
 
@@ -67,23 +39,22 @@ export default function CategoryView() {
     const { name, value } = e.target;
 
     setNewCategory({ ...newCategory, [name]: value });
-    console.log("PutData", newCategory);
+    console.log("putData", newCategory);
   };
 
   const createCategory = async () => {
     try {
-      const formData = new FormData();
-      formData.set("image", file!);
-      formData.set("name", newCategory.name);
-      formData.set("description", newCategory.description);
-      console.log("image", file!);
-      console.log("name", newCategory.name);
-      console.log("description", newCategory.description);
-      console.log("FFFFFFFF==>", formData);
-      const data = await axios.post("http://localhost:8080/category", formData);
+      const dataForm = new FormData();
+
+      dataForm.set("image", file!);
+      dataForm.set("name", newCategory.name);
+      dataForm.set("description", newCategory.description);
+
+      const data = await axios.post("http://localhost:8080/category", dataForm);
       console.log("successfull added category", data);
-      console.log("data", formData);
-    } catch (error) {}
+    } catch (error) {
+      console.log("errr", error);
+    }
   };
 
   const getCategory = async () => {
@@ -99,9 +70,17 @@ export default function CategoryView() {
     }
   };
 
+  const handleClose = () => {
+    setOpen(() => false);
+  };
+
+  const handleOpen = () => {
+    setOpen(() => true);
+  };
+
   useEffect(() => {
     getCategory();
-  }, []);
+  }, [createCategory()]);
   return (
     <Container>
       <Stack
@@ -146,7 +125,6 @@ export default function CategoryView() {
       <CategoryModal
         open={open}
         handleClose={handleClose}
-        newCategory={newCategory}
         handleChange={handleChange}
         handleFileChange={handleFileChange}
         handleSave={createCategory}

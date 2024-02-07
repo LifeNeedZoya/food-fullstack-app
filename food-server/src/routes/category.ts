@@ -6,10 +6,14 @@ import {
   updateCategory,
   deleteCategory,
 } from "../contoller/category";
-
+import { upload } from "../middleware/multer";
+import { authenticate } from "../middleware/auth";
 const router = Router();
 
-router.route("/").post(createCategory).get(getAllCategory);
+router
+  .route("/")
+  .post(upload.single("image"), createCategory)
+  .get(authenticate, getAllCategory);
 
 router
   .route("/:categoryId")

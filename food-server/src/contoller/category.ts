@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import Category from "../model/category";
 import MyError from "../utils/myError";
+import cloudinary from "../utils/cloudinary";
+import { rmSync } from "fs";
+import { IReq } from "../utils/interface";
 
 export const createCategory = async (
   req: Request,
@@ -8,8 +11,18 @@ export const createCategory = async (
   next: NextFunction
 ) => {
   try {
-    console.log("DDDDD=>", req.body);
-    await Category.create(req.body);
+    console.log("RRQ,", req.body);
+    console.log("RRFF,", req.file);
+    const newCategory = { ...req.body };
+    if (req.file) {
+      const { secure_url } = await cloudinary.uploader.upload(req.file.path);
+      newCategory.image = secure_url;
+    }
+
+    await Category.create(newCategory);
+    res.status(200).json({
+      message: `successfully created new category with ${newCategory.name} `,
+    });
     res.status(200).json({ message: "successfully created new category" });
   } catch (error) {
     next(error);
@@ -17,7 +30,7 @@ export const createCategory = async (
 };
 
 export const getAllCategory = async (
-  req: Request,
+  req: IReq,
   res: Response,
   next: NextFunction
 ) => {

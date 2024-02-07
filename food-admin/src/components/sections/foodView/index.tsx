@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
@@ -12,74 +12,103 @@ import FoodSort from "./food-sort";
 // import ProductFilters from "./product-filters";
 // import ProductCartWidget from "./product-cart-widget";
 
+import FoodModal from "./food-modal";
 // ----------------------------------------------------------------------
+
 import { sample } from "lodash";
 import { faker } from "@faker-js/faker";
-
-// ----------------------------------------------------------------------
-
-const FOOD_NAME = [
-  "Nike Air Force 1 NDESTRUKT",
-  "Nike Space Hippie 04",
-  "Nike Air Zoom Pegasus 37 A.I.R. Chaz Bear",
-  "Nike Blazer Low 77 Vintage",
-  "Nike ZoomX SuperRep Surge",
-  "Zoom Freak 2",
-  "Nike Air Max Zephyr",
-  "Jordan Delta",
-];
-const FOOD_COLOR = [
-  "#00AB55",
-  "#000000",
-  "#FFFFFF",
-  "#FFC0CB",
-  "#FF4842",
-  "#1890FF",
-  "#94D82D",
-  "#FFC107",
-];
-
-// ----------------------------------------------------------------------
-
-export const products = [...Array(FOOD_NAME.length)].map((_, index) => {
-  const setIndex = index + 1;
-
-  return {
-    id: faker.string.uuid(),
-    cover: `/assets/images/products/product_${setIndex}.jpg`,
-    name: FOOD_NAME[index],
-    price: faker.number.int({ min: 4, max: 99 }),
-    priceSale: setIndex % 3 ? null : faker.number.int({ min: 19, max: 29 }),
-    colors:
-      (setIndex === 1 && FOOD_COLOR.slice(0, 2)) ||
-      (setIndex === 2 && FOOD_COLOR.slice(1, 3)) ||
-      (setIndex === 3 && FOOD_COLOR.slice(2, 4)) ||
-      (setIndex === 4 && FOOD_COLOR.slice(3, 6)) ||
-      (setIndex === 23 && FOOD_COLOR.slice(4, 6)) ||
-      (setIndex === 24 && FOOD_COLOR.slice(5, 6)) ||
-      FOOD_COLOR,
-    status: sample(["sale", "new", "", ""]),
-  };
-});
-
-// ----------------------------------------------------------------------
+import axios from "axios";
+import { Button } from "@mui/material";
+import Iconify from "@/components/iconify";
 
 export default function FoodView() {
-  const [openFilter, setOpenFilter] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [foods, setFoods] = useState([]);
+  const [file, setFile] = useState<File | null>(null);
+  const [newFood, setNewFood] = useState({
+    name: "",
+    description: "",
+    price: "",
+    discountPrice: "",
+    category: "65bccbf8cfc2bc3551a49ea4rs",
+    isSale: 12,
+  });
 
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
+  const handleClose = () => {
+    setOpen(() => false);
   };
 
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
+  const handleOpen = () => {
+    setOpen(() => true);
   };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("FFF", e.currentTarget.files![0]);
+    setFile(e.currentTarget.files![0]);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setNewFood({ ...newFood, [name]: value });
+    console.log("putData", newFood);
+  };
+
+  const getFoods = async () => {
+    try {
+      const {
+        data: { foods },
+      } = await axios.get("http://localhost:8080/food");
+      console.log("FOODS", foods);
+      setFoods(foods);
+      console.log("get foods successfully");
+    } catch (error: any) {
+      alert("Get Error - " + error.message);
+    }
+  };
+
+  const createFood = async (newFood: any) => {
+    console.log("working");
+    try {
+      const dataForm = new FormData();
+
+      dataForm.set("image", file!);
+      dataForm.set("name", newFood.name);
+      dataForm.set("description", newFood.description);
+      dataForm.set("category", newFood.category);
+      dataForm.set("discountPrice", newFood.discountPrice);
+      dataForm.set("isSale", newFood.isSale);
+
+      const data = await axios.post("http://localhost:8080/category", dataForm);
+      console.log("successfull added category", data);
+    } catch (error) {
+      console.log("errr", error);
+    }
+  };
+
+  useEffect(() => {
+    getFoods();
+  }, []);
 
   return (
     <Container>
-      <Typography variant="h4" sx={{ mb: 5 }}>
-        Хоолны жагсаалт
-      </Typography>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={5}
+      >
+        <Typography variant="h4"> Хоолны жагсаалт</Typography>
+
+        <Button
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={handleOpen}
+        >
+          Шинэ хоол
+        </Button>
+      </Stack>
 
       <Stack
         direction="row"
@@ -100,12 +129,19 @@ export default function FoodView() {
       </Stack>
 
       <Grid container spacing={3}>
-        {products.map((product: any) => (
+        {foods.map((product: any) => (
           <Grid key={product.id} xs={12} sm={6} md={3}>
             <FoodCard product={product} />
           </Grid>
         ))}
       </Grid>
+      <FoodModal
+        open={open}
+        handleClose={handleClose}
+        handleChange={handleChange}
+        handleFileChange={handleFileChange}
+        createFood={createFood}
+      />
 
       {/* <ProductCartWidget /> */}
     </Container>

@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { sendEmail } from "../utils/sendEmail";
 import jwt from "jsonwebtoken";
 import MyError from "../utils/myError";
+import { emitWarning } from "process";
 
 export const signup = async (
   req: Request,
@@ -37,8 +38,8 @@ export const login = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = req.body;
-
+    const { userEmail, userPassword } = req.body;
+    const email = userEmail;
     const user = await User.findOne({ email }).select("+password");
 
     if (user?.isVerified === false) {
@@ -49,7 +50,7 @@ export const login = async (
       // return res.status(400).json({ message: "user does not exist" });
     }
 
-    const isValid = await bcrypt.compare(password, user.password);
+    const isValid = await bcrypt.compare(userPassword, user.password);
 
     if (!isValid) {
       throw new MyError(`Нууц үг буруу байна`, 400);
@@ -62,8 +63,13 @@ export const login = async (
       process.env.JWT_PRIVATE_KEY as string,
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
+    const { password, ...otherParams } = user;
 
-    res.status(201).json({ message: "Хэрэглэгч амжилттай нэвтэрлээ", token });
+    res.status(201).json({
+      message: "Хэрэглэгч амжилттай нэвтэрлээ",
+      token,
+      user: otherParams,
+    });
   } catch (error) {
     next(error);
   }

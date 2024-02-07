@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { fCurrency } from "@/utils/format-number";
 
 import Label from "@/components/label";
-import { ColorPreview } from "@/components/color-utils";
+// import { ColorPreview } from "@/components/color-utils";
 
 // ----------------------------------------------------------------------
 
@@ -84,7 +84,6 @@ export default function FoodCard({ product }: any) {
           alignItems="center"
           justifyContent="space-between"
         >
-          <ColorPreview colors={product.colors} />
           {renderPrice}
         </Stack>
       </Stack>

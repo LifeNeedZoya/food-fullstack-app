@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import {
   Box,
   Button as MuiButton,
@@ -18,8 +18,8 @@ import {
   FormHelperText,
   Button,
   Input,
+  TextField,
 } from "@mui/material";
-import Image from "next/image";
 
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
@@ -48,16 +48,17 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function FoodModal({ handleClose, openFilter }: any) {
-  const [age, setAge] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
-  };
+const FoodModal = ({
+  handleClose,
+  open,
+  handleChange,
+  handleFileChange,
+  createFood,
+}: any) => {
   return (
     <div>
       <Modal
-        open={openFilter}
+        open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -70,20 +71,56 @@ export default function FoodModal({ handleClose, openFilter }: any) {
             </MuiButton>
           </Stack>
 
-          <Input />
-          <Input />
-          <Input />
-          <Stack>
-            <Input />
-            <FormGroup sx={{ display: "flex", flexDirection: "row" }}>
-              <FormControlLabel
-                control={<Checkbox defaultChecked />}
-                label="sale"
-              />
-            </FormGroup>
+          <Stack gap={2}>
+            <TextField
+              onChange={handleChange}
+              name="name"
+              id="outlined-basic"
+              variant="outlined"
+              label="name"
+              fullWidth
+            />
+            <TextField
+              onChange={handleChange}
+              name="description"
+              id="outlined-basic"
+              variant="outlined"
+              label="description"
+              fullWidth
+            />
+            <TextField
+              onChange={handleChange}
+              name="price"
+              id="outlined-basic"
+              variant="outlined"
+              label="price"
+              fullWidth
+            />
+            <TextField
+              onChange={handleChange}
+              name="discountPrice"
+              id="outlined-basic"
+              variant="outlined"
+              label="Discount percent"
+              fullWidth
+            />
+            <TextField
+              onChange={handleChange}
+              name="category"
+              id="outlined-basic"
+              variant="outlined"
+              label="category"
+              fullWidth
+            />
           </Stack>
-          <Stack>
-            <FormControl sx={{ m: 1, minWidth: 120 }} required>
+
+          {/* <Stack>
+            <FormControlLabel
+              control={<Checkbox defaultChecked />}
+              label="sale"
+              name="isSale"
+            />
+            <FormControl sx={{ m: 1, minWidth: 120, display: "flex" }} required>
               <InputLabel id="demo-simple-select-disabled-label">
                 Катигори
               </InputLabel>
@@ -103,18 +140,28 @@ export default function FoodModal({ handleClose, openFilter }: any) {
               </Select>
               <FormHelperText>Required</FormHelperText>
             </FormControl>
-          </Stack>
+          </Stack> */}
           <MuiButton
             component="label"
             variant="contained"
             startIcon={<CloudUploadIcon />}
+            fullWidth
+            sx={{ marginY: 2 }}
           >
             Upload file
-            <VisuallyHiddenInput type="file" />
+            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
           </MuiButton>
-          <Button variant="outlined">+</Button>
+          <Button
+            variant="outlined"
+            fullWidth
+            sx={{ margin: 2 }}
+            onClick={createFood}
+          >
+            +
+          </Button>
         </Box>
       </Modal>
     </div>
   );
-}
+};
+export default FoodModal;
