@@ -64,12 +64,13 @@ export const login = async (
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
     const { password, ...otherParams } = user;
-
+    console.log("token", token);
     res.status(201).json({
       message: "Хэрэглэгч амжилттай нэвтэрлээ",
       token,
       user: otherParams,
     });
+    console.log("Хэрэглэгч амжилттай нэвтэрлээ");
   } catch (error) {
     next(error);
   }

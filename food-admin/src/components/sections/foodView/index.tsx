@@ -70,16 +70,16 @@ export default function FoodView() {
   const createFood = async (newFood: any) => {
     console.log("working");
     try {
-      const dataForm = new FormData();
+      const foodForm = new FormData();
 
-      dataForm.set("image", file!);
-      dataForm.set("name", newFood.name);
-      dataForm.set("description", newFood.description);
-      dataForm.set("category", newFood.category);
-      dataForm.set("discountPrice", newFood.discountPrice);
-      dataForm.set("isSale", newFood.isSale);
+      foodForm.set("image", file!);
+      foodForm.set("name", newFood.name);
+      foodForm.set("description", newFood.description);
+      foodForm.set("category", newFood.category);
+      foodForm.set("discountPrice", newFood.discountPrice);
+      foodForm.set("isSale", newFood.isSale);
 
-      const data = await axios.post("http://localhost:8080/category", dataForm);
+      const data = await axios.post("http://localhost:8080/food", foodForm);
       console.log("successfull added category", data);
     } catch (error) {
       console.log("errr", error);

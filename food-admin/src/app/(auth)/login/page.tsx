@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Card from "@mui/material/Card";
@@ -20,6 +20,7 @@ import { bgGradient } from "@/theme/css";
 
 import Logo from "@/components/logo";
 import Iconify from "@/components/iconify";
+import axios from "axios";
 
 // ----------------------------------------------------------------------
 
@@ -28,21 +29,46 @@ export default function LoginView() {
 
   const router = useRouter();
 
+  const [userEmail, setUserEmail] = useState("tserenyanjinb216@gmail.com");
+  const [userPassword, setUserPassword] = useState("1234pass");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    const {
+      data: { user, token },
+    } = (await axios.post("http://localhost:8080/auth/login", {
+      userEmail,
+      userPassword,
+    })) as {
+      data: { token: string; user: any };
+    };
+
+    console.log("information", token, user);
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
     router.push("/dashboard");
   };
 
   const renderForm = (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField
+          name="userEmail"
+          label="Email address"
+          value={userEmail}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setUserEmail(e.target.value);
+          }}
+        />
 
         <TextField
-          name="password"
+          name="userPassword"
           label="Password"
           type={showPassword ? "text" : "password"}
+          value={userPassword}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setUserPassword(e.target.value);
+          }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

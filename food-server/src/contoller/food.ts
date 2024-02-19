@@ -9,6 +9,7 @@ export const createFood = async (
 ) => {
   try {
     const newFood = req.body;
+    console.log("ServerPutData", req.body);
     Food.create(newFood);
     res.status(200).json({ message: "Хоол амжилттай үүслээ" });
   } catch (error) {
