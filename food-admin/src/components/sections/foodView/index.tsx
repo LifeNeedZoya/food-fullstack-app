@@ -13,7 +13,6 @@ import FoodSort from "./food-sort";
 // import ProductCartWidget from "./product-cart-widget";
 
 import FoodModal from "./food-modal";
-// ----------------------------------------------------------------------
 
 import { sample } from "lodash";
 import { faker } from "@faker-js/faker";
@@ -28,11 +27,24 @@ export default function FoodView() {
   const [newFood, setNewFood] = useState({
     name: "",
     description: "",
-    price: "",
-    discountPrice: "",
+    price: 0,
+    discountPrice: 0,
     category: "65bccbf8cfc2bc3551a49ea4rs",
-    isSale: 12,
+    isSale: "0",
   });
+  const [categories, setCategories] = useState([]);
+  const getCategory = async () => {
+    try {
+      const {
+        data: { categories },
+      } = await axios.get("http://localhost:8080/category");
+
+      setCategories(categories);
+      console.log("get categories successfully");
+    } catch (error: any) {
+      alert("Get Error - " + error.message);
+    }
+  };
 
   const handleClose = () => {
     setOpen(() => false);
@@ -49,6 +61,8 @@ export default function FoodView() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log("name", name);
+    console.log("value", value);
 
     setNewFood({ ...newFood, [name]: value });
     console.log("putData", newFood);
@@ -59,7 +73,7 @@ export default function FoodView() {
       const {
         data: { foods },
       } = await axios.get("http://localhost:8080/food");
-      console.log("FOODS", foods);
+
       setFoods(foods);
       console.log("get foods successfully");
     } catch (error: any) {
@@ -67,20 +81,20 @@ export default function FoodView() {
     }
   };
 
-  const createFood = async (newFood: any) => {
-    console.log("working");
+  const createFood = async () => {
     try {
-      const foodForm = new FormData();
+      const dataForm = new FormData();
 
-      foodForm.set("image", file!);
-      foodForm.set("name", newFood.name);
-      foodForm.set("description", newFood.description);
-      foodForm.set("category", newFood.category);
-      foodForm.set("discountPrice", newFood.discountPrice);
-      foodForm.set("isSale", newFood.isSale);
+      dataForm.append("image", file!);
+      dataForm.append("name", newFood.name);
+      dataForm.append("description", newFood.description);
+      dataForm.append("price", newFood.price.toString());
+      dataForm.append("category", newFood.category);
+      dataForm.append("discountPrice", newFood.discountPrice.toString());
+      dataForm.append("isSale", "" + newFood.isSale);
 
-      const data = await axios.post("http://localhost:8080/food", foodForm);
-      console.log("successfull added category", data);
+      const data = await axios.post("http://localhost:8080/food", dataForm);
+      console.log("successfully added food", data);
     } catch (error) {
       console.log("errr", error);
     }
@@ -88,7 +102,8 @@ export default function FoodView() {
 
   useEffect(() => {
     getFoods();
-  }, []);
+    getCategory();
+  }, [createFood]);
 
   return (
     <Container>
@@ -137,10 +152,11 @@ export default function FoodView() {
       </Grid>
       <FoodModal
         open={open}
+        createFood={createFood}
+        categories={categories}
         handleClose={handleClose}
         handleChange={handleChange}
         handleFileChange={handleFileChange}
-        createFood={createFood}
       />
 
       {/* <ProductCartWidget /> */}

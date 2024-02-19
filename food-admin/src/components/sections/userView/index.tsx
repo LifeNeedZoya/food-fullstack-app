@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { sample } from "lodash";
 import { faker } from "@faker-js/faker";
 import Card from "@mui/material/Card";
@@ -22,6 +22,8 @@ import UserTableHead from "./user-table-head";
 import TableEmptyRows from "./table-empty-rows";
 import UserTableToolbar from "./user-table-toolbar";
 import { emptyRows, applyFilter, getComparator } from "./functions";
+import axios from "axios";
+import { UserContext } from "@/context/userContext";
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +65,7 @@ export default function UserView() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const { users } = useContext(UserContext);
   const handleSort = (event: any, id: any) => {
     const isAsc = orderBy === id && order === "asc";
     if (id !== "") {
@@ -73,7 +76,7 @@ export default function UserView() {
 
   const handleSelectAllClick = (event: any) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
+      const newSelecteds = users.map((n: any) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -118,7 +121,7 @@ export default function UserView() {
     filterName,
   });
 
-  const notFound = !dataFiltered.length && !!filterName;
+  const notFound = !dataFiltered?.length && !!filterName;
 
   return (
     <Container>
@@ -152,8 +155,8 @@ export default function UserView() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={users.length}
-                numSelected={selected.length}
+                rowCount={users?.length}
+                numSelected={selected?.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
@@ -167,14 +170,14 @@ export default function UserView() {
               />
               <TableBody>
                 {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  ?.map((row: any) => (
                     <UserTableRow
                       key={row.id}
                       name={row.name}
                       role={row.role}
                       status={row.status}
-                      company={row.company}
+                      email={row.email}
                       avatarUrl={row.avatarUrl}
                       isVerified={row.isVerified}
                       selected={selected.indexOf(row.name) !== -1}
@@ -184,7 +187,7 @@ export default function UserView() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, users?.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -196,7 +199,7 @@ export default function UserView() {
         <TablePagination
           page={page}
           component="div"
-          count={users.length}
+          count={users?.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

@@ -36,15 +36,15 @@ export function getComparator(order: any, orderBy: any) {
 }
 
 export function applyFilter({ inputData, comparator, filterName }: any) {
-  const stabilizedThis = inputData.map((el: any, index: any) => [el, index]);
+  const stabilizedThis = inputData?.map((el: any, index: any) => [el, index]);
 
-  stabilizedThis.sort((a: any, b: any) => {
+  stabilizedThis?.sort((a: any, b: any) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
 
-  inputData = stabilizedThis.map((el: any) => el[0]);
+  inputData = stabilizedThis?.map((el: any) => el[0]);
 
   if (filterName) {
     inputData = inputData.filter(

@@ -61,6 +61,7 @@ export const updateOrder = async (
 ) => {
   try {
     const { orderId } = req.body;
+
     const findOrder = await Basket.findByIdAndUpdate(orderId);
 
     res.status(200).json({
@@ -78,15 +79,10 @@ export const createBasket = async (
   next: NextFunction
 ) => {
   try {
-    const { foodId } = req.body;
+    const { foodId, userId, price } = req.body;
+    Basket.findById(foodId);
 
-    // const basketFoods = Basket.countDocuments({ _id: foodId }, (err, count) => {
-    //   if (count > 0) {
-    //     console.log("Document exists.");
-    //   }
-    // });
-
-    const findOrder = await Basket.create({ foodId });
+    const findOrder = await Basket.create({ foodId, userId, price });
     res.status(200).json({
       message: ` захиалгыг амжилттай үүсгэлээ`,
       findOrder,

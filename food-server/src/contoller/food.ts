@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Food from "../model/food";
 import MyError from "../utils/myError";
+import cloudinary from "../utils/cloudinary";
 
 export const createFood = async (
   req: Request,
@@ -9,7 +10,13 @@ export const createFood = async (
 ) => {
   try {
     const newFood = req.body;
+    console.log("NewFood", newFood);
     console.log("ServerPutData", req.body);
+    if (req.file) {
+      const { secure_url } = await cloudinary.uploader.upload(req.file.path);
+      newFood.image = secure_url;
+    }
+    console.log("DATA", newFood);
     Food.create(newFood);
     res.status(200).json({ message: "Хоол амжилттай үүслээ" });
   } catch (error) {

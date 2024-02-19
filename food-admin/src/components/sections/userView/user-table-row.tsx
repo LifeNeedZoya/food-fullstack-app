@@ -20,7 +20,7 @@ export default function UserTableRow({
   selected,
   name,
   avatarUrl,
-  company,
+  email,
   role,
   isVerified,
   status,
@@ -52,7 +52,7 @@ export default function UserTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell>{email}</TableCell>
 
         <TableCell>{role}</TableCell>
 

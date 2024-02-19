@@ -131,3 +131,38 @@ export const UpdateUser = async (
     next(error);
   }
 };
+
+export const getAllUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const Users = await User.find();
+
+    res.status(200).json({
+      message: `Захиалгыг амжилттай авлаа`,
+      Users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req.body;
+    const findUser = await User.find(userId);
+
+    res.status(200).json({
+      message: `Захиалгыг амжилттай авлаа`,
+      findUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

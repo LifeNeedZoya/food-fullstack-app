@@ -1,9 +1,16 @@
 import { model, Schema } from "mongoose";
 
 const BasketSchema = new Schema({
-  food: {
+  foods: [
+    {
+      type: Schema.ObjectId,
+      ref: "Food",
+      required: true,
+    },
+  ],
+  user: {
     type: Schema.ObjectId,
-    ref: "Food",
+    ref: "User",
     required: true,
   },
   createdAt: {
@@ -14,6 +21,7 @@ const BasketSchema = new Schema({
     type: Number,
     default: 1,
   },
+  isPurchased: { type: Boolean },
 });
 
 const Basket = model("Basket", BasketSchema);

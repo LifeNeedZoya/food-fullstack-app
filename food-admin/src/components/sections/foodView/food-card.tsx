@@ -32,7 +32,7 @@ export default function FoodCard({ product }: any) {
     <Box
       component="img"
       alt={product.name}
-      src={product.cover}
+      src={product.image}
       sx={{
         top: 0,
         width: 1,

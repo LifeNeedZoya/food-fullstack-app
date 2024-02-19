@@ -52,6 +52,7 @@ export default function CategoryView() {
 
       const data = await axios.post("http://localhost:8080/category", dataForm);
       console.log("successfull added category", data);
+      setOpen(false);
     } catch (error) {
       console.log("errr", error);
     }
@@ -80,7 +81,7 @@ export default function CategoryView() {
 
   useEffect(() => {
     getCategory();
-  }, [createCategory()]);
+  }, [createCategory]);
   return (
     <Container>
       <Stack
