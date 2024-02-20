@@ -1,7 +1,7 @@
 "use client";
+
 import axios from "axios";
 import { redirect } from "next/navigation";
-import { object } from "prop-types";
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -40,10 +40,11 @@ function UserProvider({ children }: any) {
   const getUserFromLocalStrorage = async () => {
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
-    if (!storedUser) {
-      redirect("/login");
+
+    if (!storedUser || !storedToken) {
       toast.error("go to signup ");
     }
+
     console.log("get user from localStorage");
     try {
     } catch (error: any) {
@@ -54,6 +55,7 @@ function UserProvider({ children }: any) {
   useEffect(() => {
     getUsers();
   }, []);
+
   return (
     <UserContext.Provider value={{ users, getUsers, getUserFromLocalStrorage }}>
       {children}

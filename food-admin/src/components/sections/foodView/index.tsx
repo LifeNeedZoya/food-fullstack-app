@@ -33,18 +33,6 @@ export default function FoodView() {
     isSale: "0",
   });
   const [categories, setCategories] = useState([]);
-  const getCategory = async () => {
-    try {
-      const {
-        data: { categories },
-      } = await axios.get("http://localhost:8080/category");
-
-      setCategories(categories);
-      console.log("get categories successfully");
-    } catch (error: any) {
-      alert("Get Error - " + error.message);
-    }
-  };
 
   const handleClose = () => {
     setOpen(() => false);
@@ -66,6 +54,19 @@ export default function FoodView() {
 
     setNewFood({ ...newFood, [name]: value });
     console.log("putData", newFood);
+  };
+
+  const getCategory = async () => {
+    try {
+      const {
+        data: { categories },
+      } = await axios.get("http://localhost:8080/category");
+
+      setCategories(categories);
+      console.log("get categories successfully");
+    } catch (error: any) {
+      alert("Get Error - " + error.message);
+    }
   };
 
   const getFoods = async () => {

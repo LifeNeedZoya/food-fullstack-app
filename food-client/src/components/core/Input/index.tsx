@@ -1,6 +1,8 @@
 "use client";
 
 import React, { ChangeEvent, useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
 
 import {
   FormControl,
@@ -9,6 +11,9 @@ import {
   InputAdornment,
   IconButton,
   FormHelperText,
+  Paper,
+  InputBase,
+  Divider,
 } from "@mui/material";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";

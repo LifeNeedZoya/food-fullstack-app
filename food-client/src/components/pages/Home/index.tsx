@@ -7,9 +7,9 @@ import {
   Grid,
   Stack,
   Typography,
-  iconClasses,
 } from "@mui/material";
-
+import StarPurple500OutlinedIcon from "@mui/icons-material/StarPurple500Outlined";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import Image from "next/image";
 
 import { InfoCard } from "@/components";
@@ -86,6 +86,38 @@ export const HomePage = () => {
           </Grid>
         </Grid>
       </Box>
+      <Container>
+        <Grid container flexDirection="row" marginY={"80px"}>
+          {infoArr.map((info) => (
+            <InfoCard {...info} />
+          ))}
+        </Grid>
+      </Container>
+      <Container>
+        <Grid container flexDirection="row" justifyContent={"space-between"}>
+          <Grid
+            item
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <StarPurple500OutlinedIcon color="success" />
+            <Typography variant="h6">Хямдралтай</Typography>
+          </Grid>
+          <Grid
+            item
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Typography variant="h6" color={"green"}>
+              See all foods
+            </Typography>
+            <PlayArrowRoundedIcon color="success" sx={{ fontSize: 30 }} />
+          </Grid>
+        </Grid>
+        <Grid container flexDirection="row" marginY={"80px"}></Grid>
+      </Container>
       <Container>
         <Grid container flexDirection="row" marginY={"80px"}>
           {infoArr.map((info) => (
