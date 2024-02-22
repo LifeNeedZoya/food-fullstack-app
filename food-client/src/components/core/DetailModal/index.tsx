@@ -29,20 +29,15 @@ const style = {
   margin: "32px",
 };
 
-export const Details = () => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+export const Details = ({
+  open,
+  handleClose,
+}: {
+  open: boolean;
+  handleClose: () => void;
+}) => {
   return (
-    <div>
-      <Button
-        variant="contained"
-        onClick={handleOpen}
-        sx={{ background: "success" }}
-      >
-        Open modal
-      </Button>
+    <>
       <Modal
         open={open}
         onClose={handleClose}
@@ -122,6 +117,6 @@ export const Details = () => {
           </Stack>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { PropsWithChildren } from "react";
+import { Details } from "../DetailModal";
 
 import {
   Card,
@@ -12,26 +13,40 @@ import {
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 
-export const Cards = () => {
+import { IFood } from "@/context/FoodProvider";
+
+export const FoodCard = ({
+  name,
+  price,
+  image,
+  isSale,
+  discountPrice,
+}: IFood) => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <Container>
-      <Card sx={{ maxWidth: 290, margin: 3 }}>
+    <>
+      <Card sx={{ width: 200, margin: 3 }} onClick={handleOpen}>
         <CardMedia
           sx={{ height: 200, position: "relative" }}
-          image="/assets/food.jpg"
+          image={image}
           title="green iguana"
         >
-          <Chip
-            label="-20%"
-            size="medium"
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              background: " #18BA51",
-              padding: "4px 16px ",
-            }}
-          />
+          {isSale === true && (
+            <Chip
+              label={discountPrice}
+              size="medium"
+              sx={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                background: " #18BA51",
+                padding: "4px 16px ",
+              }}
+            />
+          )}
         </CardMedia>
         <CardContent sx={{ boxSizing: "border-box" }}>
           <Typography
@@ -40,7 +55,7 @@ export const Cards = () => {
             component="div"
             sx={{ fontWeight: 900, font: 32, fontFamily: "unset" }}
           >
-            Өглөөний хоол
+            {name}
           </Typography>
           <Box sx={{ display: "flex", gap: "10px" }}>
             <Typography
@@ -50,24 +65,27 @@ export const Cards = () => {
               color={green[500]}
               sx={{ fontWeight: 900, font: 32, fontFamily: "unset" }}
             >
-              4,800₮
+              {price}₮
             </Typography>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-              sx={{
-                fontWeight: 600,
-                font: 32,
-                fontFamily: "unset",
-                textDecoration: "line-through",
-              }}
-            >
-              4,800₮
-            </Typography>
+            {isSale == true && (
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{
+                  fontWeight: 600,
+                  font: 32,
+                  fontFamily: "unset",
+                  textDecoration: "line-through",
+                }}
+              >
+                4,800₮
+              </Typography>
+            )}
           </Box>
         </CardContent>
       </Card>
-    </Container>
+      <Details open={open} handleClose={handleClose} />
+    </>
   );
 };

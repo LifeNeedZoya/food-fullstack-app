@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
+import Swal from "sweetalert2";
 
 import FoodCard from "./food-card";
 import FoodSort from "./food-sort";
@@ -23,6 +24,7 @@ import Iconify from "@/components/iconify";
 export default function FoodView() {
   const [open, setOpen] = useState(false);
   const [foods, setFoods] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [newFood, setNewFood] = useState({
     name: "",
@@ -30,7 +32,7 @@ export default function FoodView() {
     price: 0,
     discountPrice: 0,
     category: "65bccbf8cfc2bc3551a49ea4rs",
-    isSale: "0",
+    isSale: isChecked,
   });
   const [categories, setCategories] = useState([]);
 
@@ -86,16 +88,24 @@ export default function FoodView() {
     try {
       const dataForm = new FormData();
 
-      dataForm.append("image", file!);
-      dataForm.append("name", newFood.name);
-      dataForm.append("description", newFood.description);
-      dataForm.append("price", newFood.price.toString());
-      dataForm.append("category", newFood.category);
-      dataForm.append("discountPrice", newFood.discountPrice.toString());
-      dataForm.append("isSale", "" + newFood.isSale);
+      dataForm.set("image", file!);
+      dataForm.set("name", newFood.name);
+      dataForm.set("description", newFood.description);
+      dataForm.set("price", newFood.price.toString());
+      dataForm.set("category", newFood.category);
+      dataForm.set("discountPrice", newFood.discountPrice.toString());
+      dataForm.set("isSale", "" + newFood.isSale);
 
       const data = await axios.post("http://localhost:8080/food", dataForm);
       console.log("successfully added food", data);
+      handleClose();
+      await Swal.fire({
+        position: "center",
+        title: "Та амжилттай нэмлээ",
+        icon: "success",
+        timer: 1000,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.log("errr", error);
     }
@@ -104,7 +114,7 @@ export default function FoodView() {
   useEffect(() => {
     getFoods();
     getCategory();
-  }, [createFood]);
+  }, []);
 
   return (
     <Container>
@@ -153,6 +163,9 @@ export default function FoodView() {
       </Grid>
       <FoodModal
         open={open}
+        newFood={newFood}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
         createFood={createFood}
         categories={categories}
         handleClose={handleClose}

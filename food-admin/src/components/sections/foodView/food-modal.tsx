@@ -55,6 +55,9 @@ const FoodModal = ({
   handleFileChange,
   createFood,
   categories,
+  isChecked,
+  setIsChecked,
+  newFood,
 }: any) => {
   return (
     <Modal
@@ -96,20 +99,39 @@ const FoodModal = ({
             label="price"
             fullWidth
           />
-          <TextField
-            onChange={handleChange}
-            name="discountPrice"
-            id="outlined-basic"
-            variant="outlined"
-            label="Discount percent"
-            fullWidth
-          />
+
+          <Grid item display={"flex"}>
+            <Typography
+              variant="h6"
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              Хямдралтай эсэх
+            </Typography>
+            <Checkbox
+              checked={isChecked}
+              onClick={() => setIsChecked(!isChecked)}
+              name="isSale"
+            />
+            {isChecked && (
+              <TextField
+                onChange={handleChange}
+                name="discountPrice"
+                id="outlined-basic"
+                variant="outlined"
+                label="Хямдралын хувиа оруулна уу"
+                fullWidth
+              />
+            )}
+          </Grid>
           <FormControl fullWidth>
             <InputLabel id="demo-multiple-name-label">Category</InputLabel>
             <Select
               id="demo-simple-select"
               value="category"
               label={"category"}
+              name="category"
               onChange={handleChange}
               style={{ color: "black" }}
             >

@@ -1,17 +1,53 @@
-import React, { PropsWithChildren, useState } from "react";
+"use client";
+
+import axios from "axios";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import { createContext } from "react";
 
-export const FoodContext = createContext({} as IFoods);
+export const FoodContext = createContext({} as IFoodsContext);
 
-interface IFoods {
+export interface IFood {
+  price: string;
+  name: string;
+  image: string;
+  isSale: boolean;
+  description: string;
+  discountPrice: number;
+}
+
+interface IFoodsContext {
   getFoods: () => void;
+  foodData: IFood[];
+  isLoading: boolean;
 }
 
 const FoodProvider = ({ children }: PropsWithChildren) => {
-  const [foods, setFoods] = useState([]);
-  const getFoods = () => {};
+  const [foodData, setFoodData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getFoods = async () => {
+    try {
+      const {
+        data: { foods },
+      } = await axios.get("http://localhost:8080/food");
+      setFoodData(foods);
+
+      console.log("FOOD DATA: ", foodData);
+
+      console.log("get foods successfully", foods);
+      setIsLoading(false);
+    } catch (error: any) {
+      alert("Get Error - " + error.message);
+    }
+  };
+
+  useEffect(() => {
+    getFoods();
+  }, []);
   return (
-    <FoodContext.Provider value={{ getFoods }}>{children}</FoodContext.Provider>
+    <FoodContext.Provider value={{ getFoods, foodData, isLoading }}>
+      {children}
+    </FoodContext.Provider>
   );
 };
 

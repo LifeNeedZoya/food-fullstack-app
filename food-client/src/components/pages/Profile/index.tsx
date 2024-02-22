@@ -1,23 +1,34 @@
+"use client";
+import React, { useContext, useState } from "react";
+
 import {
   Container,
   Grid,
-  Stack,
   Typography,
   TextField,
   Paper,
   IconButton,
-  InputBase,
   Divider,
   Box,
   Button,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import PermPhoneMsgIcon from "@mui/icons-material/PermPhoneMsg";
+import MarkunreadIcon from "@mui/icons-material/Markunread";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import { UserContext } from "@/context/AuthProvider";
+
+interface IUser {
+  name: string;
+  email: string;
+  phoneNumber: number;
+}
 
 export const ProfilePage = () => {
+  const { loggedUser } = useContext(UserContext);
+
   const [isClicked, setIsClicked] = useState(false);
   const [changedUser, setChangedUser] = useState({
     name: "",
@@ -36,7 +47,7 @@ export const ProfilePage = () => {
             height={200}
             style={{ borderRadius: 100 }}
           />
-          <Typography>Угтах-Баяр</Typography>
+          <Typography>{loggedUser?.name}</Typography>
         </Grid>
         <Grid
           spacing={5}
@@ -60,7 +71,7 @@ export const ProfilePage = () => {
               </IconButton>
               <Box width={"100%"}>
                 {!isClicked ? (
-                  <Box width={"fullWidth"}>Угтах-Баяр</Box>
+                  <Box width={"fullWidth"}>{loggedUser?.name}</Box>
                 ) : (
                   <TextField variant="standard" />
                 )}
@@ -86,11 +97,11 @@ export const ProfilePage = () => {
               }}
             >
               <IconButton sx={{ p: "10px" }} aria-label="menu">
-                <PersonIcon />
+                <PermPhoneMsgIcon />
               </IconButton>
               <Box width={"100%"}>
                 {!isClicked ? (
-                  <Box width={"fullWidth"}>Угтах-Баяр</Box>
+                  <Box width={"fullWidth"}>8080-8080</Box>
                 ) : (
                   <TextField variant="standard" />
                 )}
@@ -116,11 +127,11 @@ export const ProfilePage = () => {
               }}
             >
               <IconButton sx={{ p: "10px" }} aria-label="menu">
-                <PersonIcon />
+                <MarkunreadIcon />
               </IconButton>
               <Box width={"100%"}>
                 {!isClicked ? (
-                  <Box width={"fullWidth"}>Угтах-Баяр</Box>
+                  <Box width={"fullWidth"}>{loggedUser?.email}</Box>
                 ) : (
                   <TextField variant="standard" />
                 )}

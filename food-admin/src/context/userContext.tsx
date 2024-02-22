@@ -22,6 +22,7 @@ export const UserContext = createContext<IUserContext>({} as IUserContext);
 function UserProvider({ children }: any) {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState();
+  const [token, setToken] = useState();
 
   const getUsers = async () => {
     try {
@@ -38,15 +39,29 @@ function UserProvider({ children }: any) {
   };
 
   const getUserFromLocalStrorage = async () => {
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
-
-    if (!storedUser || !storedToken) {
-      toast.error("go to signup ");
-    }
-
-    console.log("get user from localStorage");
     try {
+      const storedUser = localStorage.getItem("user");
+      const storedToken = localStorage.getItem("token");
+
+      if (!storedUser || !storedToken) {
+        toast.error("go to signup ");
+      }
+
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      }
+
+      if (storedToken) {
+        try {
+          const parsedToken = JSON.parse(storedToken);
+          setToken(parsedToken);
+        } catch (error) {
+          console.error("Failed to parse token :", error);
+        }
+      }
+
+      console.log("get user from localStorage");
     } catch (error: any) {
       alert("Get Error - " + error.message);
     }

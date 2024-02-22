@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React, { useContext, useState } from "react";
 
 import { Search, ShoppingBasket, Person } from "@mui/icons-material";
 
@@ -19,17 +19,22 @@ import {
 import Image from "next/image";
 
 import { BasketCard } from "@/components";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { UserContext } from "@/context/AuthProvider";
 
 type Anchor = "right";
 
 const Header = () => {
+  const isActive = usePathname();
+
+  const { loggedUser, loggedToken } = useContext(UserContext);
+
   const routes = [
     { name: "НҮҮР", path: "/" },
-    { name: "ХООЛНЫ ЦЭС", path: "/" },
-    { name: "ХҮРГЭЛТИЙН БҮС", path: "/" },
+    { name: "ХООЛНЫ ЦЭС", path: "/menu" },
+    { name: "ХҮРГЭЛТИЙН БҮС", path: "/map" },
   ];
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,
@@ -90,7 +95,11 @@ const Header = () => {
               <Link
                 key={i}
                 variant="subtitle1"
-                sx={{ fontWeight: 900, color: "black", textDecoration: "none" }}
+                sx={{
+                  fontWeight: 900,
+                  color: `${isActive === data.path ? "green" : "black"}`,
+                  textDecoration: "none",
+                }}
                 href={data.path}
               >
                 {data.name}
@@ -138,13 +147,24 @@ const Header = () => {
             ))}
           </Link>
 
-          <Button
-            onClick={() => router.push("/login")}
-            sx={{ fontWeight: 900, marginLeft: 2, color: "black" }}
-          >
-            <Person />
-            Нэвтрэх
-          </Button>
+          {!loggedToken ? (
+            <Button
+              onClick={() => router.push("/login")}
+              sx={{ fontWeight: 900, marginLeft: 2, color: "black" }}
+            >
+              <Person />
+              Нэвтрэх
+            </Button>
+          ) : (
+            <Button
+              onClick={() => router.push("/userProfile")}
+              sx={{ fontWeight: 900, marginLeft: 2 }}
+              color="success"
+            >
+              <Person />
+              {loggedUser?.name}
+            </Button>
+          )}
         </Grid>
       </Grid>
     </Container>

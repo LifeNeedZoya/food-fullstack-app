@@ -13,3 +13,4 @@ export * from "./pages/ForgotPass/StepThree";
 export * from "./pages/Home";
 export * from "./pages/ForgotPass";
 export * from "./pages/Profile";
+export * from "./pages/Menu";

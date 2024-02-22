@@ -8,13 +8,20 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import StarPurple500OutlinedIcon from "@mui/icons-material/StarPurple500Outlined";
-import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+
 import Image from "next/image";
 
+import { useContext, useEffect } from "react";
+
 import { InfoCard } from "@/components";
+import { FoodContext } from "@/context/FoodProvider";
+import { CategoryContext } from "@/context/CategoryContext";
+import CategoryRow from "../Menu/CategoryRow";
 
 export const HomePage = () => {
+  const { foodData, getFoods, isLoading } = useContext(FoodContext);
+  const { categories, getCategories } = useContext(CategoryContext);
+
   const infoArr = [
     {
       icon: "",
@@ -37,6 +44,12 @@ export const HomePage = () => {
       description: "Захиалга бэлтгэлийн явцыг хянах",
     },
   ];
+
+  useEffect(() => {
+    console.log("DDDD++>", foodData);
+    getCategories();
+    getFoods();
+  }, []);
   return (
     <>
       <Box
@@ -94,34 +107,17 @@ export const HomePage = () => {
         </Grid>
       </Container>
       <Container>
-        <Grid container flexDirection="row" justifyContent={"space-between"}>
-          <Grid
-            item
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <StarPurple500OutlinedIcon color="success" />
-            <Typography variant="h6">Хямдралтай</Typography>
-          </Grid>
-          <Grid
-            item
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <Typography variant="h6" color={"green"}>
-              See all foods
-            </Typography>
-            <PlayArrowRoundedIcon color="success" sx={{ fontSize: 30 }} />
-          </Grid>
-        </Grid>
-        <Grid container flexDirection="row" marginY={"80px"}></Grid>
-      </Container>
-      <Container>
-        <Grid container flexDirection="row" marginY={"80px"}>
-          {infoArr.map((info) => (
-            <InfoCard {...info} />
+        <Grid container marginY={"80px"} width={"100%"}>
+          {categories.map((category) => (
+            <Grid key={category.name} item width={"100%"}>
+              <CategoryRow
+                key={category._id}
+                name={category.name}
+                id={category._id}
+                foods={foodData}
+                isLoading={isLoading}
+              />
+            </Grid>
           ))}
         </Grid>
       </Container>

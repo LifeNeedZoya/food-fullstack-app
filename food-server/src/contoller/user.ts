@@ -40,7 +40,7 @@ export const login = async (
   try {
     const { userEmail, userPassword } = req.body;
     const email = userEmail;
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email }).select("+password").lean();
 
     if (user?.isVerified === false) {
       return res.status(401).json({ message: "Имэйлээ баталгаажуулана уу" });
@@ -70,7 +70,7 @@ export const login = async (
       token,
       user: otherParams,
     });
-    console.log("Хэрэглэгч амжилттай нэвтэрлээ");
+    console.log("Хэрэглэгч амжилттай нэвтэрлээ", user);
   } catch (error) {
     next(error);
   }

@@ -28,7 +28,9 @@ export const LoginPage = () => {
 
   const { login } = useContext(UserContext);
   const formik = useFormik({
-    onSubmit: ({ email, password }: { email: string; password: string }) => {},
+    onSubmit: ({ email, password }: { email: string; password: string }) => {
+      login({ email, password });
+    },
     initialValues: { email: "", password: "" },
     validateOnChange: false,
     validateOnBlur: false,
