@@ -46,10 +46,10 @@ export const HomePage = () => {
   ];
 
   useEffect(() => {
-    console.log("DDDD++>", foodData);
     getCategories();
     getFoods();
   }, []);
+
   return (
     <>
       <Box

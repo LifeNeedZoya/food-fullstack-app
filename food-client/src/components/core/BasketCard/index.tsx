@@ -19,7 +19,7 @@ const style = {
   margin: "32px",
 };
 
-export const BasketCard = () => {
+export const BasketCard = ({ name, price, description }) => {
   const [amount, setAmount] = useState(0);
   return (
     <>

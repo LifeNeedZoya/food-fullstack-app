@@ -1,7 +1,6 @@
 "use client";
-import * as React from "react";
+import React, { useContext } from "react";
 
-import Image from "next/image";
 import {
   ButtonGroup,
   Grid,
@@ -14,12 +13,14 @@ import {
 
 import { grey } from "@mui/material/colors";
 
+import { BasketContext } from "@/context/BasketProvider";
+
 const style = {
   position: "absolute" as "absolute",
-  top: "30%",
-  left: "30%",
+  top: "20%",
+  left: "20%",
   width: 900,
-  height: 510,
+  height: 460,
   bgcolor: "background.paper",
   borderRadius: "20px",
   boxShadow: 24,
@@ -30,12 +31,24 @@ const style = {
 };
 
 export const Details = ({
+  id,
   open,
   handleClose,
+  name,
+  price,
+  image,
+  description,
 }: {
+  id: string;
   open: boolean;
   handleClose: () => void;
+  name: string;
+  price: string;
+  image: string;
+  description: string;
 }) => {
+  const { count, addCount, minusCount, addFood, createBasket, updateBasket } =
+    useContext(BasketContext);
   return (
     <>
       <Modal
@@ -45,21 +58,16 @@ export const Details = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Image
-            src={"/assets/food.jpg"}
-            alt="pic"
-            width={480}
-            height={480}
-          ></Image>
-          <Stack spacing={4} marginY={14}>
-            <Grid sx={{ marginTop: "40px" }}>
+          <img src={image} alt="name" width={480} height={430} />
+          <Stack spacing={4} marginY={3} width={"300px"}>
+            <Grid>
               <Typography
                 sx={{ fontWeight: 900 }}
                 id="modal-modal-title"
                 variant="h4"
                 component="h2"
               >
-                Main Pizza
+                {name}
               </Typography>
               <Typography
                 sx={{ fontWeight: 900 }}
@@ -68,7 +76,7 @@ export const Details = ({
                 variant="h5"
                 component="h2"
               >
-                34,800₮
+                {price}₮
               </Typography>
             </Grid>
 
@@ -84,7 +92,7 @@ export const Details = ({
                 variant="body2"
                 sx={{ background: grey[100], padding: 3, borderRadius: "3px" }}
               >
-                Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр
+                {description}
               </Typography>
             </Grid>
             <Grid display={"flex"} flexDirection={"column"} gap={6}>
@@ -101,15 +109,17 @@ export const Details = ({
                   boxShadow: "none",
                 }}
               >
-                <Button>-</Button>
-                <Typography>1</Typography>
-                <Button>+</Button>
+                <Button onClick={minusCount}>-</Button>
+                <Typography>{count}</Typography>
+                <Button onClick={addCount}>+</Button>
               </ButtonGroup>
               <Button
                 variant="contained"
                 color="success"
-                fullWidth
                 size="large"
+                fullWidth
+                onClick={() => addFood(id)}
+                onKeyUp={updateBasket}
               >
                 Сагслах
               </Button>

@@ -14,3 +14,4 @@ export * from "./pages/Home";
 export * from "./pages/ForgotPass";
 export * from "./pages/Profile";
 export * from "./pages/Menu";
+export * from "./pages/Policy";

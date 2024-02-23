@@ -7,6 +7,7 @@ import { createContext } from "react";
 export const FoodContext = createContext({} as IFoodsContext);
 
 export interface IFood {
+  _id: string;
   price: string;
   name: string;
   image: string;
@@ -34,7 +35,6 @@ const FoodProvider = ({ children }: PropsWithChildren) => {
 
       console.log("FOOD DATA: ", foodData);
 
-      console.log("get foods successfully", foods);
       setIsLoading(false);
     } catch (error: any) {
       alert("Get Error - " + error.message);

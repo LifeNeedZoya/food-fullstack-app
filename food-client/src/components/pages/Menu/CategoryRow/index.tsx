@@ -19,7 +19,7 @@ const CategoryRow = ({ foods, name, id, isLoading }: IProps) => {
     <Grid style={{ marginBottom: 6 }} container direction={"column"}>
       <Grid container display={"flex"} justifyContent="space-between">
         <Grid item direction="row" spacing={2}>
-          <Typography variant="h5" fontFamily={"monospace"} marginLeft={2}>
+          <Typography variant="h4" fontFamily={"serif"} marginLeft={2}>
             {" "}
             {name}
           </Typography>
@@ -44,7 +44,7 @@ const CategoryRow = ({ foods, name, id, isLoading }: IProps) => {
         {foods
           ?.filter((food: any) => food.category._id === id)
           .map((food: any) => (
-            <FoodCard {...food} />
+            <FoodCard {...food} key={food._id} />
           ))}
       </Grid>
     </Grid>

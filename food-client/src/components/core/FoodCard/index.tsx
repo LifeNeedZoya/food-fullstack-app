@@ -10,6 +10,7 @@ import {
   Container,
   Chip,
   Box,
+  Grid,
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 
@@ -21,6 +22,8 @@ export const FoodCard = ({
   image,
   isSale,
   discountPrice,
+  description,
+  _id,
 }: IFood) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -28,7 +31,10 @@ export const FoodCard = ({
 
   return (
     <>
-      <Card sx={{ width: 200, margin: 3 }} onClick={handleOpen}>
+      <Card
+        sx={{ width: 260, margin: 3, borderRadius: 5 }}
+        onClick={handleOpen}
+      >
         <CardMedia
           sx={{ height: 200, position: "relative" }}
           image={image}
@@ -85,7 +91,15 @@ export const FoodCard = ({
           </Box>
         </CardContent>
       </Card>
-      <Details open={open} handleClose={handleClose} />
+      <Details
+        open={open}
+        handleClose={handleClose}
+        name={name}
+        price={price}
+        image={image}
+        description={description}
+        id={_id}
+      />
     </>
   );
 };

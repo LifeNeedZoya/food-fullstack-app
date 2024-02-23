@@ -15,8 +15,6 @@ import FoodSort from "./food-sort";
 
 import FoodModal from "./food-modal";
 
-import { sample } from "lodash";
-import { faker } from "@faker-js/faker";
 import axios from "axios";
 import { Button } from "@mui/material";
 import Iconify from "@/components/iconify";
@@ -55,7 +53,6 @@ export default function FoodView() {
     console.log("value", value);
 
     setNewFood({ ...newFood, [name]: value });
-    console.log("putData", newFood);
   };
 
   const getCategory = async () => {

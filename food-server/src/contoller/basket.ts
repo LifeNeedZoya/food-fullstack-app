@@ -7,11 +7,12 @@ export const getAllOrder = async (
   next: NextFunction
 ) => {
   try {
-    const orders = await Basket.find();
+    const { token } = req.body;
+    const basket = await Basket.find(token);
 
     res.status(200).json({
       message: `Бүх захиалгыг амжилттай авлаа`,
-      orders,
+      basket,
     });
   } catch (error) {
     next(error);
@@ -60,14 +61,22 @@ export const updateOrder = async (
   next: NextFunction
 ) => {
   try {
-    const { orderId } = req.body;
+    const { orderId, userId } = req.body;
+    console.log("req", req.body);
+    const newOrder = req.body;
+    console.log("req", newOrder);
 
-    const findOrder = await Basket.findByIdAndUpdate(orderId);
+    const findOrder = await Basket.findByIdAndUpdate(
+      userId,
+      { $set: { orderId, userId } },
+      { new: true }
+    );
 
     res.status(200).json({
       message: `захиалгыг амжилттай шинэчиллээ`,
       findOrder,
     });
+    console.log("succesfully updated basket");
   } catch (error) {
     next(error);
   }
@@ -79,14 +88,15 @@ export const createBasket = async (
   next: NextFunction
 ) => {
   try {
-    const { foodId, userId, price } = req.body;
-    Basket.findById(foodId);
+    console.log("REQ BODY :", req.body);
 
-    const findOrder = await Basket.create({ foodId, userId, price });
+    const newBasket = req.body;
+    const findOrder = await Basket.create(req.body);
     res.status(200).json({
-      message: ` захиалгыг амжилттай үүсгэлээ`,
+      message: ` сагс амжилттай үүсгэлээ`,
       findOrder,
     });
+    console.log("сагс амжилттай үүсгэлээ");
   } catch (error) {
     next(error);
   }

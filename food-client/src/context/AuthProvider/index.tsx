@@ -15,6 +15,13 @@ interface IUser {
   rePassword?: string;
   avatarImg?: string;
 }
+
+export interface ILoggedUser {
+  name: string;
+  email: string;
+  address: string;
+  _id: string;
+}
 export const UserContext = createContext<IUserContext>({
   loggedToken: "",
   login: async () => {},
@@ -28,11 +35,7 @@ export const UserContext = createContext<IUserContext>({
     rePassword: "",
     avatarImg: "",
   },
-  loggedUser: {
-    name: "",
-    email: "",
-    address: "",
-  },
+  loggedUser: {} as ILoggedUser,
 });
 
 interface ISignUp {
@@ -49,7 +52,7 @@ interface IUserContext {
   logout?: () => {};
   signup?: ({ name, email, password, address, avatarImg }: ISignUp) => {};
   getUserFromLocalStrorage: () => {};
-  loggedUser: {} | null;
+  loggedUser: ILoggedUser | null;
   loggedToken: string | null | undefined;
 }
 
@@ -59,7 +62,12 @@ interface ILogin {
 }
 const UserProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
-  const [loggedUser, setLoggedUser] = useState<object | null>({});
+  const [loggedUser, setLoggedUser] = useState<ILoggedUser | null>({
+    name: "",
+    email: "",
+    address: "",
+    _id: "",
+  });
   const [loggedToken, setLoggedToken] = useState<string | null>();
   const [user, setUser] = useState<IUser>({
     name: "",

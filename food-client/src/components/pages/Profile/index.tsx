@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 
 import {
   Container,
@@ -12,10 +12,13 @@ import {
   Box,
   Button,
 } from "@mui/material";
+
 import PersonIcon from "@mui/icons-material/Person";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import PermPhoneMsgIcon from "@mui/icons-material/PermPhoneMsg";
 import MarkunreadIcon from "@mui/icons-material/Markunread";
+import HistoryIcon from "@mui/icons-material/History";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import Image from "next/image";
 import { UserContext } from "@/context/AuthProvider";
@@ -29,12 +32,22 @@ interface IUser {
 export const ProfilePage = () => {
   const { loggedUser } = useContext(UserContext);
 
-  const [isClicked, setIsClicked] = useState(false);
-  const [changedUser, setChangedUser] = useState({
+  const [changedUserData, setChangedUserData] = useState({
     name: "",
     phoneNumber: "",
     email: "",
   });
+  const [isNameChanged, setIsNameChanged] = useState(false);
+  const [isNumberChanged, setIsNumberChanged] = useState(false);
+  const [isEmailChanged, setIsEmailChanged] = useState(false);
+
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setChangedUserData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+    console.log("state", e.target.name, e.target.value);
+  };
 
   return (
     <Container>
@@ -47,7 +60,9 @@ export const ProfilePage = () => {
             height={200}
             style={{ borderRadius: 100 }}
           />
-          <Typography>{loggedUser?.name}</Typography>
+          <Typography textAlign={"center"} variant="h4" fontFamily={"serif"}>
+            {loggedUser?.name}
+          </Typography>
         </Grid>
         <Grid
           spacing={5}
@@ -70,17 +85,18 @@ export const ProfilePage = () => {
                 <PersonIcon />
               </IconButton>
               <Box width={"100%"}>
-                {!isClicked ? (
+                {!isNameChanged ? (
                   <Box width={"fullWidth"}>{loggedUser?.name}</Box>
                 ) : (
-                  <TextField variant="standard" />
+                  <TextField variant="standard" name="name" />
                 )}
               </Box>
               <IconButton
                 type="button"
+                name="name"
                 sx={{ p: "10px" }}
                 aria-label="search"
-                onClick={() => setIsClicked(!isClicked)}
+                onClick={() => setIsNameChanged(!isNameChanged)}
               >
                 <DriveFileRenameOutlineIcon color="success" />
               </IconButton>
@@ -100,17 +116,17 @@ export const ProfilePage = () => {
                 <PermPhoneMsgIcon />
               </IconButton>
               <Box width={"100%"}>
-                {!isClicked ? (
+                {!isNumberChanged ? (
                   <Box width={"fullWidth"}>8080-8080</Box>
                 ) : (
-                  <TextField variant="standard" />
+                  <TextField variant="standard" name="phoneNumber" />
                 )}
               </Box>
               <IconButton
                 type="button"
                 sx={{ p: "10px" }}
                 aria-label="search"
-                onClick={() => setIsClicked(!isClicked)}
+                onClick={() => setIsNumberChanged(!isNumberChanged)}
               >
                 <DriveFileRenameOutlineIcon color="success" />
               </IconButton>
@@ -130,17 +146,17 @@ export const ProfilePage = () => {
                 <MarkunreadIcon />
               </IconButton>
               <Box width={"100%"}>
-                {!isClicked ? (
+                {!isEmailChanged ? (
                   <Box width={"fullWidth"}>{loggedUser?.email}</Box>
                 ) : (
-                  <TextField variant="standard" />
+                  <TextField variant="standard" name="email" />
                 )}
               </Box>
               <IconButton
                 type="button"
                 sx={{ p: "10px" }}
                 aria-label="search"
-                onClick={() => setIsClicked(!isClicked)}
+                onClick={() => setIsEmailChanged(!isEmailChanged)}
               >
                 <DriveFileRenameOutlineIcon color="success" />
               </IconButton>
@@ -155,7 +171,27 @@ export const ProfilePage = () => {
             sx={{ marginBottom: 5, color: "white" }}
             fullWidth
           >
-            Success
+            Хадгалах
+          </Button>
+
+          <Button
+            startIcon={<HistoryIcon />}
+            sx={{
+              color: "black",
+              border: 1,
+              borderColor: "gray",
+              marginBottom: 3,
+            }}
+            fullWidth
+          >
+            Захиалгийн түүх
+          </Button>
+          <Button
+            startIcon={<LogoutIcon />}
+            sx={{ color: "black", border: 1, borderColor: "gray" }}
+            fullWidth
+          >
+            Гарах
           </Button>
         </Grid>
       </Grid>

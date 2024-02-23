@@ -21,6 +21,7 @@ import Image from "next/image";
 import { BasketCard } from "@/components";
 import { usePathname, useRouter } from "next/navigation";
 import { UserContext } from "@/context/AuthProvider";
+import { BasketContext } from "@/context/BasketProvider";
 
 type Anchor = "right";
 
@@ -28,12 +29,14 @@ const Header = () => {
   const isActive = usePathname();
 
   const { loggedUser, loggedToken } = useContext(UserContext);
-
+  const { basketFoods } = useContext(BasketContext);
+  console.log("Basket", basketFoods);
   const routes = [
     { name: "НҮҮР", path: "/" },
     { name: "ХООЛНЫ ЦЭС", path: "/menu" },
     { name: "ХҮРГЭЛТИЙН БҮС", path: "/map" },
   ];
+
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -66,7 +69,9 @@ const Header = () => {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <BasketCard />
+      {basketFoods?.map((e) => (
+        <BasketCard name={name} description={e.description} price={e.price} />
+      ))}
     </Box>
   );
 

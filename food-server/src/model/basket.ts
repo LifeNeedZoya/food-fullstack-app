@@ -3,25 +3,33 @@ import { model, Schema } from "mongoose";
 const BasketSchema = new Schema({
   foods: [
     {
-      type: Schema.ObjectId,
-      ref: "Food",
-      required: true,
+      foodId: {
+        type: Schema.ObjectId,
+        ref: "Food",
+        required: true,
+      },
+      count: {
+        type: Number,
+        default: 1,
+      },
     },
   ],
-  user: {
+  userId: {
     type: Schema.ObjectId,
     ref: "User",
+    unique: true,
     required: true,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  count: {
-    type: Number,
-    default: 1,
+
+  status: {
+    type: String,
+    enum: ["active", "purchased"],
+    default: "active",
   },
-  isPurchased: { type: Boolean },
 });
 
 const Basket = model("Basket", BasketSchema);
