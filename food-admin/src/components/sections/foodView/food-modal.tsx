@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import {
   Box,
   Button as MuiButton,
@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { CategoryContext } from "@/context/CategoryContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -54,11 +55,12 @@ const FoodModal = ({
   handleChange,
   handleFileChange,
   createFood,
-  categories,
+
   isChecked,
   setIsChecked,
   newFood,
 }: any) => {
+  const { categories } = useContext(CategoryContext);
   return (
     <Modal
       open={open}

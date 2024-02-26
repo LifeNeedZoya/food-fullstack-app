@@ -59,7 +59,7 @@ export const HomePage = () => {
           backgroundImage: `url(${"/assets/Logos/bg-footer.png"})`,
         }}
       >
-        <Grid container gridRow={2} spacing={8} height={"788px"} xs={12}>
+        <Grid container gridRow={2} spacing={8} height={"788px"} item xs={12}>
           <Grid item xs={12} lg={6}>
             <Stack
               height={"100%"}
@@ -102,7 +102,7 @@ export const HomePage = () => {
       <Container>
         <Grid container flexDirection="row" marginY={"80px"}>
           {infoArr.map((info) => (
-            <InfoCard {...info} />
+            <InfoCard key={info.title} {...info} />
           ))}
         </Grid>
       </Container>

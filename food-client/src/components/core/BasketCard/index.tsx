@@ -1,59 +1,70 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Image from "next/image";
-import { ButtonGroup, Divider, Grid, Stack } from "@mui/material";
+import { ButtonGroup, Grid, IconButton, Stack } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { BasketContext } from "@/context/BasketProvider";
 
 const style = {
   position: "absolute" as "absolute",
   width: 538,
   height: 182,
-  bgcolor: "background.paper",
-
+  bgcolor: grey[200],
   p: 4,
   display: "flex",
   gap: "40px",
   margin: "32px",
+  borderRadius: "20px",
 };
 
-export const BasketCard = ({ name, price, description }) => {
-  const [amount, setAmount] = useState(0);
+export const BasketCard = ({
+  id,
+  name,
+  price,
+  description,
+  foodCount,
+  image,
+}: {
+  id: string;
+  name: string;
+  price: string;
+  description: string;
+  foodCount: string;
+  image: string;
+}) => {
+  const { deleteBasketItem, updateBasket, addCount, minusCount } =
+    useContext(BasketContext);
+
   return (
-    <>
-      <Divider aria-hidden="true" />
+    <Grid sx={{ border: 1 }} container>
       <Box sx={style}>
-        <Image
-          src={"/assets/food.jpg"}
-          alt="pic"
-          width={245}
-          height={150}
-        ></Image>
+        <img src={image} alt="pic" width={245} height={150} />
         <Stack>
-          <Grid>
-            <Typography sx={{ fontWeight: 500 }} variant="h5">
-              Main Pizza
+          <Grid item>
+            <Typography sx={{ fontWeight: 700 }} variant="h5">
+              {name}
             </Typography>
             <Typography
-              sx={{ fontWeight: 700 }}
+              sx={{ fontWeight: 900, fontSize: 20 }}
               color="#18BA51"
               variant="subtitle1"
+              fontWeight={900}
             >
-              34,800₮
+              {price}₮
             </Typography>
           </Grid>
 
-          <Grid>
+          <Grid item>
             <Typography
               variant="body2"
               sx={{ background: grey[50], padding: 1, borderRadius: "3px" }}
             >
-              Хулуу, төмс, лууван , сонгино, цөцгийн тос, самрын үр
+              {description}
             </Typography>
           </Grid>
-          <Grid display={"flex"} flexDirection={"column"} gap={6}>
+          <Grid display={"flex"} flexDirection={"column"} gap={6} item>
             <ButtonGroup
               variant="contained"
               aria-label="outlined button group "
@@ -62,26 +73,30 @@ export const BasketCard = ({ name, price, description }) => {
                 justifyContent: "space-between",
                 boxShadow: "none",
               }}
+              fullWidth
             >
               <Button
                 sx={{ background: "#18BA51" }}
-                onClick={() => {
-                  setAmount(amount);
-                }}
+                onClick={() => (minusCount(), updateBasket(id))}
               >
                 -
               </Button>
-              <Typography>{amount}</Typography>
+              <Typography marginX={5} fontSize={20}>
+                {foodCount}
+              </Typography>
               <Button
                 sx={{ background: "#18BA51" }}
-                onClick={() => setAmount((prev) => prev + 1)}
+                onClick={() => (addCount(), updateBasket(id))}
               >
                 +
               </Button>
             </ButtonGroup>
           </Grid>
         </Stack>
+        <Grid item>
+          <IconButton onClick={() => deleteBasketItem(id)}>X</IconButton>
+        </Grid>
       </Box>
-    </>
+    </Grid>
   );
 };

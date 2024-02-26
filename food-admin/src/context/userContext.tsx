@@ -2,16 +2,18 @@
 
 import axios from "axios";
 import { redirect } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface IUser {
   name: string;
   email: string;
   image: string;
+  _id: string;
 }
 
 interface IUserContext {
+  user: IUser;
   users: IUser[];
   getUsers: () => void;
   getUserFromLocalStrorage: () => void;
@@ -19,9 +21,14 @@ interface IUserContext {
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
 
-function UserProvider({ children }: any) {
+function UserProvider({ children }: PropsWithChildren) {
   const [users, setUsers] = useState([]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({
+    name: "",
+    image: "",
+    email: "",
+    _id: "",
+  });
   const [token, setToken] = useState();
 
   const getUsers = async () => {
@@ -72,7 +79,9 @@ function UserProvider({ children }: any) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ users, getUsers, getUserFromLocalStrorage }}>
+    <UserContext.Provider
+      value={{ user, users, getUsers, getUserFromLocalStrorage }}
+    >
       {children}
     </UserContext.Provider>
   );

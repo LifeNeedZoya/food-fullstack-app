@@ -5,13 +5,10 @@ import { Box, Button, Container, Grid, Skeleton } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 
 export const MenuPage = () => {
-  const { categories } = useContext(CategoryContext);
+  const { categories, HandleClickCategory, chosenCategory } =
+    useContext(CategoryContext);
 
   const { foodData, isLoading } = useContext(FoodContext);
-
-  const [chosenCategory, setChosenCategory] = useState(
-    "65bccbf8cfc2bc3551a49ea4"
-  );
 
   return (
     <Container>
@@ -29,7 +26,7 @@ export const MenuPage = () => {
                 variant="contained"
                 color={e._id === chosenCategory ? "success" : "secondary"}
                 sx={{ borderRadius: 6, width: 185 }}
-                onClick={() => setChosenCategory(e._id)}
+                onClick={() => HandleClickCategory(e._id)}
               >
                 {e.name}
               </Button>

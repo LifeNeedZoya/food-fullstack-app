@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
@@ -18,10 +18,10 @@ import FoodModal from "./food-modal";
 import axios from "axios";
 import { Button } from "@mui/material";
 import Iconify from "@/components/iconify";
+import { FoodContext } from "@/context/foodContext";
 
 export default function FoodView() {
   const [open, setOpen] = useState(false);
-  const [foods, setFoods] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [newFood, setNewFood] = useState({
@@ -32,7 +32,8 @@ export default function FoodView() {
     category: "65bccbf8cfc2bc3551a49ea4rs",
     isSale: isChecked,
   });
-  const [categories, setCategories] = useState([]);
+
+  const { foods } = useContext(FoodContext);
 
   const handleClose = () => {
     setOpen(() => false);
@@ -53,32 +54,6 @@ export default function FoodView() {
     console.log("value", value);
 
     setNewFood({ ...newFood, [name]: value });
-  };
-
-  const getCategory = async () => {
-    try {
-      const {
-        data: { categories },
-      } = await axios.get("http://localhost:8080/category");
-
-      setCategories(categories);
-      console.log("get categories successfully");
-    } catch (error: any) {
-      alert("Get Error - " + error.message);
-    }
-  };
-
-  const getFoods = async () => {
-    try {
-      const {
-        data: { foods },
-      } = await axios.get("http://localhost:8080/food");
-
-      setFoods(foods);
-      console.log("get foods successfully");
-    } catch (error: any) {
-      alert("Get Error - " + error.message);
-    }
   };
 
   const createFood = async () => {
@@ -107,11 +82,6 @@ export default function FoodView() {
       console.log("errr", error);
     }
   };
-
-  useEffect(() => {
-    getFoods();
-    getCategory();
-  }, []);
 
   return (
     <Container>
@@ -164,7 +134,6 @@ export default function FoodView() {
         isChecked={isChecked}
         setIsChecked={setIsChecked}
         createFood={createFood}
-        categories={categories}
         handleClose={handleClose}
         handleChange={handleChange}
         handleFileChange={handleFileChange}

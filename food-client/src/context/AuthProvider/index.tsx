@@ -137,7 +137,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     try {
       const storedUser = localStorage.getItem("user");
       const storedToken = localStorage.getItem("token");
-
+      console.log("log", storedUser);
       if (!storedUser || !storedToken) {
         toast.error("go to signup ");
       }

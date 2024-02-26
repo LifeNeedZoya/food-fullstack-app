@@ -14,6 +14,7 @@ export interface IFood {
   isSale: boolean;
   description: string;
   discountPrice: number;
+  count: string;
 }
 
 interface IFoodsContext {

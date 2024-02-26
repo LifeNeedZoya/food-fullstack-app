@@ -1,15 +1,16 @@
 import { Router } from "express";
 import {
-  createBasket,
   deleteBasket,
   getAllOrder,
   getOrder,
   updateOrder,
 } from "../contoller/basket";
+import { authenticate } from "../middleware/auth";
 
 const router = Router();
 
-router.route("/").get(getAllOrder).post(createBasket);
-router.route("/:orderId").get(getOrder).put(updateOrder).delete(deleteBasket);
+router.route("/").get(getAllOrder);
+router.route("/:userId").get(getOrder).put(updateOrder);
 
+router.route("/:foodId").delete(authenticate, deleteBasket);
 export default router;

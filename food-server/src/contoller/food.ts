@@ -98,13 +98,16 @@ export const deleteFood = async (
 ) => {
   try {
     const { foodId } = req.params;
+    console.log("REQ :", req.params);
 
     const deletedFood = await Food.findByIdAndDelete(foodId);
+    console.log("deletedFood :", deletedFood);
     if (!deletedFood) {
       throw new MyError(`can not find Food with ${foodId} id`, 404);
     }
+
     res.status(200).json({
-      message: `${foodId} id successfully deleted`,
+      message: `${foodId} id-тай хоол амжилттай устгалаа `,
       deletedFood,
     });
   } catch (error) {

@@ -47,7 +47,7 @@ export const Details = ({
   image: string;
   description: string;
 }) => {
-  const { count, addCount, minusCount, addFood, createBasket, updateBasket } =
+  const { count, addCount, minusCount, updateBasket } =
     useContext(BasketContext);
   return (
     <>
@@ -118,8 +118,7 @@ export const Details = ({
                 color="success"
                 size="large"
                 fullWidth
-                onClick={() => addFood(id)}
-                onKeyUp={updateBasket}
+                onClick={() => updateBasket(id)}
               >
                 Сагслах
               </Button>

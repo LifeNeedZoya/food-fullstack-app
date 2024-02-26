@@ -24,7 +24,6 @@ const BasketSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-
   status: {
     type: String,
     enum: ["active", "purchased"],

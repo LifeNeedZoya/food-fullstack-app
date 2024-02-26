@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import Basket from "../model/basket";
+import User from "../model/user";
+import { IReq } from "../utils/interface";
+import MyError from "../utils/myError";
 
 export const getAllOrder = async (
   req: Request,
@@ -25,12 +28,14 @@ export const getOrder = async (
   next: NextFunction
 ) => {
   try {
-    const { orderId } = req.body;
-    const findOrder = await Basket.find(orderId);
-
+    const { userId } = req.body;
+    const basket = await Basket.findOne(userId).populate(
+      "foods.foodId",
+      "name price image "
+    );
     res.status(200).json({
       message: `Захиалгыг амжилттай авлаа`,
-      findOrder,
+      basket,
     });
   } catch (error) {
     next(error);
@@ -38,17 +43,34 @@ export const getOrder = async (
 };
 
 export const deleteBasket = async (
-  req: Request,
+  req: IReq,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { orderId } = req.body;
-    const findOrder = await Basket.findByIdAndDelete(orderId);
+    const { foodId } = req.params;
+    console.log("PARAMS :", req.params);
 
+    const basket = await Basket.findOne({ userId: req.user._id });
+    if (!basket) {
+      throw new MyError("basket uuseegui bn", 404);
+    }
+
+    console.log("BASKET", basket);
+    const findIndexOfFood = (e: any) => {
+      return e.foodId == foodId;
+    };
+
+    const foodIndex = basket.foods.findIndex(findIndexOfFood);
+    console.log("III", foodIndex);
+
+    basket.foods.splice(foodIndex, 1);
+    console.log("BASKET", basket);
+
+    await basket?.save();
+    console.log("BASKET", basket);
     res.status(200).json({
       message: `Захиалгыг амжилттай устгалаа`,
-      findOrder,
     });
   } catch (error) {
     next(error);
@@ -61,42 +83,42 @@ export const updateOrder = async (
   next: NextFunction
 ) => {
   try {
-    const { orderId, userId } = req.body;
-    console.log("req", req.body);
-    const newOrder = req.body;
-    console.log("req", newOrder);
+    const { foods, userId } = req.body;
+    console.log("req :", req.body);
 
-    const findOrder = await Basket.findByIdAndUpdate(
-      userId,
-      { $set: { orderId, userId } },
-      { new: true }
-    );
+    const findUser = await User.findById(userId);
+    const basket = await Basket.findOne({ userId: findUser?._id });
 
-    res.status(200).json({
-      message: `захиалгыг амжилттай шинэчиллээ`,
-      findOrder,
-    });
-    console.log("succesfully updated basket");
-  } catch (error) {
-    next(error);
-  }
-};
+    if (!basket) {
+      console.log("REQ BODY :", req.body);
 
-export const createBasket = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    console.log("REQ BODY :", req.body);
+      const findOrder = await Basket.create(req.body);
+      res.status(200).json({
+        message: ` сагс амжилттай үүсгэлээ`,
+        findOrder,
+      });
+      console.log("сагс амжилттай үүсгэлээ");
+    } else {
+      const finIndexOfFood = (e: any) => {
+        return e.foodId == foods.foodId;
+      };
 
-    const newBasket = req.body;
-    const findOrder = await Basket.create(req.body);
-    res.status(200).json({
-      message: ` сагс амжилттай үүсгэлээ`,
-      findOrder,
-    });
-    console.log("сагс амжилттай үүсгэлээ");
+      const baskedIndex = basket?.foods.findIndex(finIndexOfFood);
+      console.log("YYY", baskedIndex);
+
+      if (baskedIndex === undefined || baskedIndex === -1) {
+        basket?.foods.push({ ...foods });
+      } else {
+        basket!.foods[baskedIndex].count += foods.count;
+        basket!.foods[baskedIndex].foodId = foods.foodId;
+      }
+
+      await basket?.save();
+      res.status(200).json({
+        message: `захиалгыг амжилттай шинэчиллээ`,
+      });
+      console.log("succesfully updated basket");
+    }
   } catch (error) {
     next(error);
   }
