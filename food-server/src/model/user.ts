@@ -40,6 +40,35 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  orders: [
+    {
+      orderNo: String,
+      payment: {
+        paidAmount: Number,
+        status: {
+          type: String,
+          enum: ["paid" || "unpaid"],
+          default: "unpaid",
+        },
+        paidDate: Date,
+        createdAt: Date,
+      },
+      address: {
+        Khoroo: { type: String },
+        Duureg: { type: String },
+        BuildingNo: { type: String },
+        Info: String,
+      },
+      delivery: {
+        status: {
+          type: String,
+          enum: ["Pending", "Progressing", "Delivered"],
+          default: "Pending",
+        },
+        deliveredAt: Date,
+      },
+    },
+  ],
 });
 
 userSchema.pre("save", async function () {

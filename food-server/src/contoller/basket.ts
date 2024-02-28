@@ -12,7 +12,7 @@ export const getAllOrder = async (
   try {
     const { token } = req.body;
     const basket = await Basket.find(token);
-
+    console.log("getall");
     res.status(200).json({
       message: `Бүх захиалгыг амжилттай авлаа`,
       basket,
@@ -23,16 +23,19 @@ export const getAllOrder = async (
 };
 
 export const getOrder = async (
-  req: Request,
+  req: IReq,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { userId } = req.body;
-    const basket = await Basket.findOne(userId).populate(
+    console.log("GET");
+
+    console.log("IIIID", req.user._id);
+    const basket = await Basket.findOne({ userId: req.user._id }).populate(
       "foods.foodId",
-      "name price image "
+      "name price image"
     );
+    console.log("object", basket);
     res.status(200).json({
       message: `Захиалгыг амжилттай авлаа`,
       basket,
@@ -83,8 +86,10 @@ export const updateOrder = async (
   next: NextFunction
 ) => {
   try {
-    const { foods, userId } = req.body;
+    const { foods } = req.body;
+    const { userId } = req.params;
     console.log("req :", req.body);
+    console.log("req :", req.params);
 
     const findUser = await User.findById(userId);
     const basket = await Basket.findOne({ userId: findUser?._id });

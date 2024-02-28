@@ -22,6 +22,7 @@ interface IBasket {
 interface IBasketContext {
   count: number | undefined;
   addCount: () => void;
+  getBasket: () => void;
   minusCount: () => void;
   basketFoods: IBasket[] | undefined[];
   updateBasket: (id: string) => void;
@@ -31,7 +32,6 @@ interface IBasketContext {
 export const BasketContext = createContext({} as IBasketContext);
 
 const BasketProvider = ({ children }: PropsWithChildren) => {
-  // const [foodId, setFoodId] = useState<string | null>(null);
   const [basketFoods, setBasketFoods] = useState([]);
   const [count, setCount] = useState(1);
   const [refresh, setRefresh] = useState(false);
@@ -39,10 +39,17 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
   const { loggedUser, loggedToken } = useContext(UserContext);
 
   const getBasket = async () => {
+    console.log("MIDDle", loggedToken);
     const {
       data: { basket },
-    } = await axios.get(`http://localhost:8080/basket/${loggedUser?._id}`);
+    } = await axios.get(`http://localhost:8080/basket/user`, {
+      headers: {
+        Authorization: `Bearer ${loggedToken}`,
+      },
+    });
+    console.log("BASKET_DATA :", basket);
     setBasketFoods(basket?.foods);
+    toast.success("get basket foods successfully");
   };
 
   let foodId = "";
@@ -54,18 +61,16 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
         `http://localhost:8080/basket/${loggedUser?._id}`,
         {
           foods: { count: count, foodId: foodId },
-          userId: loggedUser?._id,
         }
       );
-
+      setRefresh(!refresh);
       toast.success("Хоолыг амжилттай сагсанд нэмлээ");
     } catch (error: any) {
       toast.error("Хоолыг нэмэхэд алдаа гарлаа дахин оролдоно уу", error);
-      console.log("ERR", error);
+      console.log("ERR CLF+++++>", error);
     } finally {
       setCount(1);
       foodId = "";
-      setRefresh(!refresh);
     }
   };
 
@@ -78,11 +83,10 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
         },
       });
       toast.success("Хоолыг амжилттай устгалаа");
+      setRefresh(!refresh);
     } catch (error) {
       toast.error(`Хоолыг нэмэхэд алдаа гарлаа дахин оролдоно уу ${error}`);
       console.log("ERR", error);
-    } finally {
-      setRefresh(!refresh);
     }
   };
 
@@ -99,14 +103,17 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
-    getBasket();
-  }, [refresh]);
+    if (loggedToken != undefined) {
+      getBasket();
+    }
+  }, [refresh, loggedToken]);
 
   return (
     <BasketContext.Provider
       value={{
         count,
         addCount,
+        getBasket,
         minusCount,
         basketFoods,
         deleteBasketItem,

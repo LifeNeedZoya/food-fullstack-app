@@ -14,40 +14,35 @@ import {
   Drawer,
   Box,
   Badge,
-  Modal,
-  IconButton,
 } from "@mui/material";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import Image from "next/image";
 
-import { BasketCard } from "@/components";
 import { usePathname, useRouter } from "next/navigation";
 import { UserContext } from "@/context/AuthProvider";
 import { BasketContext } from "@/context/BasketProvider";
 import DrawerList from "./DrawerList";
 
 const Header = () => {
-  const isActive = usePathname();
-
   const { loggedUser, loggedToken } = useContext(UserContext);
   const { basketFoods } = useContext(BasketContext);
+
+  const [open, setOpen] = useState(false);
+  const isActive = usePathname();
+  const router = useRouter();
 
   const routes = [
     { name: "НҮҮР", path: "/" },
     { name: "ХООЛНЫ ЦЭС", path: "/menu" },
-    { name: "ХҮРГЭЛТИЙН БҮС", path: "/map" },
+    { name: "ЗАХИАЛГА", path: "/order" },
   ];
-
-  const router = useRouter();
-
-  const [open, setOpen] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
 
   const sum = 8000;
+
   // basketFoods
   //   .map((food: any) => food?.foodId?.price * food?.count)
   //   .reduce((prev, next) => prev + next, 0);
@@ -132,7 +127,35 @@ const Header = () => {
             onClose={toggleDrawer(false)}
             sx={{ marginBottom: 4 }}
           >
-            <DrawerList toggleDrawer={toggleDrawer} />
+            <Grid
+              sx={{ width: 600 }}
+              onClick={() => toggleDrawer!(true)}
+              marginBottom={8}
+              flexDirection={"row"}
+            >
+              <DrawerList />
+              <Grid container gridRow={2} gridColumn={1}>
+                <Box
+                  fontWeight={500}
+                  fontSize={20}
+                  sx={{ width: "40%" }}
+                  textAlign={"center"}
+                >
+                  <Typography>Нийт төлөх дүн</Typography>
+                  <Typography fontSize={25} color="green">
+                    80000₮
+                  </Typography>
+                </Box>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => router.push("/order")}
+                  sx={{ width: "40%" }}
+                >
+                  Захиалах
+                </Button>
+              </Grid>
+            </Grid>
           </Drawer>
           {!loggedToken ? (
             <Button

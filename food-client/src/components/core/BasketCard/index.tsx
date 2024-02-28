@@ -59,21 +59,17 @@ export const BasketCard = ({
           <Grid item>
             <Typography
               variant="body2"
-              sx={{ background: grey[50], padding: 1, borderRadius: "3px" }}
+              sx={{ background: grey[100], padding: 1, borderRadius: "3px" }}
             >
               {description}
             </Typography>
           </Grid>
-          <Grid display={"flex"} flexDirection={"column"} gap={6} item>
+          <Grid item>
             <ButtonGroup
-              variant="contained"
-              aria-label="outlined button group "
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                boxShadow: "none",
               }}
-              fullWidth
             >
               <Button
                 sx={{ background: "#18BA51" }}

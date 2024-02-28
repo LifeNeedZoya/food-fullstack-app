@@ -1,11 +1,18 @@
 "use client";
 
-import { PropsWithChildren, createContext, useEffect, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import MyAxios from "@/utils/axios";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { BasketContext } from "../BasketProvider";
 
 interface IUser {
   name: string;
@@ -52,7 +59,7 @@ interface IUserContext {
   logout?: () => {};
   signup?: ({ name, email, password, address, avatarImg }: ISignUp) => {};
   getUserFromLocalStrorage: () => {};
-  loggedUser: ILoggedUser | null;
+  loggedUser: ILoggedUser;
   loggedToken: string | null | undefined;
 }
 
@@ -62,13 +69,14 @@ interface ILogin {
 }
 const UserProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
-  const [loggedUser, setLoggedUser] = useState<ILoggedUser | null>({
+  const [loggedUser, setLoggedUser] = useState<ILoggedUser>({
     name: "",
     email: "",
     address: "",
     _id: "",
   });
   const [loggedToken, setLoggedToken] = useState<string | null>();
+
   const [user, setUser] = useState<IUser>({
     name: "",
     email: "",
@@ -116,16 +124,18 @@ const UserProvider = ({ children }: PropsWithChildren) => {
         userEmail: email,
         userPassword: password,
       });
+
       await Swal.fire({
-        position: "top-end",
+        position: "center",
         title: "амжилттай Нэвтрэлээ",
-        text: "E-mail хаягруу баталгаажуулах линк явууллаа",
         icon: "success",
         timer: 1500,
         showConfirmButton: false,
       });
+
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", JSON.stringify(token));
+
       router.push("/");
     } catch (error: any) {
       toast.error(` Error ${error.response.data.message as string}`);
