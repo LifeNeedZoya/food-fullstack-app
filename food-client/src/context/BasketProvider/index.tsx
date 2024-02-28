@@ -34,6 +34,7 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
   // const [foodId, setFoodId] = useState<string | null>(null);
   const [basketFoods, setBasketFoods] = useState([]);
   const [count, setCount] = useState(1);
+  const [refresh, setRefresh] = useState(false);
 
   const { loggedUser, loggedToken } = useContext(UserContext);
 
@@ -57,13 +58,14 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
         }
       );
 
-      toast.success("success");
+      toast.success("Хоолыг амжилттай сагсанд нэмлээ");
     } catch (error: any) {
-      toast.error("Error", error);
+      toast.error("Хоолыг нэмэхэд алдаа гарлаа дахин оролдоно уу", error);
       console.log("ERR", error);
     } finally {
       setCount(1);
       foodId = "";
+      setRefresh(!refresh);
     }
   };
 
@@ -75,10 +77,12 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
           Authorization: `Bearer ${loggedToken}`,
         },
       });
-      toast.success(`success`);
+      toast.success("Хоолыг амжилттай устгалаа");
     } catch (error) {
-      toast.error(`Error : ${error}`);
+      toast.error(`Хоолыг нэмэхэд алдаа гарлаа дахин оролдоно уу ${error}`);
       console.log("ERR", error);
+    } finally {
+      setRefresh(!refresh);
     }
   };
 
@@ -96,7 +100,7 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     getBasket();
-  }, [updateBasket]);
+  }, [refresh]);
 
   return (
     <BasketContext.Provider

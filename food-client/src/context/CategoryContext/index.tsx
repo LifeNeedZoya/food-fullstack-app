@@ -27,6 +27,7 @@ const CategoryProvider = ({ children }: PropsWithChildren) => {
   const [chosenCategory, setChosenCategory] = useState(
     "65bccbf8cfc2bc3551a49ea4"
   );
+
   const getCategories = async () => {
     try {
       console.log("cate");

@@ -15,6 +15,8 @@ interface ICategory {
 interface ICategoryContext {
   category: string | undefined;
   categories: ICategory[];
+  refresh: boolean;
+  setRefresh: (boolean: boolean) => void;
 }
 
 export const CategoryContext = createContext({} as ICategoryContext);
@@ -22,7 +24,7 @@ export const CategoryContext = createContext({} as ICategoryContext);
 const CategoryProvider = ({ children }: PropsWithChildren) => {
   const [category, SetCategory] = useState("");
   const [categories, setCategories] = useState([]);
-
+  const [refresh, setRefresh] = useState(false);
   const getCategory = async () => {
     try {
       const {
@@ -30,7 +32,6 @@ const CategoryProvider = ({ children }: PropsWithChildren) => {
       } = await axios.get("http://localhost:8080/category");
 
       setCategories(categories);
-      console.log("get categories successfully");
     } catch (error: any) {
       alert("Get Error - " + error.message);
     }
@@ -38,9 +39,11 @@ const CategoryProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     getCategory();
-  }, []);
+  }, [refresh]);
   return (
-    <CategoryContext.Provider value={{ category, categories }}>
+    <CategoryContext.Provider
+      value={{ category, categories, refresh, setRefresh }}
+    >
       {children}
     </CategoryContext.Provider>
   );

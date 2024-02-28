@@ -25,6 +25,8 @@ interface IFoodContext {
   food: string | undefined;
   deleteFood: (foodId: string) => void;
   foods: IFood[];
+  refresh: boolean;
+  setRefresh: (boolean: boolean) => void;
 }
 
 export const FoodContext = createContext({} as IFoodContext);
@@ -32,7 +34,7 @@ export const FoodContext = createContext({} as IFoodContext);
 const FoodProvider = ({ children }: PropsWithChildren) => {
   const [food, SetFood] = useState();
   const [foods, setFoods] = useState([]);
-  const { user } = useContext(UserContext);
+  const [refresh, setRefresh] = useState(false);
 
   const deleteFood = async (foodId: string) => {
     try {
@@ -40,6 +42,7 @@ const FoodProvider = ({ children }: PropsWithChildren) => {
       await axios.delete(`http://localhost:8080/food/${foodId}`);
 
       toast.success(`success`);
+      setRefresh(!refresh);
     } catch (error) {
       toast.error(`Error : ${error}`);
       console.log("ERR", error);
@@ -63,7 +66,9 @@ const FoodProvider = ({ children }: PropsWithChildren) => {
     getFoods();
   }, []);
   return (
-    <FoodContext.Provider value={{ food, foods, deleteFood }}>
+    <FoodContext.Provider
+      value={{ food, foods, deleteFood, refresh, setRefresh }}
+    >
       {children}
     </FoodContext.Provider>
   );

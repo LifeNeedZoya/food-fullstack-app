@@ -15,20 +15,22 @@ import CategorySearch from "./category-search";
 // ----------------------------------------------------------------------
 
 import CategoryModal from "./category-modal";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import myAxios from "@/utils/axios";
 import axios from "axios";
+import { CategoryContext } from "@/context/CategoryContext";
 // ----------------------------------------------------------------------
 
 export default function CategoryView() {
   const [open, setOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
   const [file, setFile] = useState<File | null>(null);
 
   const [newCategory, setNewCategory] = useState({
     name: "",
     description: "",
   });
+
+  const { categories, setRefresh, refresh } = useContext(CategoryContext);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log("FFF", e.currentTarget.files![0]);
@@ -53,21 +55,9 @@ export default function CategoryView() {
       const data = await axios.post("http://localhost:8080/category", dataForm);
       console.log("successfull added category", data);
       setOpen(false);
+      setRefresh(!refresh);
     } catch (error) {
       console.log("errr", error);
-    }
-  };
-
-  const getCategory = async () => {
-    try {
-      const {
-        data: { categories },
-      } = await axios.get("http://localhost:8080/category");
-      console.log("categoriesthat", myAxios);
-      setCategories(categories);
-      console.log("get categories successfully");
-    } catch (error: any) {
-      alert("Get Error - " + error.message);
     }
   };
 
@@ -79,9 +69,6 @@ export default function CategoryView() {
     setOpen(() => true);
   };
 
-  useEffect(() => {
-    getCategory();
-  }, [createCategory]);
   return (
     <Container>
       <Stack

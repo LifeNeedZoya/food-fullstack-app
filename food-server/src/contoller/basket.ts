@@ -104,7 +104,6 @@ export const updateOrder = async (
       };
 
       const baskedIndex = basket?.foods.findIndex(finIndexOfFood);
-      console.log("YYY", baskedIndex);
 
       if (baskedIndex === undefined || baskedIndex === -1) {
         basket?.foods.push({ ...foods });

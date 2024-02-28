@@ -33,7 +33,7 @@ export default function FoodView() {
     isSale: isChecked,
   });
 
-  const { foods } = useContext(FoodContext);
+  const { foods, refresh, setRefresh } = useContext(FoodContext);
 
   const handleClose = () => {
     setOpen(() => false);
@@ -78,6 +78,7 @@ export default function FoodView() {
         timer: 1000,
         showConfirmButton: false,
       });
+      setRefresh(!refresh);
     } catch (error) {
       console.log("errr", error);
     }

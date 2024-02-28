@@ -118,7 +118,7 @@ export const Details = ({
                 color="success"
                 size="large"
                 fullWidth
-                onClick={() => updateBasket(id)}
+                onClick={() => (updateBasket(id), handleClose())}
               >
                 Сагслах
               </Button>
