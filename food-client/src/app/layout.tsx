@@ -10,6 +10,8 @@ import UserProvider from "@/context/AuthProvider";
 import FoodProvider from "@/context/FoodProvider";
 import CategoryProvider from "@/context/CategoryContext";
 import BasketProvider from "@/context/BasketProvider";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default function RootLayout({
   children,
@@ -24,10 +26,12 @@ export default function RootLayout({
             <FoodProvider>
               <BasketProvider>
                 <CategoryProvider>
-                  <Header />
-                  {children}
-                  <ToastContainer />
-                  <Footer />
+                  <Suspense fallback={<Loading />}>
+                    <Header />
+                    {children}
+                    <ToastContainer />
+                    <Footer />
+                  </Suspense>
                 </CategoryProvider>
               </BasketProvider>
             </FoodProvider>
