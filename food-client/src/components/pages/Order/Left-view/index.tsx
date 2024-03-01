@@ -1,5 +1,7 @@
+"use client";
 import { Input } from "@/components";
-
+import { useFormik } from "formik";
+import * as yup from "yup";
 import {
   Box,
   FormControl,
@@ -8,6 +10,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Stack,
   Typography,
 } from "@mui/material";
@@ -57,6 +60,47 @@ const logos = [
 ];
 
 export const LeftView = () => {
+  const validationSchema = yup.object({
+    details: yup.string(),
+    khoroo: yup
+      .string()
+      .max(50, "Имэйл 50С хэтрэхгү")
+      .required("Имэйл заавал оруулан уу")
+      .email(),
+    duureg: yup.string().required("Хаягаа заавал оруулан уу"),
+    address: yup.string().required("password заавал оруулан уу"),
+    phoneNumber: yup
+      .string()
+      .required("password заавал оруулан уу")
+      .min(6, "password хамгийн багадаа 6 байх ёстой"),
+  });
+
+  const formik = useFormik({
+    onSubmit: ({
+      details,
+      khoroo,
+      duureg,
+      address,
+      phoneNumber,
+    }: {
+      details: string;
+      khoroo: string;
+      duureg: string;
+      address?: string;
+      phoneNumber: string;
+    }) => {
+      console.log("ChangedData", details);
+    },
+    initialValues: {
+      khoroo: "",
+      duureg: "",
+      details: "",
+      phoneNumber: "",
+    },
+    validateOnChange: false,
+    validateOnBlur: false,
+    validationSchema,
+  });
   return (
     <Box>
       <Box display={"flex"} alignItems={"center"} gap={2}>
@@ -81,13 +125,11 @@ export const LeftView = () => {
           </InputLabel>
           <Select
             sx={{ bgcolor: "#ECEDF0" }}
-            placeholder="Орц давхар орцны код..."
+            name="duureg"
+            onChange={formik.handleChange}
           >
-            <MenuItem disabled value="">
-              <em></em>
-            </MenuItem>
-            {duurguud.map((duureg) => (
-              <MenuItem key={duureg} value={duureg}>
+            {duurguud.map((duureg, i) => (
+              <MenuItem key={i} value={duureg}>
                 {duureg}
               </MenuItem>
             ))}
@@ -97,13 +139,14 @@ export const LeftView = () => {
           <InputLabel id="demo-simple-select-label">
             Хороо сонгоно уу
           </InputLabel>
-          <Select sx={{ bgcolor: "#ECEDF0" }}>
-            <MenuItem disabled value="">
-              {" "}
-              Хороо сонгоно уу
-            </MenuItem>
-            {khoroos.map((khoroo) => (
-              <MenuItem key={khoroo} value={khoroo}>
+          <Select
+            sx={{ bgcolor: "#ECEDF0" }}
+            name="khoroo"
+            onChange={formik.handleChange}
+          >
+            <MenuItem disabled> Хороо сонгоно уу</MenuItem>
+            {khoroos.map((khoroo, i) => (
+              <MenuItem key={i} value={khoroo}>
                 {khoroo}
               </MenuItem>
             ))}
@@ -113,11 +156,29 @@ export const LeftView = () => {
           <Input
             label="Хаягаа дэлгэрэнгүй оруулна уу"
             placeholder="Хаягаа дэлгэрэнгүй оруулна уу"
+            name="address"
+            value={formik.values.address}
+            onChange={formik.handleChange}
+            errorText={formik.errors.address}
           />
         </FormControl>
 
-        <Input label="Нэмэлт мэдээлэл" placeholder="Орц давхар орцны код..." />
-        <Input label="Утасны дугаар*" placeholder="Утасны дугаар*" />
+        <Input
+          label="Нэмэлт мэдээлэл"
+          placeholder="Орц давхар орцны код..."
+          name="details"
+          value={formik.values.details}
+          onChange={formik.handleChange}
+          errorText={formik.errors.details}
+        />
+        <Input
+          label="Утасны дугаар*"
+          placeholder="Утасны дугаар*"
+          name="phoneNumber"
+          value={formik.values.phoneNumber}
+          onChange={formik.handleChange}
+          errorText={formik.errors.phoneNumber}
+        />
         <Box>
           <Typography>Төлбөр төлөх</Typography>
           <Grid>

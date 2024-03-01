@@ -61,6 +61,7 @@ const FoodModal = ({
   newFood,
 }: any) => {
   const { categories } = useContext(CategoryContext);
+
   return (
     <Modal
       open={open}
