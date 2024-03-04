@@ -1,4 +1,8 @@
-import { NextFunction, Request } from "express";
+import { NextFunction, Request, Response } from "express";
+import { IReq } from "../utils/interface";
+import User from "../model/user";
+import MyError from "../utils/myError";
+import Basket from "../model/basket";
 
 // {
 //   orderNo: String,
@@ -14,24 +18,60 @@ import { NextFunction, Request } from "express";
 
 // },
 
-export const createOrder = (
-  req: Request,
+export const createOrder = async (
+  req: IReq,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const { address, basket } = req.body;
+    const { user } = req;
+    console.log("Basket", basket);
+
+    if (!user || !address || !basket) {
+      throw new MyError(`Хэрэглэгчийн мэдээлэл дутуу байна.`, 400);
+    }
+
+    const findUser = await User.findById(user._id);
+    if (!findUser) {
+      throw new MyError(`Хэрэглэгч олдсонгүй`, 400);
+    }
     const newOrder = {
-      orderNo: 123,
+      orderNo: "#" + Math.floor(Math.random() * 100000), // generate
+      products: basket.foods,
       payment: {
-        paidAmount: 341000,
+        paymentAmount: basket.totalPrice,
+        status: "paid",
       },
       address: {
-        Khoroo: "11-r khoroo",
-        Duureg: "3",
-        BuildingNo: 45,
-        Info: "String",
+        ...address,
+      },
+      delivery: {
+        status: "Progressing",
       },
     };
+    console.log("ORDER", newOrder);
+
+    user.orders.push(newOrder);
+    await user.save();
+
+    await Basket.findByIdAndDelete(basket._id);
+
+    res.status(201).json({ message: "Захиалга амжилттай үүслээ." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateOrder = async (
+  req: IReq,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { orderId } = req.params;
+    const findUser = User.findByIdAndUpdate({ orders: { $set: [] } });
+    res.status(200).json({ message: "Захиалга амжилттай шинэчлэгдлээ." });
   } catch (error) {
     next(error);
   }

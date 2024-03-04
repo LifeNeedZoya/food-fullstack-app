@@ -29,6 +29,17 @@ export interface ILoggedUser {
   address: string;
   _id: string;
 }
+
+interface IUserContext {
+  user: IUser;
+  login: ({ email, password }: ILogin) => {};
+  logout?: () => {};
+  signup?: ({ name, email, password, address, avatarImg }: ISignUp) => {};
+  getUserFromLocalStrorage: () => {};
+  loggedUser: ILoggedUser;
+  loggedToken: string | null | undefined;
+}
+
 export const UserContext = createContext<IUserContext>({
   loggedToken: "",
   login: async () => {},
@@ -53,20 +64,11 @@ interface ISignUp {
   avatarImg?: string;
 }
 
-interface IUserContext {
-  user: IUser;
-  login: ({ email, password }: ILogin) => {};
-  logout?: () => {};
-  signup?: ({ name, email, password, address, avatarImg }: ISignUp) => {};
-  getUserFromLocalStrorage: () => {};
-  loggedUser: ILoggedUser;
-  loggedToken: string | null | undefined;
-}
-
 interface ILogin {
   password: string;
   email: string;
 }
+
 const UserProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const [loggedUser, setLoggedUser] = useState<ILoggedUser>({
@@ -84,6 +86,8 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     password: "",
     rePassword: "",
   });
+
+  const { refresh, setRefresh } = useContext(BasketContext);
 
   const signup = async ({
     name,

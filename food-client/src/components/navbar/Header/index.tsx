@@ -134,27 +134,6 @@ const Header = () => {
               flexDirection={"row"}
             >
               <DrawerList />
-              <Grid container gridRow={2} gridColumn={1}>
-                <Box
-                  fontWeight={500}
-                  fontSize={20}
-                  sx={{ width: "40%" }}
-                  textAlign={"center"}
-                >
-                  <Typography>Нийт төлөх дүн</Typography>
-                  <Typography fontSize={25} color="green">
-                    80000₮
-                  </Typography>
-                </Box>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => router.push("/order")}
-                  sx={{ width: "40%" }}
-                >
-                  Захиалах
-                </Button>
-              </Grid>
             </Grid>
           </Drawer>
           {!loggedToken ? (

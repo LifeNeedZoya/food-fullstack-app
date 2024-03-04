@@ -27,12 +27,17 @@ interface IBasketContext {
   basketFoods: IBasket[] | undefined[];
   updateBasket: (id: string) => void;
   deleteBasketItem: (foodId: string) => void;
+  basket: any;
+  refresh: boolean;
+  createOrder: (basket: any, address: any) => {};
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const BasketContext = createContext({} as IBasketContext);
 
 const BasketProvider = ({ children }: PropsWithChildren) => {
   const [basketFoods, setBasketFoods] = useState([]);
+  const [basket, setBasket] = useState();
   const [count, setCount] = useState(1);
   const [refresh, setRefresh] = useState(false);
 
@@ -49,7 +54,7 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
     });
     console.log("BASKET_DATA :", basket);
     setBasketFoods(basket?.foods);
-    toast.success("get basket foods successfully");
+    setBasket(basket);
   };
 
   let foodId = "";
@@ -58,9 +63,14 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
     try {
       foodId = id;
       const data = await axios.put(
-        `http://localhost:8080/basket/${loggedUser?._id}`,
+        `http://localhost:8080/basket/`,
         {
           foods: { count: count, foodId: foodId },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${loggedToken}`,
+          },
         }
       );
       setRefresh(!refresh);
@@ -71,6 +81,28 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
     } finally {
       setCount(1);
       foodId = "";
+    }
+  };
+  const createOrder = async (basket: any, address: any) => {
+    console.log("food", basket);
+
+    try {
+      await axios.post(
+        "http://localhost:8080/order",
+        {
+          address,
+          basket,
+        },
+        {
+          headers: { Authorization: `Bearer ${loggedToken}` },
+        }
+      );
+      setRefresh(!refresh);
+      toast.success("Амжилттай захиаллаа");
+    } catch (error) {
+      console.log(error);
+      toast.error("Захиалга үүсгэхэд алдаа гарлаа");
+      console.log("ERRRR", error);
     }
   };
 
@@ -112,9 +144,13 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
     <BasketContext.Provider
       value={{
         count,
+        refresh,
+        createOrder,
+        basket,
         addCount,
         getBasket,
         minusCount,
+        setRefresh,
         basketFoods,
         deleteBasketItem,
         updateBasket,

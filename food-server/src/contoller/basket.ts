@@ -55,6 +55,7 @@ export const deleteBasket = async (
     console.log("PARAMS :", req.params);
 
     const basket = await Basket.findOne({ userId: req.user._id });
+
     if (!basket) {
       throw new MyError("basket uuseegui bn", 404);
     }
@@ -81,28 +82,27 @@ export const deleteBasket = async (
 };
 
 export const updateOrder = async (
-  req: Request,
+  req: IReq,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { foods } = req.body;
-    const { userId } = req.params;
-    console.log("req :", req.body);
-    console.log("req :", req.params);
+    const userId = req.user._id;
 
-    const findUser = await User.findById(userId);
-    const basket = await Basket.findOne({ userId: findUser?._id });
+    const basket = await Basket.findOne({ userId: userId });
 
     if (!basket) {
       console.log("REQ BODY :", req.body);
 
-      const findOrder = await Basket.create(req.body);
-      res.status(200).json({
+      const findOrder = await Basket.create({
+        foods: req.body.foods,
+        userId: userId,
+      });
+      return res.status(200).json({
         message: ` сагс амжилттай үүсгэлээ`,
         findOrder,
       });
-      console.log("сагс амжилттай үүсгэлээ");
     } else {
       const finIndexOfFood = (e: any) => {
         return e.foodId == foods.foodId;

@@ -7,6 +7,7 @@ import categoryRoutes from "./routes/category";
 import foodRoutes from "./routes/food";
 import uploadRoutes from "./routes/upload";
 import basketRoutes from "./routes/basket";
+import orderRoutes from "./routes/order";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -27,6 +28,7 @@ app.use("/category", categoryRoutes);
 app.use("/food", foodRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/basket", basketRoutes);
+app.use("/order", orderRoutes);
 
 app.use(errorHandler);
 

@@ -1,4 +1,3 @@
-import { Button, Input } from "@/components";
 import { Box, Grid, IconButton, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -28,28 +27,6 @@ export const RightView = () => {
           <DrawerList />
         </Box>
       </Box>
-
-      <Stack my={5} boxShadow={3} gap={10} p={5} borderRadius={2}>
-        <Grid container bottom={0} py={10} px={10}>
-          <Grid
-            item
-            xs={6}
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"flex-start"}
-          >
-            <Typography variant="body1" component="h6">
-              Нийт төлөх дүн
-            </Typography>
-            <Typography variant="body1" fontWeight={600} component="h6">
-              ₮
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Button onClick={() => router.push("/")} label={"Захиалах"} />
-          </Grid>
-        </Grid>
-      </Stack>
     </Box>
   );
 };

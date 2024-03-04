@@ -9,8 +9,8 @@ import { authenticate } from "../middleware/auth";
 
 const router = Router();
 
-router.route("/").get(getAllOrder);
-router.route("/:userId").put(updateOrder);
+router.route("/").get(getAllOrder).put(authenticate, updateOrder);
+
 router.route("/user").get(authenticate, getOrder);
 
 router.route("/:foodId").delete(authenticate, deleteBasket);
