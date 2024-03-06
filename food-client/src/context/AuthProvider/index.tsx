@@ -30,10 +30,23 @@ export interface ILoggedUser {
   _id: string;
 }
 
+interface IOrder {
+  orderNo: string;
+  delivery: {
+    status: string;
+  };
+  _id: string;
+  foods: [];
+  payment: {
+    status: string;
+  };
+}
+
 interface IUserContext {
   user: IUser;
+  orders: [IOrder] | null;
   login: ({ email, password }: ILogin) => {};
-  logout?: () => {};
+  logout: () => void;
   signup?: ({ name, email, password, address, avatarImg }: ISignUp) => {};
   getUserFromLocalStrorage: () => {};
   loggedUser: ILoggedUser;
@@ -45,6 +58,20 @@ export const UserContext = createContext<IUserContext>({
   login: async () => {},
   signup: async () => {},
   getUserFromLocalStrorage: async () => {},
+  logout: () => {},
+  orders: [
+    {
+      orderNo: "",
+      delivery: {
+        status: "",
+      },
+      _id: "",
+      foods: [],
+      payment: {
+        status: "",
+      },
+    },
+  ],
   user: {
     name: "",
     email: "",
@@ -78,6 +105,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     _id: "",
   });
   const [loggedToken, setLoggedToken] = useState<string | null>();
+  const [orders, setOrders] = useState<[IOrder] | null>([]);
 
   const [user, setUser] = useState<IUser>({
     name: "",
@@ -86,8 +114,6 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     password: "",
     rePassword: "",
   });
-
-  const { refresh, setRefresh } = useContext(BasketContext);
 
   const signup = async ({
     name,
@@ -147,6 +173,21 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const getOrders = async () => {
+    try {
+      const {
+        data: { orders },
+      } = await axios.get("http://localhost:8080/order", {
+        headers: { Authorization: `Bearer ${loggedToken}` },
+      });
+      setOrders(orders);
+      console.log("orders", orders);
+    } catch (error) {
+      toast.error("алдаа гарлаа");
+      console.log("алдаа гарлаа", error);
+    }
+  };
+
   const getUserFromLocalStrorage = async () => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -181,13 +222,19 @@ const UserProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     getUserFromLocalStrorage();
-  }, []);
+    if (loggedToken) {
+      getOrders();
+    }
+  }, [loggedToken]);
+
   return (
     <UserContext.Provider
       value={{
+        logout,
         user,
         login,
         signup,
+        orders,
         getUserFromLocalStrorage,
         loggedUser,
         loggedToken,

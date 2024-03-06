@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { createOrder } from "../contoller/order";
+import { createOrder, getOrders } from "../contoller/order";
 import { authenticate } from "../middleware/auth";
 
 const router = Router();
 
-router.route("/").post(authenticate, createOrder);
+router.route("/").get(authenticate, getOrders).post(authenticate, createOrder);
 
 export default router;

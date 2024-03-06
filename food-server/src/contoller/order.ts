@@ -70,8 +70,29 @@ export const updateOrder = async (
 ) => {
   try {
     const { orderId } = req.params;
-    const findUser = User.findByIdAndUpdate({ orders: { $set: [] } });
+    const findUser = await User.findByIdAndUpdate({ orders: { $set: [] } });
     res.status(200).json({ message: "Захиалга амжилттай шинэчлэгдлээ." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getOrders = async (
+  req: IReq,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log("getOrders");
+    console.log("REQ USER :", req.user);
+    const { _id } = req.user;
+    console.log("IID", _id);
+    const findUser = await User.findById(_id);
+
+    const orders = findUser?.orders;
+    console.log("orders", orders);
+
+    res.status(200).json({ message: "Захиалга амжилттай авлаа.", orders });
   } catch (error) {
     next(error);
   }

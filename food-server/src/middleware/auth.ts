@@ -26,6 +26,7 @@ export const authenticate = async (
     const findUser = await User.findById(id);
     console.log("foundUser", findUser);
     req.user = findUser;
+    console.log("end");
     next();
   } catch (error) {
     next(error);

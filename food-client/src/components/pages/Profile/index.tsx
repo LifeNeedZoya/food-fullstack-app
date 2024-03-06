@@ -13,6 +13,20 @@ import {
   Button,
 } from "@mui/material";
 
+import Modal from "@mui/material/Modal";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 1000,
+  bgcolor: "white",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: "10px",
+};
+
 import PersonIcon from "@mui/icons-material/Person";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import PermPhoneMsgIcon from "@mui/icons-material/PermPhoneMsg";
@@ -30,7 +44,7 @@ interface IUser {
 }
 
 export const ProfilePage = () => {
-  const { loggedUser } = useContext(UserContext);
+  const { loggedUser, orders } = useContext(UserContext);
 
   const [changedUserData, setChangedUserData] = useState({
     name: "",
@@ -40,6 +54,9 @@ export const ProfilePage = () => {
   const [isNameChanged, setIsNameChanged] = useState(false);
   const [isNumberChanged, setIsNumberChanged] = useState(false);
   const [isEmailChanged, setIsEmailChanged] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setChangedUserData((prev) => ({
@@ -182,10 +199,12 @@ export const ProfilePage = () => {
               borderColor: "gray",
               marginBottom: 3,
             }}
+            onClick={handleOpen}
             fullWidth
           >
             Захиалгийн түүх
           </Button>
+
           <Button
             startIcon={<LogoutIcon />}
             sx={{ color: "black", border: 1, borderColor: "gray" }}
@@ -195,6 +214,47 @@ export const ProfilePage = () => {
           </Button>
         </Grid>
       </Grid>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Box>
+            {orders?.map((order, i) => (
+              <Box key={i} sx={{ border: 1 }}>
+                <Typography
+                  sx={{ background: "success", display: "inline", margin: 3 }}
+                >
+                  {order.orderNo}
+                </Typography>
+                <Typography
+                  sx={{ borderRadius: 3, padding: 1, background: "green" }}
+                  color="white"
+                  display={"inline"}
+                  margin={6}
+                >
+                  Payment : {order.payment?.status}
+                </Typography>
+                <Typography
+                  sx={{
+                    display: "inline",
+                    margin: 3,
+                    background: "green",
+                    borderRadius: 3,
+                    padding: 1,
+                    color: "white",
+                  }}
+                  paddingX={3}
+                >
+                  Delivery : {order.payment?.status}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      </Modal>
     </Container>
   );
 };
