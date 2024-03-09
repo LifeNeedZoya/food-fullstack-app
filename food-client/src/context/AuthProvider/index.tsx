@@ -105,7 +105,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     _id: "",
   });
   const [loggedToken, setLoggedToken] = useState<string | null>();
-  const [orders, setOrders] = useState<[IOrder] | null>([]);
+  const [orders, setOrders] = useState<[IOrder] | null>(null);
 
   const [user, setUser] = useState<IUser>({
     name: "",
