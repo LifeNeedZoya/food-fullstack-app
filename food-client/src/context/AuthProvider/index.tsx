@@ -28,6 +28,7 @@ export interface ILoggedUser {
   email: string;
   address: string;
   _id: string;
+  phoneNumber: number;
 }
 
 interface IOrder {
@@ -44,6 +45,7 @@ interface IOrder {
 
 interface IUserContext {
   user: IUser;
+  checkPassword: (pass: string) => {};
   orders: [IOrder] | null;
   login: ({ email, password }: ILogin) => {};
   logout: () => void;
@@ -51,13 +53,16 @@ interface IUserContext {
   getUserFromLocalStrorage: () => {};
   loggedUser: ILoggedUser;
   loggedToken: string | null | undefined;
+  changeUserData: (userData: any) => void;
 }
 
 export const UserContext = createContext<IUserContext>({
   loggedToken: "",
   login: async () => {},
+  checkPassword: async () => {},
   signup: async () => {},
   getUserFromLocalStrorage: async () => {},
+  changeUserData: async () => {},
   logout: () => {},
   orders: [
     {
@@ -99,10 +104,11 @@ interface ILogin {
 const UserProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const [loggedUser, setLoggedUser] = useState<ILoggedUser>({
+    _id: "",
     name: "",
     email: "",
     address: "",
-    _id: "",
+    phoneNumber: 0,
   });
   const [loggedToken, setLoggedToken] = useState<string | null>();
   const [orders, setOrders] = useState<[IOrder] | null>(null);
@@ -173,6 +179,26 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const checkPassword = async (pass: string) => {
+    try {
+      const {
+        data: { isValid },
+      } = await axios.post(
+        `http://localhost:8080/auth/checkPassword`,
+        { pass },
+        {
+          headers: {
+            Authorization: `Bearer ${loggedToken}`,
+          },
+        }
+      );
+      if (isValid) {
+      }
+    } catch (error) {
+      toast.error("aldaa");
+    }
+  };
+
   const getOrders = async () => {
     try {
       const {
@@ -215,6 +241,25 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const changeUserData = async ({ userData }: any) => {
+    try {
+      await axios.post("http://localhost:8080/auth/signup", {
+        userData,
+      });
+      await Swal.fire({
+        position: "center",
+        title: "Хэрэглэгчийн мэдээлэлийг амжилттай өөрчиллөө",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      router.push("/login");
+    } catch (error: any) {
+      console.log("err", error);
+      toast.error(`${error.response.data.message as string}`);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -235,9 +280,11 @@ const UserProvider = ({ children }: PropsWithChildren) => {
         login,
         signup,
         orders,
-        getUserFromLocalStrorage,
         loggedUser,
         loggedToken,
+        checkPassword,
+        changeUserData,
+        getUserFromLocalStrorage,
       }}
     >
       {children}

@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
-import Food from "./food";
 
 const orderSchema = new Schema({
   orderNo: String,
@@ -11,8 +10,11 @@ const orderSchema = new Schema({
       enum: ["paid" || "unpaid"],
       default: "unpaid",
     },
+    createdAt: {
+      type: Date,
+      default: new Date(),
+    },
     paidDate: Date,
-    createdAt: Date,
   },
   foods: [],
   address: {
@@ -46,6 +48,9 @@ const userSchema = new Schema({
     required: [true, "password is required"],
     minlength: 6,
     select: false,
+  },
+  phonenumber: {
+    type: Number,
   },
   avatarImg: {
     type: String,

@@ -13,6 +13,10 @@ import {
   Button,
 } from "@mui/material";
 
+import { styled } from "@mui/material/styles";
+
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 import Modal from "@mui/material/Modal";
 
 const style = {
@@ -20,11 +24,16 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1000,
+  width: 600,
   bgcolor: "white",
   boxShadow: 24,
   p: 4,
   borderRadius: "10px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  gap: 5,
+  alignItems: "center",
 };
 
 import PersonIcon from "@mui/icons-material/Person";
@@ -43,27 +52,48 @@ interface IUser {
   phoneNumber: number;
 }
 
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+
+  whiteSpace: "nowrap",
+  width: 1,
+});
+
 export const ProfilePage = () => {
-  const { loggedUser, orders } = useContext(UserContext);
+  const { loggedUser, orders, changeUserData, checkPassword } =
+    useContext(UserContext);
+  const [password, setPassword] = useState<string>();
+
+  const [isNameChanged, setIsNameChanged] = useState(false);
+  const [isNumberChanged, setIsNumberChanged] = useState(false);
+  const [isEmailChanged, setIsEmailChanged] = useState(false);
+
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const [changedUserData, setChangedUserData] = useState({
     name: "",
     phoneNumber: "",
     email: "",
   });
-  const [isNameChanged, setIsNameChanged] = useState(false);
-  const [isNumberChanged, setIsNumberChanged] = useState(false);
-  const [isEmailChanged, setIsEmailChanged] = useState(false);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setChangedUserData((prev) => ({
-      ...prev,
+    setChangedUserData({
+      ...changedUserData,
       [e.target.name]: e.target.value,
-    }));
+    });
     console.log("state", e.target.name, e.target.value);
+    console.log("changed User :", changedUserData);
   };
 
   return (
@@ -77,6 +107,16 @@ export const ProfilePage = () => {
             height={200}
             style={{ borderRadius: 100 }}
           />
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-8}
+            startIcon={<DriveFileRenameOutlineIcon color="success" />}
+          >
+            Зураг солих
+            <VisuallyHiddenInput type="file" />
+          </Button>
           <Typography textAlign={"center"} variant="h4" fontFamily={"serif"}>
             {loggedUser?.name}
           </Typography>
@@ -105,7 +145,11 @@ export const ProfilePage = () => {
                 {!isNameChanged ? (
                   <Box width={"fullWidth"}>{loggedUser?.name}</Box>
                 ) : (
-                  <TextField variant="standard" name="name" />
+                  <TextField
+                    variant="standard"
+                    name="name"
+                    onChange={handleChangeInput}
+                  />
                 )}
               </Box>
               <IconButton
@@ -134,9 +178,13 @@ export const ProfilePage = () => {
               </IconButton>
               <Box width={"100%"}>
                 {!isNumberChanged ? (
-                  <Box width={"fullWidth"}>8080-8080</Box>
+                  <Box width={"fullWidth"}>{loggedUser?.phoneNumber}</Box>
                 ) : (
-                  <TextField variant="standard" name="phoneNumber" />
+                  <TextField
+                    variant="standard"
+                    name="phoneNumber"
+                    onChange={handleChangeInput}
+                  />
                 )}
               </Box>
               <IconButton
@@ -166,7 +214,11 @@ export const ProfilePage = () => {
                 {!isEmailChanged ? (
                   <Box width={"fullWidth"}>{loggedUser?.email}</Box>
                 ) : (
-                  <TextField variant="standard" name="email" />
+                  <TextField
+                    variant="standard"
+                    name="email"
+                    onChange={handleChangeInput}
+                  />
                 )}
               </Box>
               <IconButton
@@ -187,9 +239,35 @@ export const ProfilePage = () => {
             color="success"
             sx={{ marginBottom: 5, color: "white" }}
             fullWidth
+            onClick={handleOpenModal}
           >
             Хадгалах
           </Button>
+          <Modal
+            open={openModal}
+            onClose={handleCloseModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography variant="h5"> Пасспордоо оруулна уу</Typography>
+              <TextField
+                placeholder="Пасспордоо оруулна уу"
+                onChange={(e) => setPassword(e.target.value)}
+                fullWidth
+              />
+              <Button
+                variant="contained"
+                color="success"
+                sx={{ width: "200px" }}
+                onClick={() => (
+                  checkPassword(password!), changeUserData(changedUserData)
+                )}
+              >
+                Шалгах
+              </Button>
+            </Box>
+          </Modal>
 
           <Button
             startIcon={<HistoryIcon />}
@@ -222,8 +300,26 @@ export const ProfilePage = () => {
       >
         <Box sx={style}>
           <Box>
+            <Typography
+              fontSize={"28px"}
+              fontFamily={"sans-serif"}
+              alignContent={"center"}
+              justifyContent={"center"}
+              display={"flex"}
+            >
+              Захиалгийн түүх
+            </Typography>
             {orders?.map((order, i) => (
-              <Box key={i} sx={{ border: 1 }}>
+              <Box
+                key={i}
+                sx={{
+                  marginY: 1,
+                  border: 1,
+                  borderRadius: "20px",
+                  padding: 1,
+                  borderColor: "gray",
+                }}
+              >
                 <Typography
                   sx={{ background: "success", display: "inline", margin: 3 }}
                 >
@@ -249,6 +345,31 @@ export const ProfilePage = () => {
                   paddingX={3}
                 >
                   Delivery : {order.payment?.status}
+                </Typography>
+                <Typography
+                  sx={{
+                    display: "inline",
+                    margin: 3,
+                    borderRadius: 3,
+                    padding: 1,
+                  }}
+                  paddingX={3}
+                >
+                  Total amount : {"40,000₮"}
+                </Typography>
+                <Typography
+                  sx={{
+                    display: "inline",
+                    margin: 3,
+                    borderRadius: 3,
+                    padding: 1,
+                  }}
+                  paddingX={3}
+                >
+                  ordered Date :
+                  {order.payment?.paidDate
+                    ? order.payment?.paidDate
+                    : "2024-03-05"}
                 </Typography>
               </Box>
             ))}

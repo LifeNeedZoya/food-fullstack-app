@@ -5,6 +5,7 @@ import { sendEmail } from "../utils/sendEmail";
 import jwt from "jsonwebtoken";
 import MyError from "../utils/myError";
 import { emitWarning } from "process";
+import { IReq } from "../utils/interface";
 
 export const signup = async (
   req: Request,
@@ -71,6 +72,37 @@ export const login = async (
       user: otherParams,
     });
     console.log("Хэрэглэгч амжилттай нэвтэрлээ", user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkUserPassword = async (
+  req: IReq,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = req.user;
+    const { pass } = req.body;
+    console.log("pass", pass);
+
+    const user = await User.findOne({ email }).select("+password").lean();
+
+    if (!user) {
+      throw new MyError(`Хэрэглэгч олдсонгүй`, 400);
+    }
+
+    const isValid = await bcrypt.compare(pass, user.password);
+
+    if (!isValid) {
+      throw new MyError(`Нууц үг буруу байна`, 400);
+    }
+
+    res.status(201).json({
+      message: "Хэрэглэгчийн нууц үг зөв байна",
+      isValid: true,
+    });
   } catch (error) {
     next(error);
   }
@@ -162,6 +194,40 @@ export const getUser = async (
       message: `Захиалгыг амжилттай авлаа`,
       findUser,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changeUserData = async (
+  req: IReq,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userData } = req.body;
+    const { user } = req;
+
+    if (!userData) {
+      throw new MyError(`Хэрэглэгчийн мэдээлэл дутуу байна.`, 400);
+    }
+
+    const findUser = await User.updateMany(
+      { _id: user._id },
+      {
+        $set: {
+          name: userData.name,
+          phoneNumber: userData.phoneNumber,
+          email: userData.email,
+        },
+      }
+    );
+
+    res.status(201).json({
+      message: "Хэрэглэгчийн мэдээлэл амжилттай өөрчиллөө.",
+      findUser,
+    });
+    console.log("successfully changed user data", findUser);
   } catch (error) {
     next(error);
   }
