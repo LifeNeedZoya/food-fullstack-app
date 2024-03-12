@@ -367,8 +367,8 @@ export const ProfilePage = () => {
                   paddingX={3}
                 >
                   ordered Date :
-                  {order.payment?.paidDate
-                    ? order.payment?.paidDate
+                  {order.payment.paidDate
+                    ? order.payment.paidDate
                     : "2024-03-05"}
                 </Typography>
               </Box>

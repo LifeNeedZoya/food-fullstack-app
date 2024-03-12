@@ -40,6 +40,7 @@ interface IOrder {
   foods: [];
   payment: {
     status: string;
+    paidDate: string;
   };
 }
 
@@ -74,6 +75,7 @@ export const UserContext = createContext<IUserContext>({
       foods: [],
       payment: {
         status: "",
+        paidDate: "",
       },
     },
   ],
