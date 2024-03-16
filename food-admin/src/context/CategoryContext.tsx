@@ -1,11 +1,8 @@
 "use client";
-import axios from "axios";
-import react, {
-  PropsWithChildren,
-  createContext,
-  useEffect,
-  useState,
-} from "react";
+
+import myAxios from "@/utils/axios";
+
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 interface ICategory {
   name: string;
@@ -29,7 +26,7 @@ const CategoryProvider = ({ children }: PropsWithChildren) => {
     try {
       const {
         data: { categories },
-      } = await axios.get("http://localhost:8080/category");
+      } = await myAxios.get("/category");
 
       setCategories(categories);
     } catch (error: any) {

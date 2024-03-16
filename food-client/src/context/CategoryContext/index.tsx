@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import myAxios from "@/utils/axios";
 import React, {
   ChangeEvent,
   PropsWithChildren,
@@ -33,7 +33,7 @@ const CategoryProvider = ({ children }: PropsWithChildren) => {
       console.log("cate");
       const {
         data: { categories },
-      } = await axios.get("http://localhost:8080/category");
+      } = await myAxios.get("/category");
 
       setCategories(categories);
       console.log("Categories from backend", categories);

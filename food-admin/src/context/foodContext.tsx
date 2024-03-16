@@ -1,6 +1,6 @@
 "use client";
-import axios from "axios";
-import react, {
+import myAxios from "@/utils/axios";
+import {
   PropsWithChildren,
   createContext,
   useContext,
@@ -39,7 +39,7 @@ const FoodProvider = ({ children }: PropsWithChildren) => {
   const deleteFood = async (foodId: string) => {
     try {
       console.log("id", foodId);
-      await axios.delete(`http://localhost:8080/food/${foodId}`);
+      await myAxios.delete(`/food/${foodId}`);
 
       toast.success(`success`);
       setRefresh(!refresh);
@@ -53,7 +53,7 @@ const FoodProvider = ({ children }: PropsWithChildren) => {
     try {
       const {
         data: { foods },
-      } = await axios.get("http://localhost:8080/food");
+      } = await myAxios.get("/food");
 
       setFoods(foods);
       console.log("get foods successfully");

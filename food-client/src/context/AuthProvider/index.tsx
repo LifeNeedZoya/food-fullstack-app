@@ -131,7 +131,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     avatarImg,
   }: ISignUp) => {
     try {
-      await axios.post("http://localhost:8080/auth/signup", {
+      await MyAxios.post("/auth/signup", {
         email,
         name,
         password,
@@ -158,7 +158,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
       console.log("User");
       const {
         data: { token, user },
-      } = await axios.post("http://localhost:8080/auth/login", {
+      } = await MyAxios.post("/auth/login", {
         userEmail: email,
         userPassword: password,
       });
@@ -185,8 +185,8 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     try {
       const {
         data: { isValid },
-      } = await axios.post(
-        `http://localhost:8080/auth/checkPassword`,
+      } = await MyAxios.post(
+        `/auth/checkPassword`,
         { pass },
         {
           headers: {
@@ -205,7 +205,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     try {
       const {
         data: { orders },
-      } = await axios.get("http://localhost:8080/order", {
+      } = await MyAxios.get("/order", {
         headers: { Authorization: `Bearer ${loggedToken}` },
       });
       setOrders(orders);
@@ -245,7 +245,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
 
   const changeUserData = async ({ userData }: any) => {
     try {
-      await axios.post("http://localhost:8080/auth/signup", {
+      await MyAxios.post("/auth/signup", {
         userData,
       });
       await Swal.fire({

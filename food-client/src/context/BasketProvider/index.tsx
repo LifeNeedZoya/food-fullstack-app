@@ -13,6 +13,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { UserContext } from "../AuthProvider";
 
+import myAxios from "@/utils/axios";
+
 interface IBasket {
   count: string;
   foodId: IFood;
@@ -47,7 +49,7 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
     console.log("MIDDle", loggedToken);
     const {
       data: { basket },
-    } = await axios.get(`http://localhost:8080/basket/user`, {
+    } = await myAxios.get(`/basket/user`, {
       headers: {
         Authorization: `Bearer ${loggedToken}`,
       },
@@ -62,8 +64,8 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
   const updateBasket = async (id: string) => {
     try {
       foodId = id;
-      const data = await axios.put(
-        `http://localhost:8080/basket/`,
+      const data = await myAxios.put(
+        `/basket/`,
         {
           foods: { count: count, foodId: foodId },
         },
@@ -87,8 +89,8 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
     console.log("food", basket);
 
     try {
-      await axios.post(
-        "http://localhost:8080/order",
+      await myAxios.post(
+        "/order",
         {
           address,
           basket,
@@ -109,7 +111,7 @@ const BasketProvider = ({ children }: PropsWithChildren) => {
   const deleteBasketItem = async (foodId: string) => {
     try {
       console.log("id", foodId);
-      await axios.delete(`http://localhost:8080/basket/${foodId}`, {
+      await myAxios.delete(`/basket/${foodId}`, {
         headers: {
           Authorization: `Bearer ${loggedToken}`,
         },

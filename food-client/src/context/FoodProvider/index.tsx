@@ -3,6 +3,7 @@
 import axios from "axios";
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { createContext } from "react";
+import Myaxios from "@/utils/axios";
 
 export const FoodContext = createContext({} as IFoodsContext);
 
@@ -31,7 +32,7 @@ const FoodProvider = ({ children }: PropsWithChildren) => {
     try {
       const {
         data: { foods },
-      } = await axios.get("http://localhost:8080/food");
+      } = await Myaxios.get("/food");
       setFoodData(foods);
 
       console.log("FOOD DATA: ", foodData);

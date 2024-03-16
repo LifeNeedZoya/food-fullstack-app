@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import myAxios from "@/utils/axios";
 import { redirect } from "next/navigation";
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -35,7 +35,7 @@ function UserProvider({ children }: PropsWithChildren) {
     try {
       const {
         data: { Users },
-      } = await axios.get("http://localhost:8080/auth");
+      } = await myAxios.get("/auth");
 
       setUsers(Users);
 

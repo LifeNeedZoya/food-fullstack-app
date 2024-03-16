@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, useContext, useEffect, useState } from "react";
-
+import myAxios from "@/utils/axios";
 import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -73,7 +73,7 @@ export default function FoodView() {
       dataForm.set("discountPrice", newFood.discountPrice.toString());
       dataForm.set("isSale", "" + newFood.isSale);
 
-      const data = await axios.post("http://localhost:8080/food", dataForm);
+      const data = await myAxios.post("/food", dataForm);
       console.log("successfully added food", data);
       handleClose();
       await Swal.fire({
