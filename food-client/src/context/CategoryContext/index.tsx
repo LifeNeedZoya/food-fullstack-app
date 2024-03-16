@@ -49,6 +49,7 @@ const CategoryProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     getCategories();
   }, []);
+
   return (
     <CategoryContext.Provider
       value={{ getCategories, categories, HandleClickCategory, chosenCategory }}

@@ -55,6 +55,11 @@ export default function FoodView() {
 
     setNewFood({ ...newFood, [name]: value });
   };
+  const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+
+    setNewFood({ ...newFood, [name]: checked });
+  };
 
   const createFood = async () => {
     try {
@@ -138,6 +143,7 @@ export default function FoodView() {
         handleClose={handleClose}
         handleChange={handleChange}
         handleFileChange={handleFileChange}
+        handleChecked={handleChecked}
       />
 
       {/* <ProductCartWidget /> */}

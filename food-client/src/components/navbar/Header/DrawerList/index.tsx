@@ -28,7 +28,7 @@ const DrawerList = () => {
 
   const total = basketFoods
     ?.map((e) => e?.foodId?.price)
-    ?.reduce((prev, next) => prev! + next!);
+    ?.reduce((prev, next) => (prev ?? 0) + next);
 
   return (
     <Grid>
@@ -71,7 +71,7 @@ const DrawerList = () => {
               Нийт төлөх дүн
             </Typography>
             <Typography variant="body1" fontWeight={600} component="h6">
-              {total} ₮
+              {total || 0} ₮
             </Typography>
           </Grid>
           <Grid item xs={6}>

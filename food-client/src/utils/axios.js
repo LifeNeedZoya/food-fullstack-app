@@ -42,8 +42,3 @@ export default instanceAxios;
 //           : (quantity - 1) * food.price,
 //     });
 //   };
-
-//   const handleRemove = () => {
-//     console.log("remove basket", food?._id);
-//     deleteFoodFromBasket(food?._id);
-//   };

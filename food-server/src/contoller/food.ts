@@ -12,7 +12,7 @@ export const createFood = async (
     const newFood = req.body;
 
     console.log("NewFood", newFood);
-    console.log("ServerPutData", req.body);
+    console.log("NewFood", req.file);
 
     if (req.file) {
       const { secure_url } = await cloudinary.uploader.upload(req.file.path);
@@ -21,8 +21,9 @@ export const createFood = async (
 
     console.log("DATA", newFood);
 
-    Food.create(newFood);
+    await Food.create(newFood);
     res.status(200).json({ message: "Хоол амжилттай үүслээ" });
+    console.log("successfully created food");
   } catch (error) {
     next(error);
     console.log("error", error);

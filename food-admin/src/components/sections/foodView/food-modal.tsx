@@ -55,7 +55,7 @@ const FoodModal = ({
   handleChange,
   handleFileChange,
   createFood,
-
+  handleChecked,
   isChecked,
   setIsChecked,
   newFood,
@@ -115,6 +115,7 @@ const FoodModal = ({
             <Checkbox
               checked={isChecked}
               onClick={() => setIsChecked(!isChecked)}
+              onChange={handleChecked}
               name="isSale"
             />
             {isChecked && (
