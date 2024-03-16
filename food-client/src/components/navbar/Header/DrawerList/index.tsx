@@ -26,9 +26,12 @@ const DrawerList = () => {
     });
   };
 
-  const total = basketFoods
-    ?.map((e) => e?.foodId?.price)
-    ?.reduce((prev, next) => (prev ?? 0) + next);
+  var total: any = 0;
+  if (basketFoods.length !== 0) {
+    total = basketFoods
+      ?.map((e) => e?.foodId?.price)
+      ?.reduce((prev, next: any) => (prev ?? 0) + next);
+  }
 
   return (
     <Grid>
