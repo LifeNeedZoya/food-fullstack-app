@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.ts",
-    "start": "nodemon app.js",
-    "build": "node app.js"
+    "start": "ts-node  src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "lint": "eslint --fix src test",
+    "build": "tsc",
+    "vercel-build": "echo Hello"
   },
   "author": "",
   "license": "ISC",
