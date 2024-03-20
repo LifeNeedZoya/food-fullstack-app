@@ -182,8 +182,8 @@ export const LeftView = () => {
         <Box>
           <Typography>Төлбөр төлөх</Typography>
           <Grid>
-            {logos.map((e) => (
-              <IconButton>
+            {logos.map((e, i) => (
+              <IconButton key={i}>
                 {" "}
                 <img src={e} width="40px" />{" "}
               </IconButton>

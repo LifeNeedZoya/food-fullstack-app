@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import { createContext } from "react";
+import { toast } from "react-toastify";
 
 interface ICategory {
   name: string;
@@ -38,7 +39,7 @@ const CategoryProvider = ({ children }: PropsWithChildren) => {
       setCategories(categories);
       console.log("Categories from backend", categories);
     } catch (error: any) {
-      alert("Get Error - " + error.message);
+      toast.error("error");
     }
   };
 

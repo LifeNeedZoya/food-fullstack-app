@@ -239,7 +239,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
         }
       }
     } catch (error: any) {
-      alert("Get Error - " + error.message);
+      console.log("err");
     }
   };
 

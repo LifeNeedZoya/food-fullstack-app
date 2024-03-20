@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { createContext } from "react";
 import Myaxios from "@/utils/axios";
+import { toast } from "react-toastify";
 
 export const FoodContext = createContext({} as IFoodsContext);
 
@@ -39,7 +40,7 @@ const FoodProvider = ({ children }: PropsWithChildren) => {
 
       setIsLoading(false);
     } catch (error: any) {
-      alert("Get Error - " + error.message);
+      toast.error("err", error);
     }
   };
 
