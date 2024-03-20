@@ -36,4 +36,4 @@ const MONGO_URL = process.env.MONGO_URL as string;
 
 connectDB(MONGO_URL);
 
-app.listen(8080, () => console.log(color.rainbow("Server is running")));
+app.listen(8080, () => console.log(color.rainbow("Server is running at 8080")));

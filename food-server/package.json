@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node  src/index.ts",
-    "dev": "nodemon src/index.ts",
+    "start": "ts-node  ./src/index.ts",
+    "dev": "nodemon ./src/index.ts",
     "lint": "eslint --fix src test"
   },
   "author": "",
