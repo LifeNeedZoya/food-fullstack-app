@@ -44,7 +44,7 @@ const CategoryProvider = ({ children }: PropsWithChildren) => {
   };
 
   const HandleClickCategory = (id: string) => {
-    setChosenCategory(id);
+    return setChosenCategory(id);
   };
 
   useEffect(() => {

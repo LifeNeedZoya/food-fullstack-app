@@ -184,7 +184,6 @@ export const LeftView = () => {
           <Grid>
             {logos.map((e, i) => (
               <IconButton key={i}>
-                {" "}
                 <img src={e} width="40px" />{" "}
               </IconButton>
             ))}

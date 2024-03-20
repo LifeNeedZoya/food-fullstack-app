@@ -28,7 +28,9 @@ const CategoryRow = ({ foods, name, id, isLoading }: IProps) => {
         </Grid>
         <Grid item>
           <Button
-            onClick={() => router.replace("/menu", HandleClickCategory(id))}
+            onClick={() => (
+              HandleClickCategory(id), () => router.replace("/menu")
+            )}
             sx={{ color: "#18BA51", ml: 2 }}
           >
             Бүгдийг харах
