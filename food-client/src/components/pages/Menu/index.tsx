@@ -20,8 +20,8 @@ export const MenuPage = () => {
           justifyContent={"space-evenly"}
           gridRow={6}
         >
-          {categories.map((e) => (
-            <Grid item gridRow={6}>
+          {categories.map((e, i) => (
+            <Grid item key={i} gridRow={6}>
               <Button
                 variant="contained"
                 color={e._id === chosenCategory ? "success" : "secondary"}
@@ -43,8 +43,8 @@ export const MenuPage = () => {
             )}
             {foodData
               ?.filter((food: any) => food.category._id === chosenCategory)
-              .map((food: any) => (
-                <FoodCard {...food} />
+              .map((food: any, i) => (
+                <FoodCard key={i} {...food} />
               ))}
           </Grid>
         </Grid>
