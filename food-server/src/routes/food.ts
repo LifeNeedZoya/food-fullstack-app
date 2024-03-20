@@ -6,7 +6,7 @@ import {
   updateFood,
   deleteFood,
 } from "../contoller/food";
-import { upload } from "../middleware/multer";
+import { upload } from "../utils/multer";
 
 const router = Router();
 

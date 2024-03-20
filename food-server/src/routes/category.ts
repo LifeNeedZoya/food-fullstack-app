@@ -6,7 +6,7 @@ import {
   updateCategory,
   deleteCategory,
 } from "../contoller/category";
-import { upload } from "../middleware/multer";
+import { upload } from "../utils/multer";
 import { authenticate } from "../middleware/auth";
 const router = Router();
 

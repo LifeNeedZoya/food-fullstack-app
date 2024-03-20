@@ -9,7 +9,7 @@ import {
 const router = Router();
 import { getAllUsers, getUser, changeUserData } from "../contoller/user";
 import { authenticate } from "../middleware/auth";
-import { upload } from "../middleware/multer";
+import { upload } from "../utils/multer";
 
 router.route("/").get(getAllUsers);
 router.route("/:userId").get(getUser);
