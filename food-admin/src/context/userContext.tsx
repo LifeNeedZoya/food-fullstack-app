@@ -1,7 +1,7 @@
 "use client";
 
 import myAxios from "@/utils/axios";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -29,19 +29,20 @@ function UserProvider({ children }: PropsWithChildren) {
     email: "",
     _id: "",
   });
-  const [token, setToken] = useState();
+  const [token, setToken] = useState<string | null>();
+  const router = useRouter();
 
   const getUsers = async () => {
     try {
       const {
         data: { Users },
-      } = await myAxios.get("/auth");
+      } = await myAxios.post("/auth/login");
 
       setUsers(Users);
 
-      console.log("get foods successfully");
-    } catch (error: any) {
-      alert("Get Error - " + error.message);
+      console.log("get foods successfully", Users);
+    } catch (error: unknown) {
+      toast.error("Error : go to login");
     }
   };
 
@@ -51,7 +52,8 @@ function UserProvider({ children }: PropsWithChildren) {
       const storedToken = localStorage.getItem("token");
 
       if (!storedUser || !storedToken) {
-        toast.error("go to signup ");
+        toast.error(`Нэвтэрнэ үү`);
+        router.push("/login");
       }
 
       if (storedUser) {
@@ -70,13 +72,17 @@ function UserProvider({ children }: PropsWithChildren) {
 
       console.log("get user from localStorage");
     } catch (error: any) {
-      alert("Get Error - " + error.message);
+      toast.error("Error :", error.message);
     }
   };
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    if (!setToken) {
+      getUsers();
+    } else {
+      getUserFromLocalStrorage();
+    }
+  }, [token]);
 
   return (
     <UserContext.Provider

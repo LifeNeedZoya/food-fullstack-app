@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Card from "@mui/material/Card";
@@ -13,6 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { alpha, useTheme } from "@mui/material/styles";
 import InputAdornment from "@mui/material/InputAdornment";
+import myAxios from "@/utils/axios";
 
 import { useRouter } from "next/navigation";
 
@@ -29,14 +30,16 @@ export default function LoginView() {
 
   const router = useRouter();
 
-  const [userEmail, setUserEmail] = useState("tserenyanjinb216@gmail.com");
-  const [userPassword, setUserPassword] = useState("1234pass");
+  const [userEmail, setUserEmail] = useState<string | null>();
+  const [userPassword, setUserPassword] = useState<string | null>();
   const [showPassword, setShowPassword] = useState(false);
+  const [token, setToken] = useState<string | null>();
+  const [user, setUser] = useState<string | null>();
 
   const handleClick = async () => {
     const {
       data: { user, token },
-    } = (await axios.post("http://localhost:8080/auth/login", {
+    } = (await myAxios.post("/auth/login", {
       userEmail,
       userPassword,
     })) as {
@@ -48,6 +51,15 @@ export default function LoginView() {
     localStorage.setItem("user", JSON.stringify(user));
     router.push("/dashboard");
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    if (token && user) {
+      setToken(token);
+      setUser(user);
+    }
+  });
 
   const renderForm = (
     <>
