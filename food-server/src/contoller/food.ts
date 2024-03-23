@@ -14,6 +14,12 @@ export const createFood = async (
     console.log("NewFood", newFood);
     console.log("NewFood", req.file);
 
+    const foodContainsName = Food.findOne({ name: newFood.name });
+
+    if (newFood.name == Food.name) {
+      console.log("ner adilhan bn");
+    }
+
     if (req.file) {
       const { secure_url } = await cloudinary.uploader.upload(req.file.path);
       newFood.image = secure_url;
@@ -24,9 +30,16 @@ export const createFood = async (
     await Food.create(newFood);
     res.status(200).json({ message: "Хоол амжилттай үүслээ" });
     console.log("successfully created food");
-  } catch (error) {
-    next(error);
-    console.log("error", error);
+  } catch (error: any) {
+    if (error.code === 11000) {
+      // Mongoose duplicate key error
+      res.status(400).json({
+        message: "Food is already exist",
+      });
+    } else {
+      // Pass the error to the next error handler middleware
+      next(error);
+    }
   }
 };
 

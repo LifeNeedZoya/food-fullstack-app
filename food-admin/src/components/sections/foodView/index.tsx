@@ -19,6 +19,7 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import Iconify from "@/components/iconify";
 import { FoodContext } from "@/context/foodContext";
+import { toast } from "react-toastify";
 
 export default function FoodView() {
   const [open, setOpen] = useState(false);
@@ -84,8 +85,19 @@ export default function FoodView() {
         showConfirmButton: false,
       });
       setRefresh(!refresh);
-    } catch (error) {
+    } catch (error: any) {
       console.log("errr", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(`Error: ${error.response.data.message}`);
+      } else if (error.message) {
+        toast.error(`Error: ${error.message}`);
+      } else {
+        toast.error("An error occurred");
+      }
     }
   };
 

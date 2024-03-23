@@ -161,7 +161,7 @@ const FoodModal = ({
           sx={{ margin: 2 }}
           onClick={createFood}
         >
-          +
+          Upload Food
         </Button>
       </Box>
     </Modal>
