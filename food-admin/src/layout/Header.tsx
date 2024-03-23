@@ -46,7 +46,7 @@ export default function Header({ onOpenNav }: any) {
 
   return (
     <AppBar
-      sx={{
+      style={{
         boxShadow: "none",
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
@@ -56,6 +56,7 @@ export default function Header({ onOpenNav }: any) {
         transition: theme.transitions.create(["height"], {
           duration: theme.transitions.duration.shorter,
         }),
+        position: "fixed", // Specify the position here
         ...(lgUp && {
           width: `calc(100% - ${NAV.WIDTH + 1}px)`,
           height: HEADER.H_DESKTOP,
