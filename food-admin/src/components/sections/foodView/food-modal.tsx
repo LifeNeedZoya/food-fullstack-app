@@ -139,8 +139,10 @@ const FoodModal = ({
               onChange={handleChange}
               style={{ color: "black" }}
             >
-              {categories.map((e: any) => (
-                <MenuItem value={e._id}>{e.name}</MenuItem>
+              {categories.map((e: any, i) => (
+                <MenuItem value={e._id} key={i}>
+                  {e.name}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
