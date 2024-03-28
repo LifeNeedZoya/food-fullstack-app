@@ -31,7 +31,10 @@ export const LoginPage = () => {
     onSubmit: ({ email, password }: { email: string; password: string }) => {
       login({ email, password });
     },
-    initialValues: { email: "", password: "" },
+    initialValues: {
+      email: "tserenyanjinb216@gmail.com",
+      password: "1234pass",
+    },
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema,

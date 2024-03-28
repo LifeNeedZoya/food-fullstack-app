@@ -30,8 +30,10 @@ export default function LoginView() {
 
   const router = useRouter();
 
-  const [userEmail, setUserEmail] = useState<string | null>();
-  const [userPassword, setUserPassword] = useState<string | null>();
+  const [userEmail, setUserEmail] = useState<string | null>(
+    "tserenyanjinb216@gmail.com"
+  );
+  const [userPassword, setUserPassword] = useState<string | null>("1234pass");
   const [showPassword, setShowPassword] = useState(false);
   const [token, setToken] = useState<string | null>();
   const [user, setUser] = useState<string | null>();
