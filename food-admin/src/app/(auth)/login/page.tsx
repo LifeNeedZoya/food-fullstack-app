@@ -41,12 +41,10 @@ export default function LoginView() {
   const handleClick = async () => {
     const {
       data: { user, token },
-    } = (await myAxios.post("/auth/login", {
+    } = await myAxios.post("/auth/login", {
       userEmail,
       userPassword,
-    })) as {
-      data: { token: string; user: any };
-    };
+    });
 
     console.log("information", token, user);
     localStorage.setItem("token", token);
@@ -61,7 +59,7 @@ export default function LoginView() {
       setToken(token);
       setUser(user);
     }
-  });
+  }, [token, user]);
 
   const renderForm = (
     <>

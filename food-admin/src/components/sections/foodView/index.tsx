@@ -51,8 +51,6 @@ export default function FoodView() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log("name", name);
-    console.log("value", value);
 
     setNewFood({ ...newFood, [name]: value });
   };

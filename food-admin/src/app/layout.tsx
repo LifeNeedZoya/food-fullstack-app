@@ -2,7 +2,7 @@ import ThemeProvider from "@/theme";
 import "./globals.css";
 import UserProvider from "@/context/userContext";
 import FoodProvider from "@/context/foodContext";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CategoryProvider from "@/context/CategoryContext";
 

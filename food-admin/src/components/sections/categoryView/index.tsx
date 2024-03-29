@@ -15,10 +15,11 @@ import CategorySearch from "./category-search";
 // ----------------------------------------------------------------------
 
 import CategoryModal from "./category-modal";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import myAxios from "@/utils/axios";
-import axios from "axios";
 import { CategoryContext } from "@/context/CategoryContext";
+import { toast } from "react-toastify";
+
 // ----------------------------------------------------------------------
 
 export default function CategoryView() {
@@ -52,12 +53,13 @@ export default function CategoryView() {
       dataForm.set("name", newCategory.name);
       dataForm.set("description", newCategory.description);
 
-      const data = await axios.post("http://localhost:8080/category", dataForm);
+      const data = await myAxios.post("/category", dataForm);
       console.log("successfull added category", data);
       setOpen(false);
       setRefresh(!refresh);
-    } catch (error) {
+    } catch (error: any) {
       console.log("errr", error);
+      toast.error("Error", error);
     }
   };
 
