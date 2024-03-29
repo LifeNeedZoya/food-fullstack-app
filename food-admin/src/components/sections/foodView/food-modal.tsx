@@ -133,7 +133,6 @@ const FoodModal = ({
             <InputLabel id="demo-multiple-name-label">Category</InputLabel>
             <Select
               id="demo-simple-select"
-              value="category"
               label={"category"}
               name="category"
               onChange={handleChange}

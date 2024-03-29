@@ -15,24 +15,22 @@
 // export const upload = multer({ storage });
 
 import multer from "multer";
+import os from "os";
 import path from "path";
-import fs from "fs";
 
-const uploadDir = path.join(__dirname, "../uploads");
+// Define the custom temporary directory
+const tmpDir = os.tmpdir(); // Get the system's temporary directory
+const customTmpDir = path.join(tmpDir, "custom_tmp_folder");
 
-// Check if the directory exists, if not, create it
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
+// Create a storage engine for multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    console.log("Destination:", uploadDir); // Log the destination for debugging
-    cb(null, uploadDir);
+    cb(null, customTmpDir); // Set the custom temporary directory as the destination
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, file.originalname); // Use the original filename
   },
 });
 
-export const upload = multer({ storage });
+// Initialize multer with the custom storage engine
+export const upload = multer({ storage: storage });
