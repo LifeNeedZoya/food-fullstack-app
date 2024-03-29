@@ -24,9 +24,9 @@ const customTmpDir = path.join(tmpDir, "custom_tmp_folder");
 
 // Create a storage engine for multer
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, customTmpDir); // Set the custom temporary directory as the destination
-  },
+  // destination: function (req, file, cb) {
+  //   cb(null, customTmpDir); // Set the custom temporary directory as the destination
+  // },
   filename: function (req, file, cb) {
     cb(null, file.originalname); // Use the original filename
   },
